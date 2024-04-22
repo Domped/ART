@@ -1,0 +1,74 @@
+add_library (
+	AdvancedRenderingToolkit
+	SHARED
+	${art_header_files}
+	${art_sources}
+	)
+
+target_compile_options(AdvancedRenderingToolkit PRIVATE -Wall -Wextra)
+
+@source_group_commands@
+
+if ( APPLE )
+
+	set_target_properties(
+		AdvancedRenderingToolkit
+		PROPERTIES
+			FRAMEWORK TRUE
+			FRAMEWORK_VERSION A
+  			# "current version" in semantic format in Mach-O binary file
+  			VERSION ${ART_VERSION_MAJOR}.${ART_VERSION_MINOR}.${ART_VERSION_PATCH}
+  			# "compatibility version" in semantic format in Mach-O binary file
+			# the logic here is that anything with the same major version number
+			# should work together
+  			SOVERSION ${ART_VERSION_MAJOR}.0.0
+		)
+
+#	target_link_options(AdvancedRenderingToolkit INTERFACE "LINKER:-rpath,$ENV{HOME}/Library/Frameworks")
+
+# This gets rid of a stupid warning in Xcode > 4.4 - but only for this one
+# target. Which is almost useless, since we still get warnings about the 
+# in-built targets provided by cmake, which we seemingly cannot access...
+
+	set_target_properties(
+		AdvancedRenderingToolkit
+		PROPERTIES
+		XCODE_ATTRIBUTE_COMBINE_HIDPI_IMAGES "YES"
+		XCODE_ATTRIBUTE_COMBINE_HIDPI_IMAGES_DEBUG "YES"
+		)
+
+	target_link_libraries(
+		AdvancedRenderingToolkit
+		${art_other_link_libraries}
+		)
+
+	install (
+		TARGETS
+			AdvancedRenderingToolkit
+		FRAMEWORK DESTINATION
+			Library/Frameworks
+		)
+
+else ( APPLE )
+
+	set_target_properties(
+		AdvancedRenderingToolkit 
+		PROPERTIES
+			VERSION    2.0
+			SOVERSION  2
+  		)
+
+	target_link_libraries(
+		AdvancedRenderingToolkit
+		PUBLIC
+		${art_other_link_libraries}
+		)
+
+	install (
+		TARGETS
+			AdvancedRenderingToolkit
+		DESTINATION
+			lib
+		)
+
+endif ( APPLE )
