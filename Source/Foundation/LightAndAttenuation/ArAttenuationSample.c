@@ -2074,4 +2074,20 @@ void arattenuationsample_a_debugprintf(
     fflush(stdout);
 }
 
+void arattenuationsample_a_rotate_a(
+        const ART_GV *art_gv,
+        ArAttenuationSample *a0,
+        ArAttenuationSample *ar,
+        unsigned int ref_index) {
+
+    int positions_to_rotate = HERO_SAMPLES_TO_SPLAT - ref_index;
+    arattenuationsample_a_init_a(art_gv, a0, ar);
+
+    for(unsigned int i = 0; i < HERO_SAMPLES_TO_SPLAT; i++) {
+
+        unsigned int new_index = (i + positions_to_rotate) % HERO_SAMPLES_TO_SPLAT;
+        ARATTENUATIONSAMPLE_ATTENUATION_SET_AID(ar, new_index, ARATTENUATIONSAMPLE_MAIN_DIAGONAL_AI(a0, i));
+    }
+}
+
 // ===========================================================================

@@ -54,6 +54,14 @@ ArAttenuationSample  * temporaryMediaAttenuation;
 ArLightSample        * temporaryContribution;
 ArLightSample        * temporaryMediaContribution;
 
+ArLightSample *tempEmissionSample;
+ArLightSample *lightSampleConnection;
+
+ArAttenuationSample *connectionSampleConnection;
+
+ArAttenuationSample *cvtempSample;
+
+ArAttenuationSample *cvtempSampleLight;
 // stores the intermediate results at individual path steps
 // the final result is computed as L_0, with
 //     L_i = C_i + M_i * A_i * L_(i+1)

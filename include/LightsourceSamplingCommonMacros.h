@@ -66,7 +66,6 @@
 }
 
 + (double) sampleCosineWeighedHemisphere
-        : (ArLightsourceSamplingContext *) samplingContext
         : (Vec3D*) _worldVec
         : (Vec3D) _normal
         : (double *) cosine

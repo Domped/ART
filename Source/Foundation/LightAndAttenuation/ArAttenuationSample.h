@@ -144,6 +144,14 @@ void arlightintensitysample_ai_mul_i(
         );
 
 
+void arattenuationsample_a_rotate_a(
+        const ART_GV               * art_gv,
+              ArAttenuationSample  * a0,
+              ArAttenuationSample  * ar,
+              unsigned int                    ref_index
+
+        );
+
 #define ARATTENUATIONSAMPLE_V_PD_C_INIT_NONPOLARISING_A(__v0,__pd,__c0,__ar) \
 \
 do{ \

@@ -215,5 +215,6 @@ ARARRAY_INTERFACE_FOR_TYPE(Double, double);
 #define ARDOUBLEARRAY_EMPTY         ((ArDoubleArray){ NULL })
 
 
+
 #endif /* _ART_FOUNDATION_ARARRAY_H_ */
 /* ======================================================================== */

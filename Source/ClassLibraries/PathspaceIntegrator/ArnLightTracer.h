@@ -78,6 +78,9 @@ unsigned int    nonclearMediaAttenuations[LT_ATTENUATIONS_ARRAY_LENGTH];
 //        and should not be used
 unsigned int    nonzeroContributions[LT_CONTRIBUTIONS_ARRAY_LENGTH];
     int DEBUG_PL;
+
+
+    int DEBUG_COUNT_RADIANCE;
 }
 
 - (id) init

@@ -452,7 +452,7 @@ typedef struct ArPixelID {
 
         uint32_t max = 0;
         unsigned int sizeArray = arpvdynarray_size(&pathVertexArray);
-//
+
 //        for (unsigned int p = 0; p < sizeArray; p++) {
 //            ArPathVertex pv = arpvdynarray_i(&pathVertexArray, p);
 //
@@ -598,6 +598,7 @@ typedef struct ArPixelID {
                     ArReferenceFrame   referenceFrame;
                     wavelength = tempWavelengthVertex.incomingWavelength;
                     ArLightAlphaSample* lightAlphaSample = arlightalphasample_alloc(art_gv);
+                    arlightsample_d_init_unpolarised_l(art_gv, 0.0, lightAlphaSample->light);
 
 #ifdef MONOHERO
                     arwavelength_d_init_w(art_gv, 550 NM, &wavelength);
@@ -643,8 +644,11 @@ typedef struct ArPixelID {
 
 
 
-                    if ( true )
+                    if ( arlightalphasample_l_valid(
+                            art_gv, lightAlphaSample))
                     {
+
+
                         if ( splattingKernelWidth == 1 )
                         {
                             for ( unsigned int im = 0; im < numberOfImagesToWrite; im++ )

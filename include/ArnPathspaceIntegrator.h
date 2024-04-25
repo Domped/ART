@@ -74,7 +74,10 @@ ArDistanceTrackingMode;
     double                          minimalContribution;
     unsigned int                    maximalRecursionLevel;
     ArDistanceTrackingMode          distanceTrackingMode;
-    
+
+    double                                vmNormalization;
+    double                                VMweight;
+    double                                VCweight;
 }
 
 - (id) init

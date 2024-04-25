@@ -1,5 +1,5 @@
 #ifndef SAMPLES
-    #define SAMPLES 7
+    #define SAMPLES 8
 #endif
 
 
@@ -312,7 +312,7 @@ ARM_MAIN_FUNCTION(CornellBox)
                         rayCaster:        STANDARD_RAYCASTER
                         maximalRecursion: 9
                         ]
-                sampleSplattingKernel: TENT_KERNEL
+               // sampleSplattingKernel: TENT_KERNEL
                 samplesPerPixel:       SAMPLES
                 randomValueGeneration: RANDOM_SEQUENCE
                 ],

@@ -984,4 +984,33 @@ void arlightsample_l_debugprintf(
         );
 }
 
+void arlightsample_l_rotate_l(
+        const ART_GV *art_gv,
+        ArLightSample *l0,
+        ArLightSample *l1,
+        unsigned int reference_index)
+{
+    int positions_to_rotate = HERO_SAMPLES_TO_SPLAT - reference_index;
+    ArSpectralSample* s;
+    s = sps_alloc(art_gv);
+
+    printf("Rotating %f positions\n", arlightsample_l_max(art_gv, l0));
+    arlightsample_l_init_h(art_gv, l0, s);
+
+    arlightsample_l_inv_l()
+    ArSpectralSample *s1;
+    s1 = sps_alloc(art_gv);
+
+    for(unsigned int i = 0; i < HERO_SAMPLES_TO_SPLAT; i++) {
+
+        unsigned int new_index = (i + positions_to_rotate) % HERO_SAMPLES_TO_SPLAT;
+        SPS_CI(*s1, new_index) = SPS_CI(*s, i);
+    }
+
+    arlightsample_s_init_unpolarised_l(art_gv, s1, l1);
+
+    sps_free(art_gv, s);
+    sps_free(art_gv, s1);
+}
+
 // ===========================================================================

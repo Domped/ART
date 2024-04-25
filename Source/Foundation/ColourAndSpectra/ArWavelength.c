@@ -191,15 +191,15 @@ int arwavelength_ww_equal_ranged(
 )
 {
 
-    for(int i = 0; i < 1; i++)
+    for(unsigned int i = 0; i < HERO_SAMPLES_TO_SPLAT; i++)
     {
-        if(fabs(ARWL_WI(*w0, i) - ARWL_WI(*w1, i)) <= 5 NM)
+        if(fabs(ARWL_WI(*w0, 0) - ARWL_WI(*w1, i)) <= 5 NM)
         {
-            return 1;
+            return i;
         }
     }
 
-    return 0;
+    return -1;
 }
 
 void arwavelength_w_debugprintf(

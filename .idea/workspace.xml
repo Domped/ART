@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="CMakePresetLoader">{
+  &quot;useNewFormat&quot;: true
+}</component>
+  <component name="CMakeReloadState">
+    <option name="reloaded" value="true" />
+  </component>
+  <component name="CMakeRunConfigurationManager">
+    <generated>
+      <config projectName="ART" targetName="art_imagediff" />
+      <config projectName="ART" targetName="arm2art" />
+      <config projectName="ART" targetName="art_imagesnr" />
+      <config projectName="ART" targetName="artist" />
+      <config projectName="ART" targetName="AdvancedRenderingToolkit" />
+      <config projectName="ART" targetName="bugblatter" />
+      <config projectName="ART" targetName="greymap" />
+      <config projectName="ART" targetName="art_imagetool" />
+      <config projectName="ART" targetName="polvis" />
+      <config projectName="ART" targetName="tonemap" />
+      <config projectName="ART" targetName="impresario" />
+    </generated>
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" TOOLCHAIN_NAME="Default" GENERATION_OPTIONS="-DCMAKE_INSTALL_PREFIX=~ -DCMAKE_BUILD_TYPE=Debug" BUILD_OPTIONS="-j 32" NO_GENERATOR="true" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9d6451dd-56f5-4571-bf94-32a69572af15" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.artcsp" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.artcsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.exr" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.exr" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxPT.artcsp" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxPT.artcsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxPT.exr" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxPT.exr" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/MiscellaneousClasses/ArcHashgrid.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/MiscellaneousClasses/ArcHashgrid.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/MiscellaneousStructs/ArPDFValue.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/MiscellaneousStructs/ArPDFValue.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/MiscellaneousStructs/ArPDFValue.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/MiscellaneousStructs/ArPDFValue.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnLightTracer.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnLightTracer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnLightTracer.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnLightTracer.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CommandLineTools/artist/artist" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CommandLineTools/artist/artist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Foundation/ColourAndSpectra/ArWavelength.c" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Foundation/ColourAndSpectra/ArWavelength.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Foundation/LightAndAttenuation/ArAttenuationSample.c" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Foundation/LightAndAttenuation/ArAttenuationSample.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Foundation/LightAndAttenuation/ArAttenuationSample.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Foundation/LightAndAttenuation/ArAttenuationSample.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Foundation/LightAndAttenuation/ArLightSample.c" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Foundation/LightAndAttenuation/ArLightSample.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Foundation/LightAndAttenuation/ArLightSample.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Foundation/LightAndAttenuation/ArLightSample.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArArray.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/ArArray.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArPathVertex.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/ArPathVertex.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArWavelength.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/ArWavelength.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnImageSamplerBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/ArnImageSamplerBase.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnLightTracer.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/ArnLightTracer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnPathspaceIntegrator.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/ArnPathspaceIntegrator.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpPathspaceIntegrator.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/ArpPathspaceIntegrator.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/LightsourceSamplingCommonMacros.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/LightsourceSamplingCommonMacros.h" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectApplicationVersion">
+    <option name="ide" value="CLion" />
+    <option name="majorVersion" value="2024" />
+    <option name="minorVersion" value="1" />
+    <option name="productBranch" value="Classic" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2fTLfwNWdHHfQAyVwJrsRgGGa6C" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "CMake Application.artist.executor": "Debug",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.RadMigrateCodeStyle": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "structure.view.defaults.are.configured": "true",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager" selected="CMake Application.artist">
+    <configuration name="AdvancedRenderingToolkit" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="AdvancedRenderingToolkit" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="arm2art" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="arm2art" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="arm2art">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="art_imagediff" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="art_imagediff" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="art_imagediff">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="art_imagesnr" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="art_imagesnr" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="art_imagesnr">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="art_imagetool" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="art_imagetool" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="art_imagetool">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="artist" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm -j 32" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="artist" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="artist">
+      <envs>
+        <env name="LD_LIBRARY_PATH" value="$PROJECT_DIR$/cmake-build-debug/lib" />
+      </envs>
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="bugblatter" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="bugblatter" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="bugblatter">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="greymap" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="greymap" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="greymap">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="impresario" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="impresario" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="impresario">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="polvis" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="polvis" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="polvis">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="tonemap" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="tonemap" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="tonemap">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="CMake Application.AdvancedRenderingToolkit" />
+      <item itemvalue="CMake Application.arm2art" />
+      <item itemvalue="CMake Application.art_imagediff" />
+      <item itemvalue="CMake Application.art_imagesnr" />
+      <item itemvalue="CMake Application.art_imagetool" />
+      <item itemvalue="CMake Application.artist" />
+      <item itemvalue="CMake Application.bugblatter" />
+      <item itemvalue="CMake Application.greymap" />
+      <item itemvalue="CMake Application.impresario" />
+      <item itemvalue="CMake Application.polvis" />
+      <item itemvalue="CMake Application.tonemap" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9d6451dd-56f5-4571-bf94-32a69572af15" name="Changes" comment="" />
+      <created>1713820228109</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1713820228109</updated>
+      <workItem from="1713820229802" duration="383000" />
+      <workItem from="1713821203796" duration="52000" />
+      <workItem from="1713959666717" duration="646000" />
+      <workItem from="1713961327679" duration="1010000" />
+      <workItem from="1713972430349" duration="6107000" />
+      <workItem from="1713993210450" duration="2896000" />
+      <workItem from="1714057428385" duration="5159000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VCPKGProject">
+    <isAutomaticCheckingOnLaunch value="false" />
+    <isAutomaticFoundErrors value="true" />
+    <isAutomaticReloadCMake value="true" />
+  </component>
+</project>

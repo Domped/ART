@@ -2,24 +2,32 @@
 // Created by domin on 28.11.2023.
 //
 
-#ifndef _ART_FOUNDATION_ARPATHVERTEX_H_
-#define _ART_FOUNDATION_ARPATHVERTEX_H_
-
-
-#include "ART_Foundation_System.h"
-
-#include "IPnt3D.h"
 #import "ArPDFValue.h"
+#import "ArcPointContext.h"
+#import "ArpRayEndpoint.h"
 
-@class ArcPointContext;
 @class ArcIntersection;
 
 ART_MODULE_INTERFACE(ArPathVertex)
 
+typedef struct ArVCMGlobalValues
+{
+
+    double vmNormalization;
+    double VMweight;
+    double VCweight;
+
+} ArVCMGlobalValues;
 typedef struct ArPathVertex
 {
 
     ArcIntersection* worldHitPoint;
+
+//    ArcRayEndpoint *worldHitPoint;
+//    ArcPointContext<ArpRayEndpoint> *worldHitPoint;
+
+
+
     uint totalPathLength;
 
     //TODO: BRDF?
@@ -30,7 +38,7 @@ typedef struct ArPathVertex
 //    ArAttenuationSample* mediaAttenuationSample;
 
     ArLightAlphaSample* cameraLightSample;
-    ArAttenuationSample* cameraDirectionAttenuationSample;
+//    ArAttenuationSample* cameraDirectionAttenuationSample;
     
     //TODO: SPECTRA
     double basicPDF;
@@ -54,6 +62,11 @@ typedef struct ArPathVertex
     double dVCM;
     double dVC;
     double dVM;
+    Vec3D worldNormal;
+
+    Vec3D incomingDirection;
+
+    ART_GV *art_gv;
 }
 
 ArPathVertex;
@@ -76,9 +89,9 @@ ArPathVertex;
 #define ARPV_CAMERAWAVELENGTH(_pv) (_pv).cameraWavelength
 
 #define ARPV_EMPTY \
-((ArPathVertex){NULL, 0, 1.0f, NULL, NULL, NULL, NULL, 1.0f, 0.0f, 0.0f, ARPDFVALUE_ONE, ARPDFVALUE_ONE})
+((ArPathVertex){NULL, 0, 1.0f, NULL, NULL, NULL, 1.0f, 0.0f, 0.0f, ARPDFVALUE_ONE, ARPDFVALUE_ONE})
 
 ARDYNARRAY_INTERFACE_FOR_ARTYPE(PathVertex,pv,pv);
 ARDYNARRAY_INTERFACE_FOR_ARTYPE_PTR(PathVertex,pv,pv);
 
-#endif //ART_ARPATHVERTEX_H
+void arpv_free_arr_itrsc(const ART_GV  * art_gv, ArPathVertexDynArray *arr);

@@ -214,5 +214,11 @@ void arpdfvalue_p_debugprintf(
         ArPDFValue  * p0
         );
 
+void arpdfvalue_p_rotate_p(
+        ART_GV    * art_gv,
+        ArPDFValue *p0,
+        ArPDFValue *pr,
+        unsigned int reference_index);
+
 // ===========================================================================
 

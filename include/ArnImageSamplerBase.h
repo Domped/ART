@@ -44,6 +44,9 @@ ART_MODULE_INTERFACE(ArnImageSamplerBase)
     unsigned int                          overallNumberOfSamplesPerPixel;
     int                                   randomValueGeneration;
 
+    double                                vmNormalization;
+    double                                VMweight;
+    double                                VCweight;
     //   These are taken from the stack or other input, and stored locally
     //   to be shared between the various components that need them.
     

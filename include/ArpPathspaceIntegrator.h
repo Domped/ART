@@ -31,6 +31,7 @@ ART_MODULE_INTERFACE(ArpPathspaceIntegrator)
 #import "ART_MiscellaneousStructs.h"
 #import "ArpPathspaceIntegratorCore.h"
 #import "ArPathVertex.h"
+#import "ArcHashgrid.h"
 
 @protocol ArpCamera;
 
@@ -68,6 +69,7 @@ ART_MODULE_INTERFACE(ArpPathspaceIntegrator)
         : (ArPathVertexDynArray *)     lightPathsList
         : (const ArWavelength *)       wavelength
         : (ArLightAlphaSample *)       tempLightSample
+        : (ArVCMGlobalValues *)        pArVcmGlobalValues
         ;
 
 - (void) generateLightPaths
@@ -78,6 +80,7 @@ ART_MODULE_INTERFACE(ArpPathspaceIntegrator)
         : (uint32_t* )                 pathEnds
         : (uint32_t )                  pathIndex
         : (ArLightAlphaSample *)       lightalpha_r
+        : (ArVCMGlobalValues *)        pArVcmGlobalValues
 ;
 
 - (void) generateEyePaths
@@ -89,6 +92,8 @@ ART_MODULE_INTERFACE(ArpPathspaceIntegrator)
         : (uint32_t* )                  pathEnds
         : (      ArLightAlphaSample *)  lightalpha_r
         : (uint32_t )                   pathIndex
+        : (ArcHashgrid *)               hashgrid
+        : (ArVCMGlobalValues *)         pArVcmGlobalValues
         ;
 
 @end

@@ -139,6 +139,24 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
 }
 
 
+- (void) RotatePath
+        : (ART_GV *) gv
+        : (ArPathVertex *) prev
+        : (ArPathVertex *) next
+        : (unsigned int )  reference_index
+{
+
+    *next = *prev;
+
+    arpdfvalue_p_rotate_p(gv, &prev->pathPDF, &next->pathPDF, reference_index);
+    if(prev->attenuationSample && next->attenuationSample)
+        arattenuationsample_a_rotate_a(gv, prev->attenuationSample, next->attenuationSample, reference_index);
+
+    if(prev->lightSample->light && next->lightSample->light)
+        arlightsample_l_rotate_l(gv, prev->lightSample->light, next->lightSample->light, reference_index);
+
+}
+
 - (bool) Process
         : (ArPathVertex *) currentState
         : (Pnt3D) position
@@ -166,9 +184,13 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
                     Vec3D distVec;
                     vec3d_pp_sub_v(&particle.worldHitPoint->worldspace_point, &position, &distVec);
 
-                    bool areWavelengthDependent = arwavelength_ww_equal_ranged(gv,
+                    int areWavelengthDependent = arwavelength_ww_equal_ranged(gv,
                                                                                &particle.outgoingWavelength,
                                                                                &currentState->outgoingWavelength);
+
+                    if(areWavelengthDependent == -1)
+                        continue;
+
 
 //                    if(!areWavelengthDependent)
 //                    {
@@ -179,8 +201,19 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
 
                     if(distSqr <= self->radiusSQR)
                     {
-                        DEBUG_COUNT++;
-                        [self ProcessContribution: currentState : &particle : contribution : sgc : gv];
+                        ArPathVertex* temp = ALLOC(ArPathVertex);
+                        if(areWavelengthDependent > 0)
+                        {
+                            [self RotatePath : gv : &particle : temp : areWavelengthDependent];
+                        }
+                        else
+                        {
+                            *temp = particle;
+                        }
+
+                        [self ProcessContribution: currentState : temp : contribution : sgc : gv];
+
+                        FREE(temp);
                     }
                 }
             }

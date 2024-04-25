@@ -466,4 +466,17 @@ void arpdfvalue_sum_p(
     }
 }
 
+void arpdfvalue_p_rotate_p(
+        ART_GV    * art_gv,
+        ArPDFValue *p0,
+        ArPDFValue *pr,
+        unsigned int reference_index)
+{
+    // rotate the pdf
+    for (unsigned int i = 0; i < HERO_SAMPLES_TO_SPLAT; i++)
+    {
+        ARPDFVAL_PI(*pr, i) = ARPDFVAL_PI(*p0, (i + reference_index) % HERO_SAMPLES_TO_SPLAT);
+    }
+}
+
 // ===========================================================================

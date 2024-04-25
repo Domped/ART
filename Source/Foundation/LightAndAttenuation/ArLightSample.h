@@ -97,5 +97,14 @@ arlightsample_d_init_unpolarised_l( \
     (__l) \
     )
 
+
+void arlightsample_l_rotate_l(
+    const ART_GV            * art_gv,
+          ArLightSample     * l0,
+          ArLightSample     * l1,
+          unsigned int        reference_index
+    );
+
+
 #endif /* _ART_FOUNDATION_LIGHTANDATTENUATION_ARLIGHTSAMPLE_H_ */
 // ===========================================================================
