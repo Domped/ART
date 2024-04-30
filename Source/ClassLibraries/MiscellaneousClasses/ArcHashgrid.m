@@ -38,6 +38,20 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
 
 //ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArcHashgrid)
 
+- (double) mis
+        : (ART_GV *) art_gv
+        : (ArPDFValue *)    currentPDF
+{
+    ArPDFValue sumPDF = *currentPDF;
+    arpdfvalue_sum_p(& sumPDF);
+
+
+    return arpdfvalue_pp_ratio(
+            currentPDF,
+            & sumPDF
+    );
+}
+
 - (void) CLEAR
 {
 
@@ -139,22 +153,40 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
 }
 
 
-- (void) RotatePath
+- (BOOL) RotatePath
         : (ART_GV *) gv
         : (ArPathVertex *) prev
         : (ArPathVertex *) next
         : (unsigned int )  reference_index
 {
+    next->lightSample->alpha = 1;
 
-    *next = *prev;
+    next->incomingDirection = prev->incomingDirection;
+    next->incomingWavelength = prev->incomingWavelength;
+    next->outgoingWavelength = prev->outgoingWavelength;
+    next->dVCM = prev->dVCM;
+    next->dVM = prev->dVM;
+    next->dVC = prev->dVC;
+    next->totalPathLength = prev->totalPathLength;
+    next->throughput = prev->throughput;
+    next->pathPDF = prev->pathPDF;
 
     arpdfvalue_p_rotate_p(gv, &prev->pathPDF, &next->pathPDF, reference_index);
-    if(prev->attenuationSample && next->attenuationSample)
-        arattenuationsample_a_rotate_a(gv, prev->attenuationSample, next->attenuationSample, reference_index);
+    if(!prev->attenuationSample || !next->attenuationSample)
+    {
+        return NO;
+    }
 
-    if(prev->lightSample->light && next->lightSample->light)
-        arlightsample_l_rotate_l(gv, prev->lightSample->light, next->lightSample->light, reference_index);
+    arattenuationsample_a_rotate_a(gv, prev->attenuationSample, next->attenuationSample, reference_index);
 
+    if(!prev->lightSample->light || !next->lightSample->light)
+    {
+        return NO;
+    }
+
+    arlightsample_l_rotate_l(gv, prev->lightSample->light, next->lightSample->light, reference_index);
+
+    return YES;
 }
 
 - (bool) Process
@@ -185,8 +217,8 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
                     vec3d_pp_sub_v(&particle.worldHitPoint->worldspace_point, &position, &distVec);
 
                     int areWavelengthDependent = arwavelength_ww_equal_ranged(gv,
-                                                                               &particle.outgoingWavelength,
-                                                                               &currentState->outgoingWavelength);
+                                                                               &currentState->outgoingWavelength,
+                                                                              &particle.outgoingWavelength);
 
                     if(areWavelengthDependent == -1)
                         continue;
@@ -201,19 +233,7 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
 
                     if(distSqr <= self->radiusSQR)
                     {
-                        ArPathVertex* temp = ALLOC(ArPathVertex);
-                        if(areWavelengthDependent > 0)
-                        {
-                            [self RotatePath : gv : &particle : temp : areWavelengthDependent];
-                        }
-                        else
-                        {
-                            *temp = particle;
-                        }
-
-                        [self ProcessContribution: currentState : temp : contribution : sgc : gv];
-
-                        FREE(temp);
+                        [self ProcessContribution: currentState : &particle : contribution : sgc : gv : areWavelengthDependent];
                     }
                 }
             }
@@ -230,11 +250,28 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
         : (ArLightAlphaSample *) contribution
         : (ArBSDFSampleGenerationContext *)       sgc
         : (ART_GV *) gv
+        : (int)      referenceIndex
 {
     if( particle->totalPathLength + currentState->totalPathLength > 10)
     {
         return;
     }
+
+    ArAttenuationSample *rotatedLightAtten = arattenuationsample_alloc(gv);
+    ArLightSample *rotatedLightSample = arlightsample_alloc(gv);
+
+    ArPDFValue lightRotatedPDF;
+
+
+    if(particle->totalPathLength > 0)
+    {
+        arattenuationsample_a_rotate_a(gv, particle->attenuationSample, rotatedLightAtten, referenceIndex);
+    }
+
+    arlightsample_l_rotate_l(gv, particle->lightSample->light, rotatedLightSample, referenceIndex);
+    arpdfvalue_p_rotate_p(gv, &particle->pathPDF, &lightRotatedPDF, referenceIndex);
+
+
 
     Vec3D incomingLightDir = particle->incomingDirection;
 
@@ -259,34 +296,45 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
     ])
     {
         arattenuationsample_free(gv, temp);
+        arattenuationsample_free(gv, rotatedLightAtten);
+        arlightsample_free(gv, rotatedLightSample);
         return;
 
     };
+
 
     double wLight = particle->dVCM * VCweight + particle->dVM * ARPDFVALUE_MAIN(eyeForwardPDF_W);
 
     double wCamera = currentState->dVCM * VCweight + currentState->dVM * ARPDFVALUE_MAIN(eyeReversePDF_W);
     double misW = 1.f / (wLight + 1.f + wCamera);
+//    double misW = 1;
 
-    ArLightAlphaSample *tempLightSample = arlightalphasample_alloc(gv);
+    ArLightSample *tempLightSample = arlightsample_alloc(gv);
+    arlightsample_d_init_unpolarised_l(gv, 1.0, tempLightSample);
 
     if(particle->totalPathLength > 0)
     {
-        arattenuationsample_a_mul_a(gv, particle->attenuationSample, temp);
+        arattenuationsample_a_mul_a(gv, rotatedLightAtten, temp);
     }
-
     arattenuationsample_d_mul_a(gv, misW * particle->throughput, temp);
 
-    arattenuationsample_d_div_a(gv, ARPDFVALUE_MAIN(particle->pathPDF), temp);
+    arattenuationsample_d_div_a(gv, ARPDFVALUE_MAIN(lightRotatedPDF), temp);
 
-    arlightalphasample_l_init_l(gv, particle->lightSample, tempLightSample);
-    arlightsample_a_mul_l(gv, temp, tempLightSample->light);
 
-    arlightsample_l_add_l(gv, tempLightSample->light, contribution->light);
+    double hwssWeight = [self mis : gv : &lightRotatedPDF];
+    hwssWeight = 1;
+
+    arlightsample_l_init_l(gv, rotatedLightSample, tempLightSample);
+
+    arlightsample_a_mul_l(gv, temp, tempLightSample);
+    arlightsample_d_mul_l(gv, hwssWeight, tempLightSample);
+    arlightsample_l_add_l(gv, tempLightSample, contribution->light);
 
 
     arattenuationsample_free(gv, temp);
-    arlightalphasample_free(gv, tempLightSample);
+    arlightsample_free(gv, tempLightSample);
+    arattenuationsample_free(gv, rotatedLightAtten);
+    arlightsample_free(gv, rotatedLightSample);
 }
 
 

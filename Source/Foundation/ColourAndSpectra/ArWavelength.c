@@ -191,7 +191,7 @@ int arwavelength_ww_equal_ranged(
 )
 {
 
-    for(unsigned int i = 0; i < HERO_SAMPLES_TO_SPLAT; i++)
+    for(unsigned int i = 0; i < 4; i++)
     {
         if(fabs(ARWL_WI(*w0, 0) - ARWL_WI(*w1, i)) <= 5 NM)
         {

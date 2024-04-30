@@ -990,27 +990,27 @@ void arlightsample_l_rotate_l(
         ArLightSample *l1,
         unsigned int reference_index)
 {
+
     int positions_to_rotate = HERO_SAMPLES_TO_SPLAT - reference_index;
-    ArSpectralSample* s;
-    s = sps_alloc(art_gv);
+    ArLightIntensitySample intensitySample;
 
-    printf("Rotating %f positions\n", arlightsample_l_max(art_gv, l0));
-    arlightsample_l_init_h(art_gv, l0, s);
 
-    arlightsample_l_inv_l()
-    ArSpectralSample *s1;
-    s1 = sps_alloc(art_gv);
+
+    arlightsample_l_init_i(art_gv, l0, &intensitySample);
+    ArLightIntensitySample temporaryIntensitySample;
+
+//    printf("FIRST LIGHT SAMPLE MAIN : %f, %f, %f, %f\n", SPS_CI(intensitySample, 0), SPS_CI(intensitySample, 1), SPS_CI(intensitySample, 2), SPS_CI(intensitySample, 3));
 
     for(unsigned int i = 0; i < HERO_SAMPLES_TO_SPLAT; i++) {
 
         unsigned int new_index = (i + positions_to_rotate) % HERO_SAMPLES_TO_SPLAT;
-        SPS_CI(*s1, new_index) = SPS_CI(*s, i);
+        SPS_CI(temporaryIntensitySample, new_index) = SPS_CI(intensitySample, i);
     }
 
-    arlightsample_s_init_unpolarised_l(art_gv, s1, l1);
 
-    sps_free(art_gv, s);
-    sps_free(art_gv, s1);
+//    printf("ROTATED LIGHT SAMPLE MAIN : %f, %f, %f, %f\n", SPS_CI(temporaryIntensitySample, 0), SPS_CI(temporaryIntensitySample, 1), SPS_CI(temporaryIntensitySample, 2), SPS_CI(temporaryIntensitySample, 3));
+
+    arlightsample_i_init_unpolarised_l(art_gv, &temporaryIntensitySample, l1);
 }
 
 // ===========================================================================

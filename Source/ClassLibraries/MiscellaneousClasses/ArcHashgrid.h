@@ -15,7 +15,7 @@ typedef struct ArIndexHolder
 ARDYNARRAY_INTERFACE_FOR_ARTYPE(IndexHolder,iholder,iholder);
 ARDYNARRAY_INTERFACE_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder);
 
-#define CELL_SIZE 50
+#define CELL_SIZE 70
 @interface ArcHashgrid
         : ArcObject
 {

@@ -373,6 +373,27 @@ typedef struct ArPixelID {
         vcmGlobalValues.VMweight = VMweight;
         vcmGlobalValues.VCweight = VCweight;
 
+        [THREAD_RANDOM_GENERATOR setCurrentSequenceID
+        :startingSequenceID
+        ];
+        ArWavelength wavelength;
+
+        if (deterministicWavelengths) {
+            arwavelength_i_deterministic_init_w(
+                    art_gv,
+                    0,
+                    &wavelength
+            );
+        } else {
+            arwavelength_sd_init_w(
+                    art_gv,
+                    &spectralSamplingData,
+                    [THREAD_RANDOM_GENERATOR valueFromNewSequence],
+                    &wavelength
+            );
+        }
+
+
         for (int ylv = 0; ylv < YC(imageSize); ylv++) {
             int y = ylv + threadOffset;
 
@@ -396,33 +417,15 @@ typedef struct ArPixelID {
 //                                                :   crc32_of_data( & px_id, sizeof(ArPixelID) )
 //                                                ];
 
-
-                    [THREAD_RANDOM_GENERATOR setCurrentSequenceID
-                    :startingSequenceID
-                    ];
-
                     BOOL validSample = FALSE;
 
                     Ray3D ray;
                     ArReferenceFrame referenceFrame;
-                    ArWavelength wavelength;
+
 
 
 #ifndef MONOHERO
-                    if (deterministicWavelengths) {
-                        arwavelength_i_deterministic_init_w(
-                                art_gv,
-                                w,
-                                &wavelength
-                        );
-                    } else {
-                        arwavelength_sd_init_w(
-                                art_gv,
-                                &spectralSamplingData,
-                                [THREAD_RANDOM_GENERATOR valueFromNewSequence],
-                                &wavelength
-                        );
-                    }
+
 
 #else
                     arwavelength_d_init_w(art_gv, 550 NM, &wavelength);
@@ -433,6 +436,7 @@ typedef struct ArPixelID {
 
                     sampleCount++;
                     [THREAD_PATHSPACE_INTEGRATOR generateLightPaths
+                                :art_gv
                                 :&ray
                                 :camera
                                 :&pathVertexArray
@@ -453,84 +457,84 @@ typedef struct ArPixelID {
         uint32_t max = 0;
         unsigned int sizeArray = arpvdynarray_size(&pathVertexArray);
 
-//        for (unsigned int p = 0; p < sizeArray; p++) {
-//            ArPathVertex pv = arpvdynarray_i(&pathVertexArray, p);
+        for (unsigned int p = 0; p < sizeArray; p++) {
+            ArPathVertex pv = arpvdynarray_i(&pathVertexArray, p);
+
+//            XC(pv.worldHitPoint->worldspace_point) = 0.502949119f;
+//            YC(pv.worldHitPoint->worldspace_point) = -1.28001988f;
+//            ZC(pv.worldHitPoint->worldspace_point) = -0.381383151f;
 //
-////            XC(pv.worldHitPoint->worldspace_point) = 0.502949119f;
-////            YC(pv.worldHitPoint->worldspace_point) = -1.28001988f;
-////            ZC(pv.worldHitPoint->worldspace_point) = -0.381383151f;
-////
-//            Ray3D cameraRay;
-//            [camera getCameraRay:&cameraRay];
-//
-//
-//            //
-//            if (ARPV_OCCLUDED(pv)) {
-//                continue;
-//            }
-//
-//            Vec2D pixelCoords;
-//            [camera getPixelCoordinates
-//                    :&pv.worldHitPoint->worldspace_point
-//                    :&pixelCoords
-//            ];
-//
-//
-//            if (XC(pixelCoords) > 511 || YC(pixelCoords) > 511 || XC(pixelCoords) < 0 || YC(pixelCoords) < 0) {
-//                continue;
-//            }
-//
-//
-//            if (splattingKernelWidth == 1) {
-//                for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
-//                    PIXEL_SAMPLE_COUNT( (int) XC(pixelCoords), (int) YC(pixelCoords), THREAD_INDEX, im ) += 1.0;
-//
-//                    double s = arlightsample_l_max(art_gv, pv.cameraLightSample->light);
-//
-//                    arlightalpha_wsd_sloppy_add_l(
-//                            art_gv,
-//                            pv.cameraLightSample,
-//                            &pv.cameraWavelength,
-//                            &spectralSplattingData,
-//                            3.0 DEGREES,
-//                            PIXEL_SAMPLE_VALUE((int) XC(pixelCoords), (int) YC(pixelCoords), THREAD_INDEX, im)
-//                    );
-//                }
-//            } else {
-//                for (unsigned int l = 0; l < splattingKernelArea; l++) {
-//                    int x = XC(pixelCoords);
-//                    int y = YC(pixelCoords);
-//
-//                    int cX = x + XC(sampleSplattingOffset[l]);
-//                    int cY = y + YC(sampleSplattingOffset[l]);
-//
-//                    if (cX >= 0
-//                        && cX < XC(imageSize)
-//                        && cY >= 0
-//                        && cY < YC(imageSize)) {
-//                        for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
-//                            PIXEL_SAMPLE_COUNT(cX, cY, THREAD_INDEX, im) += SAMPLE_SPLATTING_FACTOR(subpixelIdx, l);
-//
-//                            for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
-//
-//                                arlightalpha_dwsd_mul_sloppy_add_l(
-//                                        art_gv,
-//                                        SAMPLE_SPLATTING_FACTOR(subpixelIdx, l),
-//                                        pv.cameraLightSample,
-//                                        &pv.cameraWavelength,
-//                                        &spectralSplattingData,
-//                                        5.0 DEGREES,
-//                                        THREAD_RESULT_PIXEL(cX, cY, im)
-//                                );
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//
-//            arlightalphasample_free(art_gv, pv.cameraLightSample);
-//
-//        }
+            Ray3D cameraRay;
+            [camera getCameraRay:&cameraRay];
+
+
+            //
+            if (ARPV_OCCLUDED(pv)) {
+                continue;
+            }
+
+            Vec2D pixelCoords;
+            [camera getPixelCoordinates
+                    :&pv.worldHitPoint->worldspace_point
+                    :&pixelCoords
+            ];
+
+
+            if (XC(pixelCoords) > 511 || YC(pixelCoords) > 511 || XC(pixelCoords) < 0 || YC(pixelCoords) < 0) {
+                continue;
+            }
+
+
+            if (splattingKernelWidth == 1) {
+                for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
+                    PIXEL_SAMPLE_COUNT( (int) XC(pixelCoords), (int) YC(pixelCoords), THREAD_INDEX, im ) += 1.0;
+
+                    double s = arlightsample_l_max(art_gv, pv.cameraLightSample->light);
+
+                    arlightalpha_wsd_sloppy_add_l(
+                            art_gv,
+                            pv.cameraLightSample,
+                            &pv.cameraWavelength,
+                            &spectralSplattingData,
+                            3.0 DEGREES,
+                            PIXEL_SAMPLE_VALUE((int) XC(pixelCoords), (int) YC(pixelCoords), THREAD_INDEX, im)
+                    );
+                }
+            } else {
+                for (unsigned int l = 0; l < splattingKernelArea; l++) {
+                    int x = XC(pixelCoords);
+                    int y = YC(pixelCoords);
+
+                    int cX = x + XC(sampleSplattingOffset[l]);
+                    int cY = y + YC(sampleSplattingOffset[l]);
+
+                    if (cX >= 0
+                        && cX < XC(imageSize)
+                        && cY >= 0
+                        && cY < YC(imageSize)) {
+                        for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
+                            PIXEL_SAMPLE_COUNT(cX, cY, THREAD_INDEX, im) += SAMPLE_SPLATTING_FACTOR(subpixelIdx, l);
+
+                            for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
+
+                                arlightalpha_dwsd_mul_sloppy_add_l(
+                                        art_gv,
+                                        SAMPLE_SPLATTING_FACTOR(subpixelIdx, l),
+                                        pv.cameraLightSample,
+                                        &pv.cameraWavelength,
+                                        &spectralSplattingData,
+                                        5.0 DEGREES,
+                                        THREAD_RESULT_PIXEL(cX, cY, im)
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+
+            arlightalphasample_free(art_gv, pv.cameraLightSample);
+
+        }
 
         [hashgrid Reserve:(XC(imageSize) * YC(imageSize))];
         [hashgrid BuildHashgrid:&pathVertexArray :radius];
@@ -572,7 +576,7 @@ typedef struct ArPixelID {
 
                     ArPathVertex *currentState = ALLOC(ArPathVertex);
 
-                    ArWavelength wavelength;
+//                    ArWavelength wavelength;
 
                     uint32_t rangeX, rangeY;
                     rangeX = 0;
@@ -596,7 +600,7 @@ typedef struct ArPixelID {
 
                     Ray3D              ray;
                     ArReferenceFrame   referenceFrame;
-                    wavelength = tempWavelengthVertex.incomingWavelength;
+//                    wavelength = tempWavelengthVertex.incomingWavelength;
                     ArLightAlphaSample* lightAlphaSample = arlightalphasample_alloc(art_gv);
                     arlightsample_d_init_unpolarised_l(art_gv, 0.0, lightAlphaSample->light);
 
@@ -709,11 +713,25 @@ typedef struct ArPixelID {
 
 
         NSLog(@"%d HASH", hashgrid->DEBUG_COUNT);
+        for(int p = 0; p < arpvdynarray_size(&pathVertexArray); p++)
+        {
 
+            ArPathVertex *pv = arpvdynarray_ptr_to_i(&pathVertexArray, p);
 
+            if (pv->lightSample)
+            {
+                arlightalphasample_free(art_gv, pv->lightSample);
+            }
+
+            if(pv->attenuationSample && pv->totalPathLength > 0)
+            {
+                arattenuationsample_free(art_gv, pv->attenuationSample);
+            }
+
+        }
 
         [hashgrid CLEAR];
-        arpv_free_arr_itrsc(art_gv, &pathVertexArray);
+//        arpv_free_arr_itrsc(art_gv, &pathVertexArray);
         arpvdynarray_free_contents(&pathVertexArray);
 
         if (THREAD_INDEX == 0) {
