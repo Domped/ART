@@ -193,18 +193,18 @@ ARM_MAIN_FUNCTION(OrenNayarSpheres)
     id  sphere1 =
         [ base_sphere apply
             :   lambertMaterial
-            :   TRANSLATION(-2.4,0,1)
+            :   TRANSLATION(-2.4,0,-3)
             ];
 
     id  sphere2 =
         [ base_sphere apply
             :   mediumOrenNayar
-            :   TRANSLATION_Z(1)
+            :   TRANSLATION_Z(-3)
             ];
 
     id  sphere3 =
         [ base_sphere apply
-            :   TRANSLATION(2.4,0,1)
+            :   TRANSLATION(2.4,0,-3)
             :   roughOrenNayar
             ];
 
@@ -244,15 +244,13 @@ ARM_MAIN_FUNCTION(OrenNayarSpheres)
             sphere2,
             sphere3,
 
-            cylinder0,
-
             UNION_END
             );
             
     id camera =
         [ CAMERA
             imageSize:  IVEC2D(640,320)
-            ray:        RAY3D(PNT3D(0,-8,6),VEC3D(0,8,-5))
+            ray:       RAY3D(PNT3D(-0.0439815f, 0.222539f, 4.12529f), VEC3D(0.00688625f, -0.0542161f, -0.998505f))
             zoom:       1.1
             ];
 
@@ -282,13 +280,8 @@ ARM_MAIN_FUNCTION(OrenNayarSpheres)
                 removeSource: NO
             ],
 
-            STANDARD_GLOBAL_TONEMAPPING_OPERATOR,
-                        
-            STANDARD_LUMINANCE_CLIPPING,
-
-            [ IMAGECONVERSION_ARTCSP_TO_TIFF
-                removeSource:    YES
-                bitsPerChannel:  8
+            [ IMAGECONVERSION_ARTCSP_TO_EXR
+                removeSource:   NO
                 ],
             
             ACTION_SEQUENCE_END 

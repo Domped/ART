@@ -492,7 +492,7 @@ ARPACTION_DEFAULT_IMPLEMENTATION(ArnImageSampler)
                               1.0 / (numberOfSamplesPerThread * numberOfRenderThreads),
                               compositeScanline->data[x]
                             );
-//
+
 //                        arlightalpha_d_mul_l(
 //                              art_gv,
 //                              1.0 / pixelSampleCount,

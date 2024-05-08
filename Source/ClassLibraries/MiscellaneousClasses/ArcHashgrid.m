@@ -77,7 +77,7 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
 }
 
 - (void)BuildHashgrid
-        :(ArPathVertexDynArray *)  vertices
+        :(ArPathVertexptrDynArray *)  vertices
         :(double)          radius
 {
     self->radius = radius;
@@ -86,9 +86,9 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
     self->bboxMin = VEC3D(1e36f, 1e36f, 1e36f);
     self->bboxMax = VEC3D(-1e36f, -1e36f, -1e36f);
 
-    for (unsigned int i = 0; i < arpvdynarray_size(vertices); i++)
+    for (unsigned int i = 0; i < arpvptrdynarray_size(vertices); i++)
     {
-        ArPathVertex pv = arpvdynarray_i(vertices, i);
+        ArPathVertex pv = *arpvptrdynarray_i(vertices, i);
 
         Pnt3D pos = pv.worldHitPoint->worldspace_point;
 
@@ -118,9 +118,9 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
         }
     }
 
-    for(size_t i=0; i < arpvdynarray_size(vertices); i++)
+    for(size_t i=0; i < arpvptrdynarray_size(vertices); i++)
     {
-        Pnt3D  pos  = arpvdynarray_i(vertices, i).worldHitPoint->worldspace_point;
+        Pnt3D  pos  = (*arpvptrdynarray_i(vertices, i)).worldHitPoint->worldspace_point;
 
         Pnt3D temp = [self GetCellIndex: pos];
 
@@ -192,7 +192,7 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
 - (bool) Process
         : (ArPathVertex *) currentState
         : (Pnt3D) position
-        : (ArPathVertexDynArray *) vertices
+        : (ArPathVertexptrDynArray *) vertices
         : (ArLightAlphaSample *) contribution
         : (ArBSDFSampleGenerationContext *)       sgc
         : (ART_GV *) gv
@@ -211,7 +211,7 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
 
                 for(uint32_t j = 0; j < ariholderdynarray_size(&indexes); j++)
                 {
-                    ArPathVertex particle = arpvdynarray_i(vertices, ariholderdynarray_i(&indexes, j).index);
+                    ArPathVertex particle = *arpvptrdynarray_i(vertices, ariholderdynarray_i(&indexes, j).index);
 
                     Vec3D distVec;
                     vec3d_pp_sub_v(&particle.worldHitPoint->worldspace_point, &position, &distVec);

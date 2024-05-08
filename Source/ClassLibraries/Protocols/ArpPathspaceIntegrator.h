@@ -75,7 +75,7 @@ ART_MODULE_INTERFACE(ArpPathspaceIntegrator)
 - (void) generateLightPaths
         : (const Ray3D *)              cameraPixelRay
         : (ArNode <ArpCamera>  *)      sampling_ray
-        : (ArPathVertexDynArray *)     lightPathsList
+        : (ArPathVertexptrDynArray *)  lightPathsList
         : (const ArWavelength *)       wavelength
         : (uint32_t* )                 pathEnds
         : (uint32_t )                  pathIndex
@@ -87,7 +87,7 @@ ART_MODULE_INTERFACE(ArpPathspaceIntegrator)
         : (ART_GV *)                   art_gv
         : (const Ray3D *)              cameraPixelRay
         : (ArNode <ArpCamera>  *)      sampling_ray
-        : (ArPathVertexDynArray *)     lightPathsList
+        : (ArPathVertexptrDynArray *)     lightPathsList
         : (const ArWavelength *)       wavelength
         : (uint32_t* )                 pathEnds
         : (uint32_t )                  pathIndex
@@ -100,7 +100,7 @@ ART_MODULE_INTERFACE(ArpPathspaceIntegrator)
 - (void) generateEyePaths
         : (const Ray3D *)               cameraPixelRay
         : (ArNode <ArpCamera>  *)       sampling_ray
-        : (ArPathVertexDynArray *)      lightPathsList
+        : (ArPathVertexptrDynArray *)      lightPathsList
         : (const ArWavelength *)        wavelength
         : (ArPathVertex *)              currentState
         : (uint32_t* )                  pathEnds

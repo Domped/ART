@@ -261,6 +261,12 @@ ART_NO_MODULE_SHUTDOWN_FUNCTION_NECESSARY
                     pointPDF
             );
 
+        if(emissionProbability)
+            arpdfvalue_d_mul_p(
+                    1.0 / numberOfLights,
+                    emissionProbability
+            );
+
 //        if(emissionProbability)
 //            arpdfvalue_d_mul_p(
 //                    ARPDFVALUE_MAIN(pdf),

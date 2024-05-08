@@ -56,6 +56,9 @@ ArLightSample        * temporaryMediaContribution;
 
 ArLightSample *tempEmissionSample;
 ArLightSample *lightSampleConnection;
+ArLightSample *initialLightSample;
+ArLightSample *generatedLightSample;
+ArAttenuationSample *pathAttenuation;
 
 ArAttenuationSample *connectionSampleConnection;
 

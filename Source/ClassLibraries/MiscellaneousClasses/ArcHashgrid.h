@@ -70,14 +70,14 @@ double                                VCweight;
 - (bool) Process
         : (ArPathVertex *) currentState
         : (Pnt3D) position
-        : (ArPathVertexDynArray *) vertices
+        : (ArPathVertexptrDynArray *) vertices
         : (ArLightAlphaSample *) contribution
         : (ArBSDFSampleGenerationContext *)       sgc
         : (ART_GV *) gv
         ;
 
 - (void) BuildHashgrid
-        : (ArPathVertexDynArray *) vertices
+        : (ArPathVertexptrDynArray *) vertices
         : (double)         radius
         ;
 

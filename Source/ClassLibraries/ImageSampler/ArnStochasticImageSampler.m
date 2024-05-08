@@ -34,8 +34,8 @@
 
 ART_MODULE_INITIALISATION_FUNCTION
 (
-    (void) art_gv;
-    [ ArnStochasticImageSampler registerWithRuntime ];
+        (void) art_gv;
+        [ ArnStochasticImageSampler registerWithRuntime ];
 )
 
 ART_NO_MODULE_SHUTDOWN_FUNCTION_NECESSARY
@@ -64,16 +64,16 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnStochasticImageSampler)
         : (int) newRandomValueGeneration
 {
     self =
-        [ super init
-            :   newPathspaceIntegrator
-            :   newReconstructionKernel
-            :   newNumberOfSamples
-            :   newRandomValueGeneration
+            [ super init
+                    :   newPathspaceIntegrator
+                    :   newReconstructionKernel
+                    :   newNumberOfSamples
+                    :   newRandomValueGeneration
             ];
 
     deterministicWavelengths = NO;
     wavelengthSteps = 1;
-    
+
     return self;
 }
 
@@ -91,11 +91,11 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnStochasticImageSampler)
         : (int) numberOfResultImages
 {
     [ super prepareForSampling
-        :   newWorld
-        :   newCamera
-        :   image
-        :   numberOfResultImages
-        ];
+            :   newWorld
+            :   newCamera
+            :   image
+            :   numberOfResultImages
+    ];
 
     //   splatting kernel properties
 
@@ -113,8 +113,8 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnStochasticImageSampler)
     //           unique 2D subpixel coordinates in that case.
 
     numberOfSubpixelSamples =
-        M_MIN( IMAGE_SAMPLER_MAX_SUBPIXEL_SAMPLES, numberOfSamplesPerThread);
-    
+            M_MIN( IMAGE_SAMPLER_MAX_SUBPIXEL_SAMPLES, numberOfSamplesPerThread);
+
     sampleCoord = ALLOC_ARRAY( Pnt2D, numberOfSubpixelSamples );
 
     //   Actual generation of the 2D sample coordinates
@@ -128,9 +128,9 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnStochasticImageSampler)
         [ randomGenerator[0] resetSequenceIDs ];
 
         [ randomGenerator[0] getValuesFromNewSequences
-            : & XC( sampleCoord[i] )
-            : & YC( sampleCoord[i] )
-            ];
+                : & XC( sampleCoord[i] )
+                : & YC( sampleCoord[i] )
+        ];
     }
 
     //   We remember the sequence ID of the generator after it did the last
@@ -146,7 +146,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnStochasticImageSampler)
     if ( splattingKernelWidth > 1 )
     {
         sampleSplattingFactor =
-            ALLOC_ARRAY( double, splattingKernelArea * numberOfSubpixelSamples );
+                ALLOC_ARRAY( double, splattingKernelArea * numberOfSubpixelSamples );
 
         for ( unsigned int i = 0; i < numberOfSubpixelSamples; i++ )
         {
@@ -164,7 +164,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnStochasticImageSampler)
                     YC(localCoord) = YC(sampleCoord[i]) - dY - 0.5;
 
                     SAMPLE_SPLATTING_FACTOR_UV( i, u, v ) =
-                        [ RECONSTRUCTION_KERNEL valueAt
+                            [ RECONSTRUCTION_KERNEL valueAt
                             : & localCoord
                             ];
 
@@ -173,15 +173,15 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnStochasticImageSampler)
         } // i - number of samples per packet
 
         sampleSplattingOffset =
-            ALLOC_ARRAY( IPnt2D, splattingKernelArea );
+                ALLOC_ARRAY( IPnt2D, splattingKernelArea );
 
         for ( unsigned int u = 0; u < splattingKernelWidth; u++ )
             for ( unsigned int v = 0; v < splattingKernelWidth; v++ )
             {
                 XC( sampleSplattingOffset[ u * splattingKernelWidth + v ] )
-                    = u - splattingKernelOffset;
+                        = u - splattingKernelOffset;
                 YC( sampleSplattingOffset[ u * splattingKernelWidth + v ] )
-                    = v - splattingKernelOffset;
+                        = v - splattingKernelOffset;
             }
     }
 }
@@ -199,7 +199,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnStochasticImageSampler)
         : (ArnGraphTraversal *) traversal
 {
     ArnStochasticImageSampler  * copiedInstance =
-        [ super deepSemanticCopy
+            [ super deepSemanticCopy
             :   traversal
             ];
 
@@ -220,7 +220,7 @@ typedef struct ArPixelID
     int    sampleIndex;
     Pnt2D  pixelCoord;
 }
-ArPixelID;
+        ArPixelID;
 
 
 - (void) renderProc
@@ -233,41 +233,40 @@ ArPixelID;
     threadPool = [ [ NSAutoreleasePool alloc ] init ];
 
     //   The values for individual samples, obtained via the gathering estimator
-    
+
     //   We only need an array of pointers, as the actual gathering results
     //   are grabbed from, and returned to, a freelist.
 
     ArPathspaceResult  ** sampleValue =
-        ALLOC_ARRAY( ArPathspaceResult *, numberOfImagesToWrite );
-    
+            ALLOC_ARRAY( ArPathspaceResult *, numberOfImagesToWrite );
+
     /* ------------------------------------------------------------------
          We render scanlines until there is no unrendered scanline left.
     ------------------------------------------------------------------ */
 
     ArPixelID  px_id;
-    
+
     px_id.threadIndex = THREAD_INDEX;
     px_id.globalRandomSeed = arrandom_global_seed(art_gv);
-    
+
     int   threadStripWidth = YC(imageSize) / numberOfRenderThreads;
     int   threadOffset = threadStripWidth * THREAD_INDEX;
 
-    NSLog(@"Thread samples %d ", numberOfSamplesPerThread);
     for ( unsigned int i = 0; i < numberOfSamplesPerThread; i++ )
     {
         int  subpixelIdx = i % numberOfSubpixelSamples;
-        
+
         px_id.sampleIndex = i;
 
         for ( int ylv = 0; ylv < YC(imageSize); ylv++ )
         {
             int  y = ylv + threadOffset;
-            
+
             if ( y >= YC(imageSize) )
             {
                 y = y - YC(imageSize);
             }
-            
+
             YC(px_id.pixelCoord) = y + YC(imageOrigin);
 
             /* -------------------------------------------------------------
@@ -281,18 +280,17 @@ ArPixelID;
                     [ self renderProcHasFinished: threadIndex ];
 
                     FREE_ARRAY(sampleValue);
-                    
+
                     return;
                 }
-                
+
                 XC(px_id.pixelCoord) = x + XC(imageOrigin);
 
                 for ( int w = 0; w < wavelengthSteps; w++ )
                 {
-                    
                     [ THREAD_RANDOM_GENERATOR reInitializeWith
-                        :   crc32_of_data( & px_id, sizeof(ArPixelID) )
-                        ];
+                    :   crc32_of_data( & px_id, sizeof(ArPixelID) )
+                    ];
 
                     /* --------------------------------------------------------------
                         We double-check whether a given sample should be
@@ -310,67 +308,62 @@ ArPixelID;
                     BOOL  validSample = FALSE;
 
                     [ THREAD_RANDOM_GENERATOR setCurrentSequenceID
-                        :  startingSequenceID
-                        ];
+                    :  startingSequenceID
+                    ];
 
                     Ray3D              ray;
                     ArReferenceFrame   referenceFrame;
                     ArWavelength       wavelength;
 
-#ifndef MONOHERO
                     if ( deterministicWavelengths )
                     {
                         arwavelength_i_deterministic_init_w(
-                              art_gv,
-                              w,
-                            & wavelength
-                            );
+                                art_gv,
+                                w,
+                                & wavelength
+                        );
                     }
                     else
                     {
                         arwavelength_sd_init_w(
-                              art_gv,
-                            & spectralSamplingData,
-                              [ THREAD_RANDOM_GENERATOR valueFromNewSequence ],
-                            & wavelength
-                            );
+                                art_gv,
+                                & spectralSamplingData,
+                                [ THREAD_RANDOM_GENERATOR valueFromNewSequence ],
+                                & wavelength
+                        );
                     }
-#else
-                    arwavelength_d_init_w(art_gv, 550 NM, &wavelength);
-#endif
 
                     if ( [ camera getWorldspaceRay
-                             : & VEC2D(
+                            : & VEC2D(
                                     XC(px_id.pixelCoord) + XC(sampleCoord[subpixelIdx]),
                                     YC(px_id.pixelCoord) + YC(sampleCoord[subpixelIdx])
-                                    )
-                             :   THREAD_RANDOM_GENERATOR
-                             : & referenceFrame
-                             : & ray
-                             ] )
-                    {
-//                        ArWavelength sample = wavelength;
-                        [ THREAD_PATHSPACE_INTEGRATOR calculateLightSamples
+                            )
+                            :   THREAD_RANDOM_GENERATOR
+                            : & referenceFrame
                             : & ray
-                            : & wavelength
-                            :   sampleValue
-                            ];
+                    ] )
+                    {
+                        [ THREAD_PATHSPACE_INTEGRATOR calculateLightSamples
+                                : & ray
+                                : & wavelength
+                                :   sampleValue
+                        ];
 
                         if ( arlightalphasample_l_valid(
                                 art_gv,
                                 ARPATHSPACERESULT_LIGHTALPHASAMPLE(*sampleValue[0])
-                                ) )
+                        ) )
                         {
                             if ( LIGHT_SUBSYSTEM_IS_IN_POLARISATION_MODE )
                             {
                                 for ( unsigned int im = 0; im < numberOfImagesToWrite; im++ )
                                     arlightsample_realign_to_coaxial_refframe_l(
-                                          art_gv,
-                                        & referenceFrame,
-                                          ARPATHSPACERESULT_LIGHTSAMPLE( *sampleValue[im] )
-                                        );
+                                            art_gv,
+                                            & referenceFrame,
+                                            ARPATHSPACERESULT_LIGHTSAMPLE( *sampleValue[im] )
+                                    );
                             }
-                            
+
                             validSample = TRUE;
                         }
                     }
@@ -379,17 +372,17 @@ ArPixelID;
                         for ( unsigned int im = 0; im < numberOfImagesToWrite; im++ )
                         {
                             sampleValue[im] =
-                                (ArPathspaceResult*) arfreelist_pop(
-                                    & pathspaceResultFreelist[THREAD_INDEX]
+                                    (ArPathspaceResult*) arfreelist_pop(
+                                            & pathspaceResultFreelist[THREAD_INDEX]
                                     );
-                            
+
                             ARPATHSPACERESULT_NEXT(*sampleValue[im]) = NULL;
-                            
+
                             arlightalphasample_l_init_l(
-                                  art_gv,
-                                  ARLIGHTALPHASAMPLE_NONE_A0,
-                                  ARPATHSPACERESULT_LIGHTALPHASAMPLE(*sampleValue[im])
-                                );
+                                    art_gv,
+                                    ARLIGHTALPHASAMPLE_NONE_A0,
+                                    ARPATHSPACERESULT_LIGHTALPHASAMPLE(*sampleValue[im])
+                            );
                         }
 
                         validSample = TRUE;
@@ -402,15 +395,15 @@ ArPixelID;
                             for ( unsigned int im = 0; im < numberOfImagesToWrite; im++ )
                             {
                                 PIXEL_SAMPLE_COUNT( x, y, THREAD_INDEX, im ) += 1.0;
-                              
+
                                 arlightalpha_wsd_sloppy_add_l(
-                                      art_gv,
-                                      ARPATHSPACERESULT_LIGHTALPHASAMPLE(*sampleValue[im]),
-                                    & wavelength,
-                                    & spectralSplattingData,
-                                      3.0 DEGREES,
-                                      PIXEL_SAMPLE_VALUE( x, y, THREAD_INDEX, im )
-                                    );
+                                        art_gv,
+                                        ARPATHSPACERESULT_LIGHTALPHASAMPLE(*sampleValue[im]),
+                                        & wavelength,
+                                        & spectralSplattingData,
+                                        3.0 DEGREES,
+                                        PIXEL_SAMPLE_VALUE( x, y, THREAD_INDEX, im )
+                                );
                             }
                         }
                         else
@@ -421,9 +414,9 @@ ArPixelID;
                                 int  cY = y + YC( sampleSplattingOffset[l] );
 
                                 if (   cX >= 0
-                                    && cX < XC(imageSize)
-                                    && cY >= 0
-                                    && cY < YC(imageSize) )
+                                       && cX < XC(imageSize)
+                                       && cY >= 0
+                                       && cY < YC(imageSize) )
                                 {
                                     for ( unsigned int im = 0; im < numberOfImagesToWrite; im++ )
                                     {
@@ -431,16 +424,15 @@ ArPixelID;
 
                                         for ( unsigned int im = 0; im < numberOfImagesToWrite; im++ )
                                         {
-                                            
                                             arlightalpha_dwsd_mul_sloppy_add_l(
-                                                  art_gv,
-                                                  SAMPLE_SPLATTING_FACTOR( subpixelIdx, l ),
-                                                  ARPATHSPACERESULT_LIGHTALPHASAMPLE(*sampleValue[im]),
-                                                & wavelength,
-                                                & spectralSplattingData,
-                                                  5.0 DEGREES,
-                                                  THREAD_RESULT_PIXEL( cX, cY, im )
-                                                );
+                                                    art_gv,
+                                                    SAMPLE_SPLATTING_FACTOR( subpixelIdx, l ),
+                                                    ARPATHSPACERESULT_LIGHTALPHASAMPLE(*sampleValue[im]),
+                                                    & wavelength,
+                                                    & spectralSplattingData,
+                                                    5.0 DEGREES,
+                                                    THREAD_RESULT_PIXEL( cX, cY, im )
+                                            );
                                         }
                                     }
                                 }
@@ -451,10 +443,10 @@ ArPixelID;
                     for ( unsigned int im = 0; im < numberOfImagesToWrite; im++ )
                     {
                         arpathspaceresult_free_to_freelist(
-                              art_gv,
-                            & pathspaceResultFreelist[THREAD_INDEX],
-                              sampleValue[im]
-                            );
+                                art_gv,
+                                & pathspaceResultFreelist[THREAD_INDEX],
+                                sampleValue[im]
+                        );
                     }
                 }
             } // x, XC(image)
@@ -465,15 +457,15 @@ ArPixelID;
         if ( THREAD_INDEX == 0 )
         {
             [ sampleCounter step
-                :   numberOfRenderThreads
-                ];
+            :   numberOfRenderThreads
+            ];
         }
     } // i, sample index
-    
+
     [ self renderProcHasFinished: threadIndex ];
 
     //   Sample value free
-    
+
     FREE_ARRAY(sampleValue);
 }
 
@@ -495,7 +487,7 @@ ArPixelID;
 {
     [ super code: coder ];
     [ coder codeBOOL: & deterministicWavelengths ];
-    
+
     if ( [ coder isReading ] )
     {
         if ( deterministicWavelengths )

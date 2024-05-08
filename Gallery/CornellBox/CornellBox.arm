@@ -1,10 +1,13 @@
 #ifndef SAMPLES
-    #define SAMPLES 12
+    #define SAMPLES 18
 #endif
 
 
 #define MODE arpathtracermode_light_sampling
 //#define MODE arpathtracermode_mis
+
+
+
 
 ArObj whiteReflectance(ART_GV * art_gv) {
     return 
@@ -115,19 +118,20 @@ ArObj createShortBlock(ART_GV * art_gv) {
             : blockMaterial
             ];
 }
+#define SPHERECOLOUR        MUNSELL_025YR_06_06
 
 ArObj createTallBlock(ART_GV * art_gv) {
     Pnt3D * blockPoints = ALLOC_ARRAY( Pnt3D, 9);
 
 
-    blockPoints[0] = PNT3D(265.0, 330.0, 296.0); // top    right front
-    blockPoints[1] = PNT3D(314.0, 330.0, 456.0); // top    right rear
-    blockPoints[2] = PNT3D(423.0, 330.0, 247.0); // top    left  front
-    blockPoints[3] = PNT3D(472.0, 330.0, 406.0); // top    left  rear
-    blockPoints[4] = PNT3D(265.0,   0.0, 296.0); // bottom right front
-    blockPoints[5] = PNT3D(314.0,   0.0, 456.0); // bottom right rear
-    blockPoints[6] = PNT3D(423.0,   0.0, 247.0); // bottom left  front
-    blockPoints[7] = PNT3D(472.0,   0.0, 406.0); // bottom left  rear
+    blockPoints[0] = PNT3D(-1.05399, -1.24964, 0.084465 ); // top    right front
+    blockPoints[1] = PNT3D(-0.359359, -1.24964, 0.610171 ); // top    right rear
+    blockPoints[2] = PNT3D(-0.359359,-0.378502, 0.610171 ); // top    left  front
+    blockPoints[3] = PNT3D(-1.05399, -0.378502, 0.084465 ); // top    left  rear
+    blockPoints[4] = PNT3D(0.166347, -1.24964, -0.084465 ); // bottom right front
+    blockPoints[5] = PNT3D(-0.528289, -1.24964, -0.610171); // bottom right rear
+    blockPoints[6] = PNT3D(-0.528289, -0.378502, -0.610171 ); // bottom left  front
+    blockPoints[7] = PNT3D(0.166347, -0.378502, -0.084465 ); // bottom left  rear
 
 
     blockPoints[8] = PNT3D_HUGE;
@@ -144,17 +148,16 @@ ArObj createTallBlock(ART_GV * art_gv) {
     
     ArObj block =
         UNION(
-            QUADRANGLE( 0, 1, 3, 2 ),
-            QUADRANGLE( 2, 3, 7, 6 ),
-            QUADRANGLE( 6, 4, 5, 7 ),
-            QUADRANGLE( 7, 3, 1, 5 ),
-            QUADRANGLE( 5, 1, 0, 4 ),
-            QUADRANGLE( 4, 6, 2, 0 ),
-            QUADRANGLE( 4, 6, 2, 0 ),
+            QUADRANGLE( 0, 1, 2, 3 ),
+            QUADRANGLE( 1, 4, 7, 2 ),
+            QUADRANGLE( 2, 7, 6, 3 ),
             UNION_END
             );
 
-    ArObj blockMaterial = LAMBERT_REFLECTOR(whiteReflectance(art_gv));
+
+    ArObj roughOrenNayar = OREN_NAYAR_SURFACE_CONST( SPHERECOLOUR, 30 DEGREES );
+
+    ArObj blockMaterial = roughOrenNayar;
 
     return 
         [ block apply
@@ -167,18 +170,34 @@ ArObj createLight(ART_GV * art_gv) {
     Pnt3D * blockPoints = ALLOC_ARRAY( Pnt3D, 9);
 
 
-    blockPoints[0] = PNT3D( -1.27029f, -1.28002f,  -1.30455f ); // left   top    rear
-    blockPoints[1] = PNT3D(  1.28975f, -1.28002f,  -1.30455f ); // left   top    front
+    //blockPoints[0] = PNT3D( -1.27029f, -1.28002f,  -1.30455f ); // left   top    rear
+    //blockPoints[1] = PNT3D(  1.28975f, -1.28002f,  -1.30455f ); // left   top    front
 
-    blockPoints[2] = PNT3D(  0.25f,  1.26002f,  -0.25f ); // left   bottom rear
-    blockPoints[3] = PNT3D( -0.25f,  1.26002f,  -0.25f ); // left   bottom front
+    //blockPoints[2] = PNT3D(  0.25f,  1.26002f,  -0.25f ); // left   bottom rear
+    //blockPoints[3] = PNT3D( -0.25f,  1.26002f,  -0.25f ); // left   bottom front
 
 
-    blockPoints[4] = PNT3D( -1.27029f, -1.28002f, 1.25549f ); // right  top    rear
-    blockPoints[5] = PNT3D(  1.28975f, -1.28002f, 1.25549f ); // right  top    front
+    //blockPoints[4] = PNT3D( -1.27029f, -1.28002f, 1.25549f ); // right  top    rear
+    //blockPoints[5] = PNT3D(  1.28975f, -1.28002f, 1.25549f ); // right  top    front
 
-    blockPoints[6] = PNT3D(  0.25f,  1.26002f,  0.25f  ); // right  bottom rear
-    blockPoints[7] = PNT3D( -0.25f,  1.26002f,   0.25f ); // right  bottom front
+    //blockPoints[6] = PNT3D(  0.25f,  1.26002f,  0.25f  ); // right  bottom rear
+    //blockPoints[7] = PNT3D( -0.25f,  1.26002f,   0.25f ); // right  bottom front
+
+    /////////////////////////////////////
+    blockPoints[0] = PNT3D( -0.69083f, -0.660441f,  -0.156858f ); // left   top    rear
+    blockPoints[1] = PNT3D(  -0.232487f, -0.660441f,  -0.156858f ); // left   top    front
+
+    blockPoints[2] = PNT3D(  -0.232487f,  -1.11878f,  -0.156858f ); // left   bottom rear
+    blockPoints[3] = PNT3D( -0.69083f,  -1.11878f,  -0.156858f ); // left   bottom front
+
+
+    blockPoints[4] = PNT3D( -0.69083f, -0.660441f, -0.231655f ); // right  top    rear
+    blockPoints[5] = PNT3D(  -0.232487f, -0.660441f, -0.231655f ); // right  top    front
+
+    blockPoints[6] = PNT3D(  -0.232487f,  -1.11878f,  -0.231655f  ); // right  bottom rear
+    blockPoints[7] = PNT3D( -0.69083f,  -1.11878f,   -0.231655f ); // right  bottom front
+
+
 
 
     blockPoints[8] = PNT3D_HUGE;
@@ -193,7 +212,7 @@ ArObj createLight(ART_GV * art_gv) {
             NULL
             );
     
-    ArObj block = QUADRANGLE(2,6,7,3);
+    ArObj block = QUADRANGLE(0, 1, 2, 3);
 
     ArObj blockMaterial = LAMBERT_EMITTER  (lightSpectrum(art_gv), 1.0 );
 
@@ -284,8 +303,8 @@ ARM_MAIN_FUNCTION(CornellBox)
         UNION(
             createBox(art_gv),
            // createShortBlock(art_gv),
-           // createTallBlock(art_gv),
-	    createLight(art_gv),
+            createTallBlock(art_gv),
+	        createLight(art_gv),
             UNION_END
             );
 

@@ -10,6 +10,60 @@
 
 ART_MODULE_INTERFACE(ArPathVertex)
 
+
+@interface ArPV
+        : ArcObject {
+@public
+
+    ArcIntersection *worldHitPoint;
+
+//    ArcRayEndpoint *worldHitPoint;
+//    ArcPointContext<ArpRayEndpoint> *worldHitPoint;
+
+
+
+    uint totalPathLength;
+
+    //TODO: BRDF?
+
+    double throughput;
+    ArLightAlphaSample *lightSample;
+    ArAttenuationSample *attenuationSample;
+//    ArAttenuationSample* mediaAttenuationSample;
+
+    ArLightAlphaSample *cameraLightSample;
+//    ArAttenuationSample* cameraDirectionAttenuationSample;
+
+    //TODO: SPECTRA
+    double basicPDF;
+    double misVCM;
+    double misBPT;
+
+    ArPDFValue cameraConnectionPDF;
+    ArPDFValue pathPDF;
+
+    ArWavelength incomingWavelength;
+    ArWavelength outgoingWavelength;
+    ArWavelength cameraWavelength;
+
+    bool occluded;
+
+    double cameraThroughput;
+    unsigned int isClearMediaAttenuation;
+
+    bool isEND;
+
+    double dVCM;
+    double dVC;
+    double dVM;
+    Vec3D worldNormal;
+
+    Vec3D incomingDirection;
+}
+@end;
+
+
+
 typedef struct ArVCMGlobalValues
 {
 
@@ -18,6 +72,7 @@ typedef struct ArVCMGlobalValues
     double VCweight;
 
 } ArVCMGlobalValues;
+
 typedef struct ArPathVertex
 {
 
@@ -30,8 +85,6 @@ typedef struct ArPathVertex
 
     uint totalPathLength;
 
-    //TODO: BRDF?
-
     double throughput;
     ArLightAlphaSample* lightSample;
     ArAttenuationSample* attenuationSample;
@@ -39,8 +92,7 @@ typedef struct ArPathVertex
 
     ArLightAlphaSample* cameraLightSample;
 //    ArAttenuationSample* cameraDirectionAttenuationSample;
-    
-    //TODO: SPECTRA
+
     double basicPDF;
     double misVCM;
     double misBPT;
@@ -65,11 +117,20 @@ typedef struct ArPathVertex
     Vec3D worldNormal;
 
     Vec3D incomingDirection;
-
-    ART_GV *art_gv;
 }
 
 ArPathVertex;
+
+typedef struct ArSubPathStateMin
+{
+    double dVCM;
+    double dVC;
+    double dVM;
+
+    double throughput;
+    ArPDFValue pathPDF;
+
+} ArSubPathStateMin;
 
 #define ARPV_HITPOINT(__pv)  (__pv).worldHitPoint
 #define ARPV_PATHLENGTH(__pv)  (__pv).totalPathLength
@@ -94,4 +155,5 @@ ArPathVertex;
 ARDYNARRAY_INTERFACE_FOR_ARTYPE(PathVertex,pv,pv);
 ARDYNARRAY_INTERFACE_FOR_ARTYPE_PTR(PathVertex,pv,pv);
 
-void arpv_free_arr_itrsc(const ART_GV  * art_gv, ArPathVertexDynArray *arr);
+void arpv_free_pv(const ART_GV *art_gv, ArPathVertex *pv);
+void arpv_free_arr_itrsc(const ART_GV  * art_gv, ArPathVertexptrDynArray *arr);

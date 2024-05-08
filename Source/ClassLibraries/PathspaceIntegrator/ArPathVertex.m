@@ -8,6 +8,16 @@
 ART_NO_MODULE_INITIALISATION_FUNCTION_NECESSARY
 ART_NO_MODULE_SHUTDOWN_FUNCTION_NECESSARY
 
+@implementation ArPV
+
+- (void) dealloc
+{
+
+    [super dealloc];
+}
+
+@end;
+
 ArPathVertex _pv_retain(
         ArPathVertex pv
 )
@@ -20,7 +30,7 @@ ArPathVertex _pv_release(
 )
 {
 
-    RELEASE_OBJECT(pv.worldHitPoint);
+//    RELEASE_OBJECT(pv.worldHitPoint);
 //    if(pv.attenuationSample)
 //        arattenuationsample_free(pv.art_gv, pv.attenuationSample);
 
@@ -37,53 +47,45 @@ ARDYNARRAY_IMPLEMENTATION_FOR_MANAGED_TYPE(
 
 ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(PathVertex,pv,pv,0);
 
-void arpv_free_arr_itrsc(const ART_GV  * art_gv, ArPathVertexDynArray *arr)
+
+void arpv_free_pv(const ART_GV *art_gv, ArPathVertex *pv)
 {
-    ArPathVertex pv = arpvdynarray_i(arr, 0);
-
-    if(pv.attenuationSample)
+    if(pv->lightSample)
     {
-        arattenuationsample_free(art_gv, pv.attenuationSample);
+        arlightalphasample_free(art_gv, pv->lightSample);
+        pv->lightSample = 0;
     }
 
-    pv = arpvdynarray_i(arr, 1);
-    if(pv.lightSample)
+//    if(pv->cameraLightSample)
+//    {
+//        arlightalphasample_free(art_gv, pv->cameraLightSample);
+//        pv->cameraLightSample = 0;
+//    }
+
+    if(pv->attenuationSample && pv->totalPathLength)
     {
-        arlightalphasample_free(art_gv, pv.lightSample);
+        arattenuationsample_free(art_gv, pv->attenuationSample);
+        pv->attenuationSample = 0;
     }
 
-
-    return;
-
-    pv = arpvdynarray_i(arr, 5);
-    if(pv.attenuationSample)
+    if(pv->worldHitPoint)
     {
-        arattenuationsample_free(art_gv, pv.attenuationSample);
+        RELEASE_OBJECT(pv->worldHitPoint);
+        pv->worldHitPoint = 0;
     }
 
-
-    unsigned int size = arpvdynarray_size(arr);
+}
+void arpv_free_arr_itrsc(const ART_GV  * art_gv, ArPathVertexptrDynArray *arr)
+{
+    unsigned int size = arpvptrdynarray_size(arr);
 
     for (unsigned int i = 0; i < size; i++)
     {
-        if(i == 2)
-            continue;
 
-        ArPathVertex pv = arpvdynarray_i(arr, i);
+        ArPathVertex *pv = arpvptrdynarray_i(arr, i);
 
-//        pv.worldHitPoint = 0;
-
-//        NSLog(@"Freeing PathVertex");
-
-        if(pv.lightSample)
-        {
-
-        }
-
-        if(pv.attenuationSample)
-        {
-            arattenuationsample_free(art_gv, pv.attenuationSample);
-        }
-
+        arpv_free_pv(art_gv, pv);
+        FREE(pv);
+        pv = 0;
     }
 }

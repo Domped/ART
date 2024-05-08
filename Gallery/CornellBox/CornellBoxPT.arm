@@ -1,52 +1,51 @@
 #ifndef SAMPLES
-    #define SAMPLES 5000
+    #define SAMPLES 345
 #endif
 
 
 #define MODE arpathtracermode_direction_sampling
-//#define MODE arpathtracermode_mis
 
 ArObj whiteReflectance(ART_GV * art_gv) {
-    return 
-        CONST_COLOUR_RSSPECTRUM(400 NANOMETER, 4 NANOMETER, 1.0, 
-            0.343, 0.445, 0.551, 0.624, 0.665, 0.687, 0.708, 0.723, 0.715, 
-            0.710, 0.745, 0.758, 0.739, 0.767, 0.777, 0.765, 0.751, 0.745, 
-            0.748, 0.729, 0.745, 0.757, 0.753, 0.750, 0.746, 0.747, 0.735, 
-            0.732, 0.739, 0.734, 0.725, 0.721, 0.733, 0.725, 0.732, 0.743, 
-            0.744, 0.748, 0.728, 0.716, 0.733, 0.726, 0.713, 0.740, 0.754, 
-            0.764, 0.752, 0.736, 0.734, 0.741, 0.740, 0.732, 0.745, 0.755, 
-            0.751, 0.744, 0.731, 0.733, 0.744, 0.731, 0.712, 0.708, 0.729, 
-            0.730, 0.727, 0.707, 0.703, 0.729, 0.750, 0.760, 0.751, 0.739, 
+    return
+        CONST_COLOUR_RSSPECTRUM(400 NANOMETER, 4 NANOMETER, 1.0,
+            0.343, 0.445, 0.551, 0.624, 0.665, 0.687, 0.708, 0.723, 0.715,
+            0.710, 0.745, 0.758, 0.739, 0.767, 0.777, 0.765, 0.751, 0.745,
+            0.748, 0.729, 0.745, 0.757, 0.753, 0.750, 0.746, 0.747, 0.735,
+            0.732, 0.739, 0.734, 0.725, 0.721, 0.733, 0.725, 0.732, 0.743,
+            0.744, 0.748, 0.728, 0.716, 0.733, 0.726, 0.713, 0.740, 0.754,
+            0.764, 0.752, 0.736, 0.734, 0.741, 0.740, 0.732, 0.745, 0.755,
+            0.751, 0.744, 0.731, 0.733, 0.744, 0.731, 0.712, 0.708, 0.729,
+            0.730, 0.727, 0.707, 0.703, 0.729, 0.750, 0.760, 0.751, 0.739,
             0.724, 0.730, 0.740, 0.737, RSS_END
             );
 }
 
 ArObj greenReflectance(ART_GV * art_gv) {
     return
-        CONST_COLOUR_RSSPECTRUM(400 NANOMETER, 4 NANOMETER, 1.0, 
-            0.092, 0.096, 0.098, 0.097, 0.098, 0.095, 0.095, 0.097, 0.095, 
-            0.094, 0.097, 0.098, 0.096, 0.101, 0.103, 0.104, 0.107, 0.109, 
-            0.112, 0.115, 0.125, 0.140, 0.160, 0.187, 0.229, 0.285, 0.343, 
-            0.390, 0.435, 0.464, 0.472, 0.476, 0.481, 0.462, 0.447, 0.441, 
-            0.426, 0.406, 0.373, 0.347, 0.337, 0.314, 0.285, 0.277, 0.266, 
-            0.250, 0.230, 0.207, 0.186, 0.171, 0.160, 0.148, 0.141, 0.136, 
-            0.130, 0.126, 0.123, 0.121, 0.122, 0.119, 0.114, 0.115, 0.117, 
-            0.117, 0.118, 0.120, 0.122, 0.128, 0.132, 0.139, 0.144, 0.146, 
+        CONST_COLOUR_RSSPECTRUM(400 NANOMETER, 4 NANOMETER, 1.0,
+            0.092, 0.096, 0.098, 0.097, 0.098, 0.095, 0.095, 0.097, 0.095,
+            0.094, 0.097, 0.098, 0.096, 0.101, 0.103, 0.104, 0.107, 0.109,
+            0.112, 0.115, 0.125, 0.140, 0.160, 0.187, 0.229, 0.285, 0.343,
+            0.390, 0.435, 0.464, 0.472, 0.476, 0.481, 0.462, 0.447, 0.441,
+            0.426, 0.406, 0.373, 0.347, 0.337, 0.314, 0.285, 0.277, 0.266,
+            0.250, 0.230, 0.207, 0.186, 0.171, 0.160, 0.148, 0.141, 0.136,
+            0.130, 0.126, 0.123, 0.121, 0.122, 0.119, 0.114, 0.115, 0.117,
+            0.117, 0.118, 0.120, 0.122, 0.128, 0.132, 0.139, 0.144, 0.146,
             0.150, 0.152, 0.157, 0.159, RSS_END
             );
 }
 
 ArObj redReflectance(ART_GV * art_gv) {
     return
-        CONST_COLOUR_RSSPECTRUM(400 NANOMETER, 4 NANOMETER, 1.0, 
-            0.040, 0.046, 0.048, 0.053, 0.049, 0.050, 0.053, 0.055, 0.057, 
-            0.056, 0.059, 0.057, 0.061, 0.061, 0.060, 0.062, 0.062, 0.062, 
-            0.061, 0.062, 0.060, 0.059, 0.057, 0.058, 0.058, 0.058, 0.056, 
-            0.055, 0.056, 0.059, 0.057, 0.055, 0.059, 0.059, 0.058, 0.059, 
-            0.061, 0.061, 0.063, 0.063, 0.067, 0.068, 0.072, 0.080, 0.090, 
-            0.099, 0.124, 0.154, 0.192, 0.255, 0.287, 0.349, 0.402, 0.443, 
-            0.487, 0.513, 0.558, 0.584, 0.620, 0.606, 0.609, 0.651, 0.612, 
-            0.610, 0.650, 0.638, 0.627, 0.620, 0.630, 0.628, 0.642, 0.639, 
+        CONST_COLOUR_RSSPECTRUM(400 NANOMETER, 4 NANOMETER, 1.0,
+            0.040, 0.046, 0.048, 0.053, 0.049, 0.050, 0.053, 0.055, 0.057,
+            0.056, 0.059, 0.057, 0.061, 0.061, 0.060, 0.062, 0.062, 0.062,
+            0.061, 0.062, 0.060, 0.059, 0.057, 0.058, 0.058, 0.058, 0.056,
+            0.055, 0.056, 0.059, 0.057, 0.055, 0.059, 0.059, 0.058, 0.059,
+            0.061, 0.061, 0.063, 0.063, 0.067, 0.068, 0.072, 0.080, 0.090,
+            0.099, 0.124, 0.154, 0.192, 0.255, 0.287, 0.349, 0.402, 0.443,
+            0.487, 0.513, 0.558, 0.584, 0.620, 0.606, 0.609, 0.651, 0.612,
+            0.610, 0.650, 0.638, 0.627, 0.620, 0.630, 0.628, 0.642, 0.639,
             0.657, 0.639, 0.635, 0.64, RSS_END
             );
 }
@@ -73,7 +72,7 @@ ArObj lightSpectrum(ART_GV * art_gv)
 
 ArObj createShortBlock(ART_GV * art_gv) {
     Pnt3D * blockPoints = ALLOC_ARRAY( Pnt3D, 9);
-    
+
     blockPoints[0] = PNT3D(130.0, 165.0,  65.0); // top    right front
     blockPoints[1] = PNT3D( 82.0, 165.0, 225.0); // top    right rear
     blockPoints[2] = PNT3D(290.0, 165.0, 114.0); // top    left  front
@@ -86,7 +85,7 @@ ArObj createShortBlock(ART_GV * art_gv) {
 
     blockPoints[8] = PNT3D_HUGE;
 
-    ArObj vertices = 
+    ArObj vertices =
         arnvertexset(
             art_gv,
             blockPoints,
@@ -109,30 +108,32 @@ ArObj createShortBlock(ART_GV * art_gv) {
 
     ArObj blockMaterial = LAMBERT_REFLECTOR(whiteReflectance(art_gv));
 
-    return 
+    return
         [ block apply
             : vertices
             : blockMaterial
             ];
 }
 
+#define SPHERECOLOUR        MUNSELL_025YR_06_06
+
 ArObj createTallBlock(ART_GV * art_gv) {
     Pnt3D * blockPoints = ALLOC_ARRAY( Pnt3D, 9);
 
 
-    blockPoints[0] = PNT3D(265.0, 330.0, 296.0); // top    right front
-    blockPoints[1] = PNT3D(314.0, 330.0, 456.0); // top    right rear
-    blockPoints[2] = PNT3D(423.0, 330.0, 247.0); // top    left  front
-    blockPoints[3] = PNT3D(472.0, 330.0, 406.0); // top    left  rear
-    blockPoints[4] = PNT3D(265.0,   0.0, 296.0); // bottom right front
-    blockPoints[5] = PNT3D(314.0,   0.0, 456.0); // bottom right rear
-    blockPoints[6] = PNT3D(423.0,   0.0, 247.0); // bottom left  front
-    blockPoints[7] = PNT3D(472.0,   0.0, 406.0); // bottom left  rear
+    blockPoints[0] = PNT3D(-1.05399, -1.24964, 0.084465 ); // top    right front
+    blockPoints[1] = PNT3D(-0.359359, -1.24964, 0.610171 ); // top    right rear
+    blockPoints[2] = PNT3D(-0.359359,-0.378502, 0.610171 ); // top    left  front
+    blockPoints[3] = PNT3D(-1.05399, -0.378502, 0.084465 ); // top    left  rear
+    blockPoints[4] = PNT3D(0.166347, -1.24964, -0.084465 ); // bottom right front
+    blockPoints[5] = PNT3D(-0.528289, -1.24964, -0.610171); // bottom right rear
+    blockPoints[6] = PNT3D(-0.528289, -0.378502, -0.610171 ); // bottom left  front
+    blockPoints[7] = PNT3D(0.166347, -0.378502, -0.084465 ); // bottom left  rear
 
 
     blockPoints[8] = PNT3D_HUGE;
 
-    ArObj vertices = 
+    ArObj vertices =
         arnvertexset(
             art_gv,
             blockPoints,
@@ -141,22 +142,21 @@ ArObj createTallBlock(ART_GV * art_gv) {
             NULL,
             NULL
             );
-    
+
     ArObj block =
         UNION(
-            QUADRANGLE( 0, 1, 3, 2 ),
-            QUADRANGLE( 2, 3, 7, 6 ),
-            QUADRANGLE( 6, 4, 5, 7 ),
-            QUADRANGLE( 7, 3, 1, 5 ),
-            QUADRANGLE( 5, 1, 0, 4 ),
-            QUADRANGLE( 4, 6, 2, 0 ),
-            QUADRANGLE( 4, 6, 2, 0 ),
+            QUADRANGLE( 0, 1, 2, 3 ),
+            QUADRANGLE( 1, 4, 7, 2 ),
+            QUADRANGLE( 2, 7, 6, 3 ),
             UNION_END
             );
 
-    ArObj blockMaterial = LAMBERT_REFLECTOR(whiteReflectance(art_gv));
 
-    return 
+    ArObj roughOrenNayar = OREN_NAYAR_SURFACE_CONST( SPHERECOLOUR, 30 DEGREES );
+
+    ArObj blockMaterial = roughOrenNayar;
+
+    return
         [ block apply
             : vertices
             : blockMaterial
@@ -167,23 +167,39 @@ ArObj createLight(ART_GV * art_gv) {
     Pnt3D * blockPoints = ALLOC_ARRAY( Pnt3D, 9);
 
 
-    blockPoints[0] = PNT3D( -1.27029f, -1.28002f,  -1.30455f ); // left   top    rear
-    blockPoints[1] = PNT3D(  1.28975f, -1.28002f,  -1.30455f ); // left   top    front
+    //blockPoints[0] = PNT3D( -1.27029f, -1.28002f,  -1.30455f ); // left   top    rear
+    //blockPoints[1] = PNT3D(  1.28975f, -1.28002f,  -1.30455f ); // left   top    front
 
-    blockPoints[2] = PNT3D(  0.25f,  1.26002f,  -0.25f ); // left   bottom rear
-    blockPoints[3] = PNT3D( -0.25f,  1.26002f,  -0.25f ); // left   bottom front
+    //blockPoints[2] = PNT3D(  0.25f,  1.26002f,  -0.25f ); // left   bottom rear
+    //blockPoints[3] = PNT3D( -0.25f,  1.26002f,  -0.25f ); // left   bottom front
 
 
-    blockPoints[4] = PNT3D( -1.27029f, -1.28002f, 1.25549f ); // right  top    rear
-    blockPoints[5] = PNT3D(  1.28975f, -1.28002f, 1.25549f ); // right  top    front
+    //blockPoints[4] = PNT3D( -1.27029f, -1.28002f, 1.25549f ); // right  top    rear
+    //blockPoints[5] = PNT3D(  1.28975f, -1.28002f, 1.25549f ); // right  top    front
 
-    blockPoints[6] = PNT3D(  0.25f,  1.26002f,  0.25f  ); // right  bottom rear
-    blockPoints[7] = PNT3D( -0.25f,  1.26002f,   0.25f ); // right  bottom front
+    //blockPoints[6] = PNT3D(  0.25f,  1.26002f,  0.25f  ); // right  bottom rear
+    //blockPoints[7] = PNT3D( -0.25f,  1.26002f,   0.25f ); // right  bottom front
+
+    /////////////////////////////////////
+    blockPoints[0] = PNT3D( -0.69083f, -0.660441f,  -0.156858f ); // left   top    rear
+    blockPoints[1] = PNT3D(  -0.232487f, -0.660441f,  -0.156858f ); // left   top    front
+
+    blockPoints[2] = PNT3D(  -0.232487f,  -1.11878f,  -0.156858f ); // left   bottom rear
+    blockPoints[3] = PNT3D( -0.69083f,  -1.11878f,  -0.156858f ); // left   bottom front
+
+
+    blockPoints[4] = PNT3D( -0.69083f, -0.660441f, -0.231655f ); // right  top    rear
+    blockPoints[5] = PNT3D(  -0.232487f, -0.660441f, -0.231655f ); // right  top    front
+
+    blockPoints[6] = PNT3D(  -0.232487f,  -1.11878f,  -0.231655f  ); // right  bottom rear
+    blockPoints[7] = PNT3D( -0.69083f,  -1.11878f,   -0.231655f ); // right  bottom front
+
+
 
 
     blockPoints[8] = PNT3D_HUGE;
 
-    ArObj vertices = 
+    ArObj vertices =
         arnvertexset(
             art_gv,
             blockPoints,
@@ -192,12 +208,12 @@ ArObj createLight(ART_GV * art_gv) {
             NULL,
             NULL
             );
-    
-    ArObj block = QUADRANGLE(2,6,7,3);
+
+    ArObj block = QUADRANGLE(0,1,2,3);
 
     ArObj blockMaterial = LAMBERT_EMITTER  (lightSpectrum(art_gv), 1.0 );
 
-    return 
+    return
         [ block apply
             : vertices
             : blockMaterial
@@ -215,10 +231,10 @@ ArObj createBox(ART_GV * art_gv) {
     boxPoints[5] = PNT3D(  1.28975f, -1.28002f, 1.25549f ); // right  top    front
     boxPoints[6] = PNT3D(  1.28975f,  1.28002f, 1.25549f ); // right  bottom rear
     boxPoints[7] = PNT3D( -1.27029f,  1.28002f, 1.25549f ); // right  bottom front
-    
+
     boxPoints[8] = PNT3D_HUGE;
-    
-    ArObj vertices = 
+
+    ArObj vertices =
         arnvertexset(
             art_gv,
             boxPoints,
@@ -232,8 +248,8 @@ ArObj createBox(ART_GV * art_gv) {
     ArObj redLambert      = LAMBERT_REFLECTOR(redReflectance(art_gv));
     ArObj greenLambert    = LAMBERT_REFLECTOR(greenReflectance(art_gv));
     ArObj emitterMaterial = LAMBERT_EMITTER  (lightSpectrum(art_gv), 1.0 );
-    
-     ArObj floorGeometry = 
+
+     ArObj floorGeometry =
         [ QUADRANGLE(5, 1, 0, 4) apply
             : whiteLambert
             ];
@@ -248,7 +264,7 @@ ArObj createBox(ART_GV * art_gv) {
             : greenLambert
             ];
 
-    ArObj leftWallGeometry = 
+    ArObj leftWallGeometry =
         [ QUADRANGLE(0, 3, 7, 4) apply
             : redLambert
             ];
@@ -258,7 +274,7 @@ ArObj createBox(ART_GV * art_gv) {
             : whiteLambert
             ];
 
-    ArObj lightGeometry = 
+    ArObj lightGeometry =
         [ TRIANGLE(5, 1, 0) apply
             : emitterMaterial
             ];
@@ -284,7 +300,7 @@ ARM_MAIN_FUNCTION(CornellBoxPT)
         UNION(
             createBox(art_gv),
            // createShortBlock(art_gv),
-           // createTallBlock(art_gv),
+           createTallBlock(art_gv),
 	    createLight(art_gv),
             UNION_END
             );
@@ -296,10 +312,10 @@ ARM_MAIN_FUNCTION(CornellBoxPT)
             zoom:      1
             ];
 
-    ArObj actionsquence = 
+    ArObj actionsquence =
         ACTION_SEQUENCE(
             CREATE_STANDARD_RAYCASTING_ACCELERATION_STRUCTURE,
-            
+
             [ LIGHTSOURCE_COLLECTOR
                 sampler2D:   STANDARD_SAMPLER_2D
                 resolution:  5
@@ -308,10 +324,9 @@ ARM_MAIN_FUNCTION(CornellBoxPT)
 
             [ STOCHASTIC_PIXEL_SAMPLER
                 sampleProvider:
-                    [ PATHTRACER
+                    [PATHTRACER
                         rayCaster:        STANDARD_RAYCASTER
                         maximalRecursion: 9
-                        mode:             MODE
                         ]
                 sampleSplattingKernel: TENT_KERNEL
                 samplesPerPixel:       SAMPLES
@@ -321,14 +336,14 @@ ARM_MAIN_FUNCTION(CornellBoxPT)
             [ IMAGECONVERSION_RAW_TO_ARTCSP
                 removeSource: NO
                 ],
-            
+
            [ IMAGECONVERSION_ARTCSP_TO_EXR
                 removeSource:   NO
                 ],
-            
+
             ACTION_SEQUENCE_END
             );
-  
+
     return
         [ SCENE
             sceneGeometry:  scene_geometry
