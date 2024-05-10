@@ -1719,6 +1719,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
 
         currentState->worldHitPoint = intersection;
         currentState->incomingDirection = intersection->worldspace_incoming_ray.vector;
+
         if ( [ ARCINTERSECTION_SHAPE(intersection)
                 isMemberOfClass
                 :   [ ArnInfSphere class ] ] )
@@ -1770,7 +1771,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
         for (uint32_t i = rangeX; i < rangeY; ++i)
         {
 
-            ArPathVertex lightVertex = *arpvptrdynarray_i(lightPathsList, i);
+            ArPathVertex *lightVertex = arpvptrdynarray_i(lightPathsList, i);
 //
 //            int res = arwavelength_ww_equal_ranged(art_gv, &lightVertex.outgoingWavelength, &currentState->incomingWavelength);
 //
@@ -1779,30 +1780,30 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
 //                continue;
 //            }
 
-            if(lightVertex.totalPathLength + 2 + pathLength + 1 > 10)
+            if(lightVertex->totalPathLength + 2 + pathLength + 1 > 10)
                 break;
 
             if([self connectVertices
                     : currentState
-                    : &lightVertex
+                    : lightVertex
                     : connectionSampleConnection
                     : pArVcmGlobalValues
             ])
             {
                 double weight = (currentState->throughput / ARPDFVALUE_MAIN(currentState->pathPDF))
-                        * (lightVertex.throughput / ARPDFVALUE_MAIN(lightVertex.pathPDF));
+                        * (lightVertex->throughput / ARPDFVALUE_MAIN(lightVertex->pathPDF));
 
 
-                if(lightVertex.totalPathLength > 0)
+                if(lightVertex->totalPathLength > 0)
                 {
-                    arattenuationsample_a_mul_a(art_gv, lightVertex.attenuationSample, connectionSampleConnection);
+                    arattenuationsample_a_mul_a(art_gv, lightVertex->attenuationSample, connectionSampleConnection);
                 }
                 arattenuationsample_d_mul_a(art_gv,
                                           weight,
                                           connectionSampleConnection);
 
                 arlightsample_l_init_l(art_gv,
-                                       lightVertex.lightSample->light,
+                                       lightVertex->lightSample->light,
                                        lightSampleConnection);
 
 //                NSLog(@"%f", arattenuationsample_a_max(art_gv, connectionSampleConnection));
@@ -1823,31 +1824,30 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
 //
 //
 //
-//        ArLightAlphaSample* vmContribution = arlightalphasample_alloc(art_gv);
-//        arlightsample_d_init_unpolarised_l(art_gv, 0.0, vmContribution->light);
-////
-////        if([hashgrid Process: currentState : intersection->worldspace_point : lightPathsList : vmContribution : &sgc : art_gv])
-//        if([hashgrid Process: currentState : intersection->worldspace_point : lightPathsList : vmContribution : &sgc : art_gv])
-//        {
-//
-////            if(arlightsample_l_max(art_gv, vmContribution->light) > 0)
-////            {
-////                NSLog(@"%f", arlightsample_l_max(art_gv, vmContribution->light));
-////
-////            }
-//            double hwssWeight = [self mis : &currentState->pathPDF];
-////            arlightsample_l_mul_l(art_gv, lightSample, vmContribution->light);
-//            arlightsample_d_mul_l(art_gv, currentState->throughput * hashgrid->vmNormalization * hwssWeight, vmContribution->light);
-//            arlightsample_d_div_l(art_gv, ARPDFVALUE_MAIN(currentState->pathPDF), vmContribution->light);
-////
-//            if(currentState->totalPathLength > 0)
+        ArLightAlphaSample* vmContribution = arlightalphasample_alloc(art_gv);
+        arlightsample_d_init_unpolarised_l(art_gv, 0.0, vmContribution->light);
+
+        if([hashgrid Process: currentState : intersection->worldspace_point : lightPathsList : vmContribution : &sgc : art_gv])
+        {
+
+//            if(arlightsample_l_max(art_gv, vmContribution->light) > 0)
 //            {
-//                arlightsample_a_mul_l(art_gv, currentState->attenuationSample, vmContribution->light);
-//            }
-//            arlightsample_l_add_l(art_gv, vmContribution->light, lightalpha_r->light);
-//        }
+//                NSLog(@"%f", arlightsample_l_max(art_gv, vmContribution->light));
 //
-//        arlightalphasample_free(art_gv, vmContribution);
+//            }
+            double hwssWeight = [self mis : &currentState->pathPDF];
+//            arlightsample_l_mul_l(art_gv, lightSample, vmContribution->light);
+            arlightsample_d_mul_l(art_gv, currentState->throughput * hashgrid->vmNormalization * hwssWeight, vmContribution->light);
+            arlightsample_d_div_l(art_gv, ARPDFVALUE_MAIN(currentState->pathPDF), vmContribution->light);
+//
+            if(currentState->totalPathLength > 0)
+            {
+                arlightsample_a_mul_l(art_gv, currentState->attenuationSample, vmContribution->light);
+            }
+            arlightsample_l_add_l(art_gv, vmContribution->light, lightalpha_r->light);
+        }
+
+        arlightalphasample_free(art_gv, vmContribution);
 
 
 
@@ -1886,7 +1886,8 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
             arpdfvalue_p_concat_p(&directionSamplingPDF, &currentState->pathPDF);
             currentState->throughput *= cos;
 
-            if (rayOriginIntersection) {
+            if (rayOriginIntersection)
+            {
                 [INTERSECTION_FREELIST releaseInstance
                 :rayOriginIntersection
                 ];
@@ -1894,19 +1895,22 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
             }
 
             rayOriginIntersection = intersection;
+            intersection = 0;
+
             originPoint = currentPoint;
         }
     }
 
 
+    if( rayOriginIntersection )
+    {
+        RELEASE_OBJECT(rayOriginIntersection);
+    }
 
     if ( intersection )
     {
-        [ INTERSECTION_FREELIST releaseInstance
-        :   intersection
-        ];
+        RELEASE_OBJECT(intersection);
     }
-
 }
 
 

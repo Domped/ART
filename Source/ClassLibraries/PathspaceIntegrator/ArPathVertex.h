@@ -155,5 +155,7 @@ typedef struct ArSubPathStateMin
 ARDYNARRAY_INTERFACE_FOR_ARTYPE(PathVertex,pv,pv);
 ARDYNARRAY_INTERFACE_FOR_ARTYPE_PTR(PathVertex,pv,pv);
 
+
+ArPathVertex* arpv_alloc(const ART_GV *art_gv);
 void arpv_free_pv(const ART_GV *art_gv, ArPathVertex *pv);
 void arpv_free_arr_itrsc(const ART_GV  * art_gv, ArPathVertexptrDynArray *arr);

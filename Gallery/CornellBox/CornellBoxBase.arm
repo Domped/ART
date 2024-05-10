@@ -1,5 +1,5 @@
 #ifndef SAMPLES
-    #define SAMPLES 24
+    #define SAMPLES 15
 #endif
 
 
@@ -310,7 +310,7 @@ ARM_MAIN_FUNCTION(CornellBoxBase)
                 sampleProvider:
                     [LIGHTTRACER
                         rayCaster:        STANDARD_RAYCASTER
-                        maximalRecursion: 9
+                        maximalRecursion: 8
                         ]
                 sampleSplattingKernel: TENT_KERNEL
                 samplesPerPixel:       SAMPLES

@@ -50,7 +50,7 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(PathVertex,pv,pv,0);
 
 void arpv_free_pv(const ART_GV *art_gv, ArPathVertex *pv)
 {
-    if(pv->lightSample)
+    if(pv->lightSample && arlightalphasample_l_valid(art_gv, pv->lightSample))
     {
         arlightalphasample_free(art_gv, pv->lightSample);
         pv->lightSample = 0;
@@ -88,4 +88,16 @@ void arpv_free_arr_itrsc(const ART_GV  * art_gv, ArPathVertexptrDynArray *arr)
         FREE(pv);
         pv = 0;
     }
+}
+
+ArPathVertex* arpv_alloc(const ART_GV *art_gv)
+{
+    ArPathVertex *pv = ALLOC(ArPathVertex);
+
+    pv->lightSample = 0;
+    pv->cameraLightSample = 0;
+    pv->attenuationSample = 0;
+    pv->worldHitPoint = 0;
+
+    return pv;
 }

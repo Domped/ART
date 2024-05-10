@@ -343,6 +343,8 @@ typedef struct ArPixelID {
     double baseRadius = 0.00665117893f;
 
     NSLog(@"%d", numberOfSamplesPerThread);
+
+
     for (unsigned int i = 0; i < numberOfSamplesPerThread; i++) {
 
         ArPathVertexptrDynArray pathVertexArray = arpvptrdynarray_init(1);
@@ -409,6 +411,11 @@ typedef struct ArPixelID {
 
 
 #ifndef MONOHERO
+
+                    [ THREAD_RANDOM_GENERATOR reInitializeWith
+                    :   crc32_of_data( & px_id, sizeof(ArPixelID) )
+                    ];
+
                     [THREAD_RANDOM_GENERATOR setCurrentSequenceID
                     :startingSequenceID
                     ];
@@ -428,7 +435,6 @@ typedef struct ArPixelID {
                                 &wavelength
                         );
                     }
-
 #else
                     arwavelength_d_init_w(art_gv, 550 NM, &wavelength);
 #endif
@@ -576,9 +582,11 @@ typedef struct ArPixelID {
 //                for ( int w = 0; w < wavelengthSteps; w++ )
 //                {
 //
-//                    ArPathVertex *currentState = ALLOC(ArPathVertex);
+//                    ArPathVertex *currentState = arpv_alloc(art_gv);
 //
 ////                    ArWavelength wavelength;
+//
+//                    currentState;
 //
 //                    uint32_t rangeX, rangeY;
 //                    rangeX = 0;
@@ -597,11 +605,11 @@ typedef struct ArPixelID {
 //                        ss--;
 //                    }
 //
-//                    ArPathVertex tempWavelengthVertex = *arpvptrdynarray_i(&pathVertexArray, rangeX);
+//                    ArPathVertex *tempWavelengthVertex = arpvptrdynarray_i(&pathVertexArray, rangeX);
 //
 //                    Ray3D              ray;
 //                    ArReferenceFrame   referenceFrame;
-////                    wavelength = tempWavelengthVertex.incomingWavelength;
+//                    wavelength = tempWavelengthVertex->outgoingWavelength;
 //                    ArLightAlphaSample* lightAlphaSample = arlightalphasample_alloc(art_gv);
 //                    arlightsample_d_init_unpolarised_l(art_gv, 0.0, lightAlphaSample->light);
 //
@@ -705,7 +713,7 @@ typedef struct ArPixelID {
 //                        }
 //                    }
 //
-//                    arlightalphasample_free(art_gv, lightAlphaSample );
+//                    arpv_free_pv(art_gv, currentState);
 //                    FREE(currentState);
 //                    currentState = 0;
 //                }

@@ -88,9 +88,9 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
 
     for (unsigned int i = 0; i < arpvptrdynarray_size(vertices); i++)
     {
-        ArPathVertex pv = *arpvptrdynarray_i(vertices, i);
+        ArPathVertex *pv = arpvptrdynarray_i(vertices, i);
 
-        Pnt3D pos = pv.worldHitPoint->worldspace_point;
+        Pnt3D pos = pv->worldHitPoint->worldspace_point;
 
         for(uint32_t j = 0; j < 3; j++)
         {
@@ -120,7 +120,7 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
 
     for(size_t i=0; i < arpvptrdynarray_size(vertices); i++)
     {
-        Pnt3D  pos  = (*arpvptrdynarray_i(vertices, i)).worldHitPoint->worldspace_point;
+        Pnt3D  pos  = (arpvptrdynarray_i(vertices, i))->worldHitPoint->worldspace_point;
 
         Pnt3D temp = [self GetCellIndex: pos];
 
@@ -211,14 +211,14 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
 
                 for(uint32_t j = 0; j < ariholderdynarray_size(&indexes); j++)
                 {
-                    ArPathVertex particle = *arpvptrdynarray_i(vertices, ariholderdynarray_i(&indexes, j).index);
+                    ArPathVertex *particle = arpvptrdynarray_i(vertices, ariholderdynarray_i(&indexes, j).index);
 
                     Vec3D distVec;
-                    vec3d_pp_sub_v(&particle.worldHitPoint->worldspace_point, &position, &distVec);
+                    vec3d_pp_sub_v(&particle->worldHitPoint->worldspace_point, &position, &distVec);
 
                     int areWavelengthDependent = arwavelength_ww_equal_ranged(gv,
                                                                                &currentState->outgoingWavelength,
-                                                                              &particle.outgoingWavelength);
+                                                                              &particle->outgoingWavelength);
 
                     if(areWavelengthDependent == -1)
                         continue;
@@ -233,7 +233,7 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
 
                     if(distSqr <= self->radiusSQR)
                     {
-                        [self ProcessContribution: currentState : &particle : contribution : sgc : gv : areWavelengthDependent];
+                        [self ProcessContribution: currentState : particle : contribution : sgc : gv : areWavelengthDependent];
                     }
                 }
             }

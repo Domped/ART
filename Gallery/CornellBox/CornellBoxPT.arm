@@ -3,7 +3,7 @@
 #endif
 
 
-#define MODE arpathtracermode_direction_sampling
+#define MODE arpathtracermode_light_sampling
 
 ArObj whiteReflectance(ART_GV * art_gv) {
     return
