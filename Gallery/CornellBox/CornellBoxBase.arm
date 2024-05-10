@@ -1,10 +1,10 @@
 #ifndef SAMPLES
-    #define SAMPLES 15
+    #define SAMPLES 13000
 #endif
 
 
-#define MODE arpathtracermode_light_sampling
-//#define MODE arpathtracermode_mis
+//#define MODE arpathtracermode_direction_sampling
+#define MODE arpathtracermode_mis
 
 ArObj whiteReflectance(ART_GV * art_gv) {
     return 
@@ -306,9 +306,9 @@ ARM_MAIN_FUNCTION(CornellBoxBase)
                 type:        arlightsourcetype_area
             ],
 
-            [ STOCHASTIC_BACKWARDS_PIXEL_SAMPLER
+            [ STOCHASTIC_PIXEL_SAMPLER
                 sampleProvider:
-                    [LIGHTTRACER
+                    [PATHTRACER
                         rayCaster:        STANDARD_RAYCASTER
                         maximalRecursion: 8
                         ]

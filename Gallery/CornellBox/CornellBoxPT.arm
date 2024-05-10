@@ -1,9 +1,9 @@
 #ifndef SAMPLES
-    #define SAMPLES 345
+    #define SAMPLES 6000
 #endif
 
 
-#define MODE arpathtracermode_light_sampling
+#define MODE arpathtracermode_direction_sampling
 
 ArObj whiteReflectance(ART_GV * art_gv) {
     return

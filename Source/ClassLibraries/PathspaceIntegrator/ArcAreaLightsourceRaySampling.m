@@ -174,22 +174,22 @@ ART_NO_MODULE_SHUTDOWN_FUNCTION_NECESSARY
 
         if(illuminationProbability)
         {
-//            double pdf =
-//                  patch[i].percentOfLightsourceRadiantPower
-//                / patch[i].area;
-//
-//            arpdfvalue_dd_init_p(
-//                pdf,
-//                pdf,
-//                illuminationProbability
-//              );
-//
+            double pdf =
+                  patch[i].percentOfLightsourceRadiantPower
+                / patch[i].area;
+
+            arpdfvalue_dd_init_p(
+                pdf,
+                pdf,
+                illuminationProbability
+              );
+
 //            illuminationProbability;
 
 
             double directPDF = (1.f / area) * M_SQR(dist) / ARDIRECTIONCOSINE_COSINE(*sampledDirection);
 
-            arpdfvalue_d_init_p(directPDF, illuminationProbability);
+//            arpdfvalue_d_init_p(directPDF, illuminationProbability);
         }
         
         if(emissionProbability)
