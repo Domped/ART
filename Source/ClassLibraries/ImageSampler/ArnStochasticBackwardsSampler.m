@@ -371,7 +371,7 @@ typedef struct ArPixelID {
 
 //            vmNormalization = 0;
 //            VMweight = 0;
-            VCweight = 0;
+//            VCweight = 0;
 
             ArVCMGlobalValues vcmGlobalValues;
             vcmGlobalValues.vmNormalization = vmNormalization;
@@ -548,12 +548,12 @@ typedef struct ArPixelID {
                 pv->cameraLightSample = 0;
             }
 
-//            [hashgrid Reserve:(XC(imageSize) * YC(imageSize))];
-//            [hashgrid BuildHashgrid:&pathVertexArray :radius];
-//
-//            hashgrid->vmNormalization = vmNormalization;
-//            hashgrid->VMweight = VMweight;
-//            hashgrid->VCweight = VCweight;
+            [hashgrid Reserve:(XC(imageSize) * YC(imageSize))];
+            [hashgrid BuildHashgrid:&pathVertexArray :radius];
+
+            hashgrid->vmNormalization = vmNormalization;
+            hashgrid->VMweight = VMweight;
+            hashgrid->VCweight = VCweight;
 
             /* *
              *

@@ -994,10 +994,10 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
         & cameraPDF
         );
 
-//    arpdfvalue_p_reverse_concat_p(
-//            & wavelengthPDF,
-//            & reverseCameraPDF
-//    );
+    arpdfvalue_p_reverse_concat_p(
+            & wavelengthPDF,
+            & reverseCameraPDF
+    );
 
     *pdf = reverseCameraPDF;
 
@@ -1145,10 +1145,10 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
             }
 
             double misWeight = 1.f / (wLight + 1.f);
-            if(pArVcmGlobalValues->VCweight == 0 && pArVcmGlobalValues->VMweight == 0)
-            {
-                misWeight = 1;
-            }
+//            if(pArVcmGlobalValues->VCweight == 0 && pArVcmGlobalValues->VMweight == 0)
+//            {
+//                misWeight = 1;
+//            }
 
 //            misWeight = 1;
             ArSpectralSample sample = SPS4(currentState->throughput);
@@ -1831,32 +1831,32 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
 
 
 
-//        ArLightAlphaSample* vmContribution = arlightalphasample_alloc(art_gv);
-//        arlightsample_d_init_unpolarised_l(art_gv, 0.0, vmContribution->light);
-//
-//        if([hashgrid Process: currentState : intersection->worldspace_point : lightPathsList : vmContribution : &sgc : art_gv])
-//        {
-//
-////            if(arlightsample_l_max(art_gv, vmContribution->light) > 0)
-////            {
-////                NSLog(@"%f", arlightsample_l_max(art_gv, vmContribution->light));
-////
-////            }
-//            double hwssWeight = [self mis : &currentState->pathPDF];
-////            arlightsample_l_mul_l(art_gv, lightSample, vmContribution->light);
-//            arlightsample_d_mul_l(art_gv, currentState->throughput * hashgrid->vmNormalization * hwssWeight, vmContribution->light);
-//            arlightsample_d_div_l(art_gv, ARPDFVALUE_MAIN(currentState->pathPDF), vmContribution->light);
-////
-//            if(currentState->totalPathLength > 0)
+        ArLightAlphaSample* vmContribution = arlightalphasample_alloc(art_gv);
+        arlightsample_d_init_unpolarised_l(art_gv, 0.0, vmContribution->light);
+
+        if([hashgrid Process: currentState : intersection->worldspace_point : lightPathsList : vmContribution : &sgc : art_gv])
+        {
+
+//            if(arlightsample_l_max(art_gv, vmContribution->light) > 0)
 //            {
-//                arlightsample_a_mul_l(art_gv, currentState->attenuationSample, vmContribution->light);
+//                NSLog(@"%f", arlightsample_l_max(art_gv, vmContribution->light));
+//
 //            }
-//            arlightsample_l_add_l(art_gv, vmContribution->light, lightalpha_r->light);
-//        }
+            double hwssWeight = [self mis : &currentState->pathPDF];
+//            arlightsample_l_mul_l(art_gv, lightSample, vmContribution->light);
+            arlightsample_d_mul_l(art_gv, currentState->throughput * hashgrid->vmNormalization * hwssWeight, vmContribution->light);
+            arlightsample_d_div_l(art_gv, ARPDFVALUE_MAIN(currentState->pathPDF), vmContribution->light);
 //
-//        arlightalphasample_free(art_gv, vmContribution);
-//
-//
+            if(currentState->totalPathLength > 0)
+            {
+                arlightsample_a_mul_l(art_gv, currentState->attenuationSample, vmContribution->light);
+            }
+            arlightsample_l_add_l(art_gv, vmContribution->light, lightalpha_r->light);
+        }
+
+        arlightalphasample_free(art_gv, vmContribution);
+
+
 
         currentState->incomingWavelength = currentState->outgoingWavelength;
 
