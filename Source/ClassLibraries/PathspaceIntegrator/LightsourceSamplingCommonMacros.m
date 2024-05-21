@@ -30,18 +30,18 @@
         double retPDF = 1;
     
         double r1, r2;
-    r1 = (float)rand() / RAND_MAX;
-    r2 = (float)rand() / RAND_MAX;
-    
-    float z = sqrt(r2);
-    float x = cos(2 * M_PI * r1) * sqrt(1 - r2);
-    float y = sin(2 * M_PI * r1) * sqrt(1 - r2);
+        r1 = (double)rand() / RAND_MAX;
+        r2 = (double)rand() / RAND_MAX;
+
+        double z = sqrt(r2);
+        double x = cos(2 * M_PI * r1) * sqrt(1 - r2);
+        double y = sin(2 * M_PI * r1) * sqrt(1 - r2);
     
     
     (_localVec) = VEC3D(x, y, z);
+    z = fmax(z, 1e-6f);
+
     vec3d_v_trafo3d_v( & (_localVec), & (local2world), (_worldVec) );
-    
-    
     *cosine = z;
     
     return z / M_PI;

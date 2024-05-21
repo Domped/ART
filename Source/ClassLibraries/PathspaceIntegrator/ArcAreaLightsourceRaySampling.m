@@ -156,11 +156,15 @@ ART_NO_MODULE_SHUTDOWN_FUNCTION_NECESSARY
             & ARDIRECTIONCOSINE_VECTOR(*sampledDirection)
             );
         
-        ARDIRECTIONCOSINE_COSINE(*sampledDirection) =
-            fabs(vec3d_vv_dot(
+        ARDIRECTIONCOSINE_COSINE(*sampledDirection) = vec3d_vv_dot(
               & ARDIRECTIONCOSINE_VECTOR(*sampledDirection),
               & ARCSURFACEPOINT_WORLDSPACE_NORMAL(*sampledPoint)
-            ));
+            );
+
+        if(ARDIRECTIONCOSINE_COSINE(*sampledDirection) < 1e-6f)
+        {
+            return NO;
+        }
 
         unsigned int ins = 0;
         double allArea = 0;
@@ -178,18 +182,18 @@ ART_NO_MODULE_SHUTDOWN_FUNCTION_NECESSARY
                   patch[i].percentOfLightsourceRadiantPower
                 / patch[i].area;
 
-            arpdfvalue_dd_init_p(
-                pdf,
-                pdf,
-                illuminationProbability
-              );
+//            arpdfvalue_dd_init_p(
+//                pdf,
+//                pdf,
+//                illuminationProbability
+//              );
 
 //            illuminationProbability;
 
 
             double directPDF = (1.f / area) * M_SQR(dist) / ARDIRECTIONCOSINE_COSINE(*sampledDirection);
 
-//            arpdfvalue_d_init_p(directPDF, illuminationProbability);
+            arpdfvalue_d_init_p(directPDF, illuminationProbability);
         }
         
         if(emissionProbability)
@@ -299,17 +303,26 @@ ART_NO_MODULE_SHUTDOWN_FUNCTION_NECESSARY
 
 //    Vec3D hemisphereDirection = vec3d_hem_dir(randomSeedX, randomSeedY);
 
+    double normalSide = [RANDOM_GENERATOR valueFromNewSequence];
+
+    Vec3D pathNormal = ARCSURFACEPOINT_WORLDSPACE_NORMAL(*generatedPoint);
+
+//    if(normalSide > 0.5)
+//    {
+//        vec3d_v_negate_v(&pathNormal, &pathNormal);
+//    }
+
     //TODO: TEMP
     Vec3D tmp = VEC3D_X_UNIT;
     
     double cosine;
     double cosinePDF = [ LightsourceSamplingCommonMacros sampleCosineWeighedHemisphere
         :   &tmp
-        :   ARCSURFACEPOINT_WORLDSPACE_NORMAL(*generatedPoint)
+        :   pathNormal
         :   &cosine];
 
     ARDIRECTIONCOSINE_VECTOR(*generatedDirection) = tmp;
-    ARDIRECTIONCOSINE_COSINE(*generatedDirection) = cosine;
+    ARDIRECTIONCOSINE_COSINE(*generatedDirection) =cosine;
 
     unsigned int ins = 0;
     double allArea = 0;
@@ -335,7 +348,7 @@ ART_NO_MODULE_SHUTDOWN_FUNCTION_NECESSARY
     arpdfvalue_d_init_p(cosinePDF * (1.0f / allArea), pointPDF);
     //    arpdfvalue_d_mul_p(cosinePDF, pointPDF);
     
-    arpdfvalue_d_init_p(1.f/allArea, emissionProbability);
+    arpdfvalue_d_init_p( (1.f/allArea), emissionProbability);
 //    ArDirectionCosine negatedDirection;
 //
 //    vec3d_v_negate_v(
@@ -423,10 +436,9 @@ ART_NO_MODULE_SHUTDOWN_FUNCTION_NECESSARY
 {
     (void) illuminatedPoint;
     (void) wavelength;
-    
+
     if(illuminationProbability)
     {
-
         arpdfvalue_d_init_p(1.0f / area, illuminationProbability);
 //        double pdf =
 //              patch[*samplingRegion].percentOfLightsourceRadiantPower
@@ -446,7 +458,7 @@ ART_NO_MODULE_SHUTDOWN_FUNCTION_NECESSARY
             & ARCSURFACEPOINT_WORLDSPACE_NORMAL(lightSamplePoint)
         ));
 
-        arpdfvalue_d_mul_p(cos * (1.f / M_PI) * (1.f / area), emissionProbability);
+        arpdfvalue_d_init_p(cos * (1.f / M_PI) * (1.f / area), emissionProbability);
     }
 }
 

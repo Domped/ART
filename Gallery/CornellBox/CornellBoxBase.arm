@@ -1,5 +1,5 @@
 #ifndef SAMPLES
-    #define SAMPLES 13000
+    #define SAMPLES 100
 #endif
 
 
@@ -306,9 +306,9 @@ ARM_MAIN_FUNCTION(CornellBoxBase)
                 type:        arlightsourcetype_area
             ],
 
-            [ STOCHASTIC_PIXEL_SAMPLER
+            [ STOCHASTIC_BACKWARDS_PIXEL_SAMPLER
                 sampleProvider:
-                    [PATHTRACER
+                    [LIGHTTRACER
                         rayCaster:        STANDARD_RAYCASTER
                         maximalRecursion: 8
                         ]

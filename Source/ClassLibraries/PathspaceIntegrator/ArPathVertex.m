@@ -50,7 +50,7 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(PathVertex,pv,pv,0);
 
 void arpv_free_pv(const ART_GV *art_gv, ArPathVertex *pv)
 {
-    if(pv->lightSample && arlightalphasample_l_valid(art_gv, pv->lightSample))
+    if(pv->lightSample)
     {
         arlightalphasample_free(art_gv, pv->lightSample);
         pv->lightSample = 0;
@@ -62,7 +62,7 @@ void arpv_free_pv(const ART_GV *art_gv, ArPathVertex *pv)
 //        pv->cameraLightSample = 0;
 //    }
 
-    if(pv->attenuationSample && pv->totalPathLength)
+    if(pv->attenuationSample && pv->totalPathLength > 0)
     {
         arattenuationsample_free(art_gv, pv->attenuationSample);
         pv->attenuationSample = 0;

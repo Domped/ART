@@ -27,23 +27,39 @@
   <component name="CMakeSettings">
     <configurations>
       <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" TOOLCHAIN_NAME="Default" GENERATION_OPTIONS="-DCMAKE_INSTALL_PREFIX=~ -DCMAKE_BUILD_TYPE=Debug" BUILD_OPTIONS="-j 32" NO_GENERATOR="true" />
+      <configuration PROFILE_NAME="Release" ENABLED="true" CONFIG_NAME="Release" TOOLCHAIN_NAME="Default" GENERATION_OPTIONS="-DCMAKE_INSTALL_PREFIX=~ -DCMAKE_BUILD_TYPE=Release" BUILD_OPTIONS="-j 32" NO_GENERATOR="true" />
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9d6451dd-56f5-4571-bf94-32a69572af15" name="Changes" comment="new gitignore; hwss;">
+    <list default="true" id="9d6451dd-56f5-4571-bf94-32a69572af15" name="Changes" comment="step2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.artcsp" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.artcsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.exr" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.exr" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxBase.arm" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxBase.arm" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxBase.artcsp" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxBase.artcsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxBase.exr" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxBase.exr" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxBaseLT.exr" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxBasePT.exr" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxBasePT.exr" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxPT.arm" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxPT.arm" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxPT.artcsp" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxPT.artcsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxPT.exr" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxPT.exr" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnImageSampler.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnImageSampler.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxPTnoise.exr" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxPTwhite.exr" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxPTwhite2.exr" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox_mono_VM.exr" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox_only_hero.exr" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox_red.exr" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/Camera/ArnCamera.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/Camera/ArnCamera.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnImageSamplerBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnImageSamplerBase.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/MiscellaneousClasses/ArcHashgrid.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/MiscellaneousClasses/ArcHashgrid.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/MiscellaneousClasses/ArcIntersection.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/MiscellaneousClasses/ArcIntersection.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArPathVertex.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArPathVertex.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArcAreaLightsourceRaySampling.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArcAreaLightsourceRaySampling.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnLightTracer.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnLightTracer.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnLightsourceCollectionSampling.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnLightsourceCollectionSampling.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnPathTracer.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnPathTracer.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/LightsourceSamplingCommonMacros.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/LightsourceSamplingCommonMacros.m" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,12 +114,12 @@
   }
 }</component>
   <component name="RunManager" selected="CMake Application.artist">
-    <configuration name="AdvancedRenderingToolkit" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="AdvancedRenderingToolkit" CONFIG_NAME="Debug">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+    <configuration name="AdvancedRenderingToolkit" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="AdvancedRenderingToolkit" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -128,7 +144,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="artist" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxBase.arm -j 32" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="artist" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="artist">
+    <configuration name="artist" type="CMakeRunConfiguration" factoryName="Application" singleton="false" PROGRAM_PARAMS="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxBase.arm -j 10" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="artist" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="artist">
       <envs>
         <env name="LD_LIBRARY_PATH" value="$PROJECT_DIR$/cmake-build-debug/lib" />
       </envs>
@@ -195,6 +211,45 @@
       <workItem from="1714300536634" duration="9138000" />
       <workItem from="1714317036623" duration="3557000" />
       <workItem from="1714321174107" duration="8000" />
+      <workItem from="1715421100343" duration="11141000" />
+      <workItem from="1715461446785" duration="2679000" />
+      <workItem from="1715465253280" duration="596000" />
+      <workItem from="1715503703135" duration="2464000" />
+      <workItem from="1715513159536" duration="5438000" />
+      <workItem from="1715521648784" duration="9038000" />
+      <workItem from="1715541375044" duration="475000" />
+      <workItem from="1715595971515" duration="7810000" />
+      <workItem from="1715616757529" duration="257000" />
+      <workItem from="1715617259589" duration="978000" />
+      <workItem from="1715619727121" duration="1396000" />
+      <workItem from="1715621860023" duration="1736000" />
+      <workItem from="1715625236676" duration="48000" />
+      <workItem from="1715634164270" duration="1094000" />
+      <workItem from="1715635269007" duration="189000" />
+      <workItem from="1715637937925" duration="276000" />
+      <workItem from="1716048864810" duration="1428000" />
+      <workItem from="1716050333548" duration="323000" />
+      <workItem from="1716050777383" duration="263000" />
+      <workItem from="1716051138082" duration="2728000" />
+      <workItem from="1716054985192" duration="535000" />
+      <workItem from="1716056965597" duration="398000" />
+      <workItem from="1716065703896" duration="2748000" />
+      <workItem from="1716113078868" duration="4682000" />
+      <workItem from="1716118529275" duration="3330000" />
+      <workItem from="1716119911213" duration="2424000" />
+      <workItem from="1716122598101" duration="901000" />
+      <workItem from="1716127830748" duration="332000" />
+      <workItem from="1716128532981" duration="3427000" />
+      <workItem from="1716204419392" duration="7258000" />
+      <workItem from="1716216958363" duration="2225000" />
+      <workItem from="1716221205895" duration="660000" />
+      <workItem from="1716228554110" duration="2949000" />
+      <workItem from="1716234600712" duration="3243000" />
+      <workItem from="1716283825278" duration="2300000" />
+      <workItem from="1716315127177" duration="28000" />
+      <workItem from="1716315165557" duration="4781000" />
+      <workItem from="1716328051828" duration="588000" />
+      <workItem from="1716328647988" duration="1777000" />
     </task>
     <task id="LOCAL-00001" summary="new gitignore; hwss;">
       <option name="closed" value="true" />
@@ -204,7 +259,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714064131784</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="step2">
+      <option name="closed" value="true" />
+      <created>1715345960366</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1715345960366</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -217,6 +280,18 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="new gitignore; hwss;" />
-    <option name="LAST_COMMIT_MESSAGE" value="new gitignore; hwss;" />
+    <MESSAGE value="step2" />
+    <option name="LAST_COMMIT_MESSAGE" value="step2" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Source/Foundation/LightAndAttenuation/ArPlainLightSample.c</url>
+          <line>207</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

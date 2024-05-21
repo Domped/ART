@@ -584,6 +584,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnPathTracer)
     ])
         return NO;
 
+    NSLog(@"ALLAH: %d", LIGHTSOURCE_COLLECTION.numberOfLights);
     // invert the direction to point towards the light source, as opposed to away from it
     ArDirectionCosine connectionDirection;
     vec3d_v_negate_v(
@@ -935,7 +936,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnPathTracer)
     int lastNonzeroIndex = -1;
     nonzeroContributions[0] = 0;
 
-    mode = arpathtracermode_mis; // start with direction sampling
+    mode = arpathtracermode_light_sampling; // start with direction sampling
 
     for(unsigned int pathLength = 0; pathLength < maximalRecursionLevel; ++pathLength)
     {

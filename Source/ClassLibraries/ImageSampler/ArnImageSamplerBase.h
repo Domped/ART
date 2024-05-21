@@ -75,6 +75,8 @@ ART_MODULE_INTERFACE(ArnImageSamplerBase)
     pthread_cond_t                        writeThreadCond;
     int                                 * x_start;
     int                                 * x_end;
+
+    int                                   DEBUG_PIXEL_COUNT;
 }
 
 - (id) init

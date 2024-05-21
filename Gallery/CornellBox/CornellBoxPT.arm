@@ -1,5 +1,5 @@
 #ifndef SAMPLES
-    #define SAMPLES 6000
+    #define SAMPLES 2000
 #endif
 
 
@@ -300,7 +300,7 @@ ARM_MAIN_FUNCTION(CornellBoxPT)
         UNION(
             createBox(art_gv),
            // createShortBlock(art_gv),
-           createTallBlock(art_gv),
+           //createTallBlock(art_gv),
 	    createLight(art_gv),
             UNION_END
             );

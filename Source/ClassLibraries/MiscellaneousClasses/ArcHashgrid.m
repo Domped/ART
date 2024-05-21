@@ -61,7 +61,7 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
         {
             for(uint32_t z= 0; z < CELL_SIZE; z++ )
             {
-//                ariholderdynarray_free(&cells[x][y][z]);
+                ariholderdynarray_free(&cells[x][y][z]);
             }
         }
     }
@@ -262,6 +262,8 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
 
     ArPDFValue lightRotatedPDF;
 
+//    if(referenceIndex != 0)
+//        NSLog(@"%d", referenceIndex);
 
     if(particle->totalPathLength > 0)
     {

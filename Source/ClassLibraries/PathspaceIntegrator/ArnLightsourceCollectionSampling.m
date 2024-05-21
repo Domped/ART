@@ -173,13 +173,13 @@ ART_NO_MODULE_SHUTDOWN_FUNCTION_NECESSARY
 //
         if(illuminationProbability)
             arpdfvalue_d_mul_p(
-                1./ numberOfLights,
+                1.f/ (float) numberOfLights,
                 illuminationProbability
               );
 
         if(emissionProbability)
             arpdfvalue_d_mul_p(
-                    1./ numberOfLights,
+                    1.f/ (float) numberOfLights,
                 emissionProbability
               );
     }

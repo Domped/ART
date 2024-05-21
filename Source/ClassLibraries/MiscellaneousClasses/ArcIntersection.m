@@ -421,7 +421,7 @@ ART_NO_MODULE_SHUTDOWN_FUNCTION_NECESSARY
 
     vec3d_v_trafo3d_v(&worldFlipped, & worldToLocal, &localIncoming);
 
-    return fabs(ZC(localIncoming));
+    return fabs(ZC(localIncoming)) < 1e-6f ? -1.0 : fabs(ZC(localIncoming));
 }
 
 @end

@@ -441,7 +441,35 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnCamera)
     
     yscale = 1.0f / tan(HFOV * 0.5f);
     xscale = yscale / ratio;
-    
+
+    Vec3D forward, forwardNegated;
+    vec3d_v_norm_v(&ray.vector, &forward);
+
+    vec3d_v_negate_v(&forward, &forwardNegated);
+    Vec3D up;
+    vec3d_vv_cross_v(&VEC3D(3.73896e-4f, 0.998529f, -0.0542148f), &forwardNegated, &up);
+    vec3d_norm_v(&up);
+
+    Vec3D left;
+    vec3d_vv_cross_v(&forwardNegated, &up, &left);
+
+    vec3d_norm_v(&ray.vector);
+
+    Vec3D position = VEC3D(PNT3D_I(ray.point, 0), PNT3D_I(ray.point, 1), PNT3D_I(ray.point, 2));
+
+    Vec3D pos = VEC3D(
+            vec3d_vv_dot(&up, &position),
+            vec3d_vv_dot(&left, &position),
+            vec3d_vv_dot(&forwardNegated, &position)
+    );
+
+
+    Mat4 worldToCamera = MAT4(
+            VEC3D_I(up, 0), VEC3D_I(up, 0), VEC3D_I(up, 0), -VEC3D_I(pos, 0),
+            VEC3D_I(left, 1), VEC3D_I(left, 1), VEC3D_I(left, 1), -VEC3D_I(pos, 1),
+            VEC3D_I(forwardNegated, 2), VEC3D_I(forwardNegated, 2), VEC3D_I(forwardNegated, 2), -VEC3D_I(pos, 2),
+            0, 0, 0, 1
+    );
     
     WorldToRaster = TRAFO4D(619.787, -13.8793, -251.355, 1067.26, 1.5318, -631.009, -222.111, 1056.76, 0, 0, 0, 0, 0.00688625, -0.0542161, -0.998506, 4.13149);
     
@@ -541,15 +569,10 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnCamera)
         : (const Vec3D *) normal
         : (double*) cameraPDFA
 {
-    
-
-    
     Vec3D cameraNormal;
     vec3d_v_norm_v(&ray.vector, &cameraNormal);
     
-    double cosine = fabs(vec3d_vv_dot(&cameraNormal, outDirection));
-
-    
+    double cosine =vec3d_vv_dot(&cameraNormal, outDirection);
     double imgToCameraDist = (planeDist) / cosine;
     double imgSolidAngle = (imgToCameraDist * imgToCameraDist) / cosine;
 
@@ -559,6 +582,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnCamera)
         *cameraPDFA = imgSolidAngle;
         return 0;
     }
+
     Vec3D directionDistance;
     vec3d_pp_sub_v(hitPoint, &ray.point, &directionDistance);
     double dist = vec3d_v_len(&directionDistance);

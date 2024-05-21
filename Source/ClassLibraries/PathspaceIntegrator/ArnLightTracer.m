@@ -425,6 +425,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
              ] )
     {
 
+
         // ignore emission from regions that are marked as being disregarded in direction sampling
 //        if( [ self isEmissionDisregarded
 //                :   specularOnlyPath
@@ -432,16 +433,20 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
 //                : & lightSamplingRegion
 //                ])
 //            return NO;
-    
+
+        // calculate the MIS weight
+
+
+
         BOOL weighed = NO;
         ArDirectionCosine lightDirection;
         vec3d_v_negate_v(
                 & ARCINTERSECTION_WORLDSPACE_VECTOR(hitPoint),
                 & ARDIRECTIONCOSINE_VECTOR(lightDirection)
         );
-        // TODO: check that this is always 1.0 for infinite sphere
-        ARDIRECTIONCOSINE_COSINE(lightDirection) =
-                ARCINTERSECTION_WORLDSPACE_COSINE(hitPoint);
+
+        ARDIRECTIONCOSINE_COSINE(lightDirection) =fabs(
+                ARCINTERSECTION_WORLDSPACE_COSINE(hitPoint));
 
         ArPDFValue directPDFA, emissionPDW;
 
@@ -456,6 +461,9 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
                 : &emissionPDW
         ])
         {
+
+            if(ARPDFVALUE_MAIN(emissionPDW) < 0)
+                return NO;
 
             double wCamera = ARPDFVALUE_MAIN(directPDFA) * currentState->dVCM
                     + ARPDFVALUE_MAIN(emissionPDW) * currentState->dVC;
@@ -670,35 +678,34 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
         : (      ArAttenuationSample *)             attenuation
         : (      double *)                          cosTheta
         : (      ArPathVertex *)                    currentState
-        : (     ArVCMGlobalValues *)                vcmGlobalValues
-{
+        : (     ArVCMGlobalValues *)                vcmGlobalValues {
 
     ASSERT_ALLOCATED_ATTENUATION_SAMPLE(attenuation);
 
     ArDirectionCosine sampledDirection;
     ArPDFValue reversePDF;
-    if( ! [ currentPoint sampleScattering
-            :   arpathdirection_from_eye
-            : & sgc
-            :   wavelength
-            :   newWavelength
-            : & sampledDirection
-            :   volumeMaterial
-            :   samplePDF
-            : & reversePDF
-            :   attenuation
-    ] )
+    if (![currentPoint sampleScattering
+            :arpathdirection_from_eye
+            :&sgc
+            :wavelength
+            :newWavelength
+            :&sampledDirection
+            :volumeMaterial
+            :samplePDF
+            :&reversePDF
+            :attenuation
+    ])
         return NO;
 
-    double cos_factor;
-    if (! ARPDFVALUE_IS_INFINITE(*samplePDF))
-    {
-        cos_factor = M_ABS( ARDIRECTIONCOSINE_COSINE(sampledDirection) );
-    }
-    else
-    {
-        cos_factor = 1.0;
-    }
+    double cos_factor = ARDIRECTIONCOSINE_COSINE(sampledDirection);
+//    if (! ARPDFVALUE_IS_INFINITE(*samplePDF))
+//    {
+//        cos_factor = M_ABS( ARDIRECTIONCOSINE_COSINE(sampledDirection) );
+//    }
+//    else
+//    {
+//        cos_factor = 1.0;
+//    }
 
     *cosTheta = cos_factor;
 
@@ -945,11 +952,12 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
             & ARDIRECTIONCOSINE_VECTOR(directionToCamera),
             normal
     );
+
     
     ArWavelength newWavelength;
     ArPDFValue wavelengthPDF;
     if( ! [ currentPoint sampleWavelengthShift
-            :   arpathdirection_from_eye
+            :   arpathdirection_from_light
             : & sgc
             :   incomingWavelength
             : & newWavelength
@@ -985,6 +993,11 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
         & wavelengthPDF,
         & cameraPDF
         );
+
+//    arpdfvalue_p_reverse_concat_p(
+//            & wavelengthPDF,
+//            & reverseCameraPDF
+//    );
 
     *pdf = reverseCameraPDF;
 
@@ -1061,7 +1074,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
 
     double distanceT;
     if ([self isOccluded
-            : intersection
+             : intersection
                 : &cameraDirection
                 : &cameraDirectionVector.point
                 : &distanceT] == NO)
@@ -1101,8 +1114,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
 
             [camera getCameraRay:&cameraRay];
 
-            vec3d_pp_sub_v(&worldHitPoint->worldspace_point,
-                           &cameraRay.point,
+            vec3d_pp_sub_v(&cameraRay.point, &worldHitPoint->worldspace_point,
                            &directionFromCamera);
 
             vec3d_norm_v(&directionFromCamera);
@@ -1118,15 +1130,6 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
             ];
 
             double div = 512 * 512;
-
-//            double wLightLeft = (cameraPDFA / div);
-//            arpdfvalue_d_mul_p(currentState->dVCM + currentState->dVC, &cameraReversePDF);
-//
-//            ArPDFValue dVCM;
-//            arpdfvalue_d_init_p(currentState->dVCM, &dVCM);
-
-//            arpdfvalue_p_add_p(&dVCM, &cameraReversePDF);
-
             double wLight = (cameraPDFA / div) *
                     ( pArVcmGlobalValues->VMweight + currentState->dVCM + currentState->dVC * ARPDFVALUE_MAIN(cameraReversePDF));
 //            arpdfvalue_d_mul_p(wLightLeft, &cameraReversePDF);
@@ -1262,6 +1265,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
         : (ArAttenuationSample *) connectionSample
         : (ArVCMGlobalValues *) pArVcmGlobalValues
 {
+
     float lightCount = LIGHTSOURCE_COLLECTION.numberOfLights;
     float lightPickProbability = 1.0f / lightCount;
 
@@ -1289,7 +1293,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
 
     double distanceT;
     if ([self isOccluded
-                : eyeState->worldHitPoint
+            : eyeState->worldHitPoint
                 : &directionToLight
                 : &lightSourcePoint->worldspace_point
                 : &distanceT] == YES)
@@ -1322,7 +1326,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
 
 
     float wLight = ARPDFVALUE_MAIN(eyeForwardPDF_W)
-            / (lightPickProbability * ARPDFVALUE_MAIN(directPDF));
+                   / (lightPickProbability * ARPDFVALUE_MAIN(directPDF));
 
 
 //    arpdfvalue_d_mul_p(toLightcosine, &emissionPDF);
@@ -1332,8 +1336,8 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
 //    arpdfvalue_pp_div_p(&emissionPDF, &directPDF, &ratioED);
 
     double wCamera = ( ARPDFVALUE_MAIN(emissionPDF) * toLightcosine /
-            (lightDirection.cosine * ARPDFVALUE_MAIN(directPDF)) ) *
-            ( pArVcmGlobalValues->VMweight + eyeState->dVCM + eyeState->dVC * ARPDFVALUE_MAIN(eyeReversePDF_W));
+                       (lightDirection.cosine * ARPDFVALUE_MAIN(directPDF)) ) *
+                     ( pArVcmGlobalValues->VMweight + eyeState->dVCM + eyeState->dVC * ARPDFVALUE_MAIN(eyeReversePDF_W));
 
 
     double misWeight = 1.0f / (1.0 + wLight + wCamera);
@@ -1351,19 +1355,11 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
 
     arlightsample_d_mul_l(art_gv, contribLeft * hwssWeight, temporaryContribution);
 
-    arlightsample_d_mul_l(art_gv,
-                          eyeState->throughput,
-                          temporaryContribution);
-
-    arlightsample_d_div_l(art_gv, ARPDFVALUE_MAIN(eyeState->pathPDF), temporaryContribution);
-
-    arlightsample_l_add_l(art_gv, temporaryContribution, lightSample);
-
-
+    arlightsample_l_init_l(art_gv, temporaryContribution, lightSample);
 
 //    arlightsample_free(art_gv, temporaryContribution);
 
-    [SURFACEPOINT_FREELIST releaseInstance: lightSourcePoint];
+    RELEASE_OBJECT(lightSourcePoint);
 
     return YES;
 }
@@ -1437,7 +1433,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
             : eyeState->worldHitPoint
                 : &direction
                 : &lightVertex->worldHitPoint->worldspace_point
-            : &distanceT] == YES)
+            : &distanceT])
     {
         return NO;
     }
@@ -1531,7 +1527,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
 //    NSLog(@"%b", valid);
 //    NSLog(@"%f", arattenuationsample_a_max(art_gv, cvtempSampleLight));
 
-    double geometryTerm = lightCosine * cameraCosine / dist2;
+    double geometryTerm = (lightCosine * cameraCosine) / dist2;
     if(geometryTerm < 0)
         return NO;
 
@@ -1549,10 +1545,6 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
 
 
     arattenuationsample_a_mul_a(art_gv, cvtempSample, cvtempSampleLight);
-    if(eyeState->totalPathLength > 0)
-    {
-        arattenuationsample_a_mul_a(art_gv, eyeState->attenuationSample, cvtempSampleLight);
-    }
 
     double hwssWeight = [self mis : &eyeState->pathPDF];
     double hwssWeightLight = [self mis : &lightVertex->pathPDF];
@@ -1576,7 +1568,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
 
     ArLightSample * emissionSample_temp = arlightsample_alloc(art_gv);
 
-    double emissionMisWeight;
+    double emissionMisWeight = 0;
     bool succ = [ self calculateEmissionContribution
             :currentState
             :   0
@@ -1600,12 +1592,10 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
             hwssWeight = 1;
         }
 
-        DEBUG_COUNT_RADIANCE++;
         if(currentState->totalPathLength > 0)
         {
             arlightsample_a_mul_l(art_gv, currentState->attenuationSample, emissionSample_temp);
-            arlightsample_d_mul_l(art_gv, (currentState->throughput) * emissionMisWeight * hwssWeight, emissionSample_temp);
-
+            arlightsample_d_mul_l(art_gv, (currentState->throughput / ARPDFVALUE_MAIN(currentState->pathPDF)) * emissionMisWeight * hwssWeight, emissionSample_temp);
             arlightsample_l_add_l(art_gv, emissionSample_temp, lightSample);
         }
         else
@@ -1636,7 +1626,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
 - (bool) traceRayPathTracing
         : (const Ray3D *)               cameraPixelRay
         : (ArNode <ArpCamera>  *)       camera
-        : (ArPathVertexptrDynArray *)      lightPathsList
+        : (ArPathVertexptrDynArray *)   lightPathsList
         : (const ArWavelength*)         wavelength
         : (ArPathVertex *)              currentState
         : (uint32_t* )                  pathEnds
@@ -1735,7 +1725,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
             currentState->dVC /= cosTheta;
             currentState->dVM /= cosTheta;
         }
-
+//
         if([self getDirectRadiance
                 : currentState
                 : originPoint
@@ -1745,18 +1735,29 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
         {
             break;
         }
+//
+//
+
 
         {
 
             [self directIllumination
                     : currentState
-                    : lightalpha_r->light
+                    : temporaryContribution
                     : temporaryMediaAttenuation
                     : pArVcmGlobalValues
             ];
 
+            arlightsample_d_mul_l(art_gv,
+                                  currentState->throughput,
+                                  temporaryContribution);
 
+            arlightsample_d_div_l(art_gv, ARPDFVALUE_MAIN(currentState->pathPDF), temporaryContribution);
+
+            arlightsample_l_add_l(art_gv, temporaryContribution, lightalpha_r->light);
         }
+
+
 
 
         uint32_t rangeX, rangeY;
@@ -1780,7 +1781,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
 //                continue;
 //            }
 
-            if(lightVertex->totalPathLength + 2 + pathLength + 1 > 10)
+            if(lightVertex->totalPathLength + pathLength + 1 > 10)
                 break;
 
             if([self connectVertices
@@ -1793,11 +1794,17 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
                 double weight = (currentState->throughput / ARPDFVALUE_MAIN(currentState->pathPDF))
                         * (lightVertex->throughput / ARPDFVALUE_MAIN(lightVertex->pathPDF));
 
+                if(pathLength > 0)
+                {
+                    arattenuationsample_a_mul_a(art_gv, currentState->attenuationSample, connectionSampleConnection);
+                }
 
                 if(lightVertex->totalPathLength > 0)
                 {
                     arattenuationsample_a_mul_a(art_gv, lightVertex->attenuationSample, connectionSampleConnection);
                 }
+
+
                 arattenuationsample_d_mul_a(art_gv,
                                           weight,
                                           connectionSampleConnection);
@@ -1821,35 +1828,35 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
 
             }
         }
-//
-//
-//
-        ArLightAlphaSample* vmContribution = arlightalphasample_alloc(art_gv);
-        arlightsample_d_init_unpolarised_l(art_gv, 0.0, vmContribution->light);
 
-        if([hashgrid Process: currentState : intersection->worldspace_point : lightPathsList : vmContribution : &sgc : art_gv])
-        {
 
-//            if(arlightsample_l_max(art_gv, vmContribution->light) > 0)
+
+//        ArLightAlphaSample* vmContribution = arlightalphasample_alloc(art_gv);
+//        arlightsample_d_init_unpolarised_l(art_gv, 0.0, vmContribution->light);
+//
+//        if([hashgrid Process: currentState : intersection->worldspace_point : lightPathsList : vmContribution : &sgc : art_gv])
+//        {
+//
+////            if(arlightsample_l_max(art_gv, vmContribution->light) > 0)
+////            {
+////                NSLog(@"%f", arlightsample_l_max(art_gv, vmContribution->light));
+////
+////            }
+//            double hwssWeight = [self mis : &currentState->pathPDF];
+////            arlightsample_l_mul_l(art_gv, lightSample, vmContribution->light);
+//            arlightsample_d_mul_l(art_gv, currentState->throughput * hashgrid->vmNormalization * hwssWeight, vmContribution->light);
+//            arlightsample_d_div_l(art_gv, ARPDFVALUE_MAIN(currentState->pathPDF), vmContribution->light);
+////
+//            if(currentState->totalPathLength > 0)
 //            {
-//                NSLog(@"%f", arlightsample_l_max(art_gv, vmContribution->light));
-//
+//                arlightsample_a_mul_l(art_gv, currentState->attenuationSample, vmContribution->light);
 //            }
-            double hwssWeight = [self mis : &currentState->pathPDF];
-//            arlightsample_l_mul_l(art_gv, lightSample, vmContribution->light);
-            arlightsample_d_mul_l(art_gv, currentState->throughput * hashgrid->vmNormalization * hwssWeight, vmContribution->light);
-            arlightsample_d_div_l(art_gv, ARPDFVALUE_MAIN(currentState->pathPDF), vmContribution->light);
+//            arlightsample_l_add_l(art_gv, vmContribution->light, lightalpha_r->light);
+//        }
 //
-            if(currentState->totalPathLength > 0)
-            {
-                arlightsample_a_mul_l(art_gv, currentState->attenuationSample, vmContribution->light);
-            }
-            arlightsample_l_add_l(art_gv, vmContribution->light, lightalpha_r->light);
-        }
-
-        arlightalphasample_free(art_gv, vmContribution);
-
-
+//        arlightalphasample_free(art_gv, vmContribution);
+//
+//
 
         currentState->incomingWavelength = currentState->outgoingWavelength;
 
@@ -1928,6 +1935,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
 {
     ASSERT_VALID_WAVELENGTH(wavelength);
     // initial ra
+    ArcIntersection * rayOriginIntersection = 0;
     ArcIntersection * intersection = 0; // outside of loop for easier early termination of loop
     ArcRayEndpoint * scatteringEvent = 0; // outside of loop for easier early termination of loop
     // initial volume
@@ -2032,7 +2040,23 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
 
         [ currentPoint prepareForUse: PHASE_INTERFACE_CACHE ];
 
-
+        ArSamplingRegion lightSamplingRegion;
+        ArLightSample *temporaryEmission = arlightsample_alloc(gv);
+        ArNode * emitter;
+        if( [ self getEmission
+                :   originPoint
+                :   intersection
+                :   wavelength
+                : & emitter
+                : & lightSamplingRegion
+                :   temporaryEmission
+        ] )
+        {
+            shouldBreak = true;
+            arlightsample_free(gv, temporaryEmission);
+            break;
+        }
+        arlightsample_free(gv, temporaryEmission);
 
         ArSpectralSample mediumReflectivity; // to store the reflectivity divided by their respective pdfs
         ArPDFValue distanceProbability, volumeProbability;
@@ -2077,11 +2101,18 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
 
         //UPDATE VCM values
         double cosTheta = [intersection getThetaFix];
+        if(cosTheta < 0)
+        {
+            shouldBreak = true;
+            break;
+        }
+
         {
             currentSubPathState.dVCM *= M_SQR(intersection->t);
-            currentSubPathState.dVC /= cosTheta;
+
             currentSubPathState.dVCM /= cosTheta;
             currentSubPathState.dVM /= cosTheta;
+            currentSubPathState.dVC /= cosTheta;
         }
 
         ArPathVertex * lightVertex = ALLOC(ArPathVertex);
@@ -2110,6 +2141,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
         lightVertex->incomingWavelength = previousWavelength;
         lightVertex->outgoingWavelength = currentWavelength;
 
+
         [self connectToCamera
                 : gv
                 : intersection
@@ -2133,6 +2165,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
             bool continueExploring = true;
             
             double cos;
+            ArAttenuationSample *temporaryAttenuation2 = arattenuationsample_alloc(gv);
             //conduct random walk step, generating new ray and wavelength
             if( ! [ self randomWalk
                     :   currentPoint
@@ -2143,7 +2176,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
                     : & lightSourceSamplingPartialPDF
                     : & ray
                     : & volumeMaterial
-                    : temporaryAttenuation
+                    : temporaryAttenuation2
                     : & cos
                     : &currentSubPathState
                     : pArVcmGlobalValues
@@ -2151,7 +2184,6 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
             ] )
             {
                 continueExploring = false;
-                shouldBreak = true;
             }
 
             if(continueExploring)
@@ -2159,12 +2191,12 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
 
                 if(pathLength == 0)
                 {
-                    arattenuationsample_a_init_a(gv, temporaryAttenuation, pathAttenuation);
+                    arattenuationsample_a_init_a(gv, temporaryAttenuation2, pathAttenuation);
                 }
                 else
                 {
                     arattenuationsample_a_mul_a(gv,
-                                                temporaryAttenuation,
+                                                temporaryAttenuation2,
                                                 pathAttenuation);
                 }
 
@@ -2173,17 +2205,17 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
 
             }
 
-            if(shouldBreak)
+            arattenuationsample_free(gv, temporaryAttenuation2);
+
+
+            if(!continueExploring)
             {
-//                [INTERSECTION_FREELIST releaseInstance: intersection];
-//                intersection = 0;
+                shouldBreak = true;
                 break;
             }
 
 
             originPoint = currentPoint;
-            if(!continueExploring)
-                break;
         }
 
 
@@ -2194,15 +2226,25 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
 
     arattenuationsample_free(gv, temporaryMediaAttenuation);
 
-    if(!gotPushed)
+    if(shouldBreak && !gotPushed)
     {
-
         if(intersection)
         {
             RELEASE_OBJECT(intersection);
+            intersection = 0;
         }
+
     }
 
+    if(!gotPushed)
+    {
+        if(intersection)
+        {
+            RELEASE_OBJECT(intersection);
+            intersection = 0;
+        }
+
+    }
 
     // release any leftover intersections or ray endpoints
     if ( scatteringEvent )
