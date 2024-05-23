@@ -320,7 +320,7 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
     }
     arattenuationsample_d_mul_a(gv, misW * particle->throughput, temp);
 
-    arattenuationsample_d_div_a(gv, ARPDFVALUE_MAIN(lightRotatedPDF), temp);
+    arattenuationsample_d_div_a(gv, ARPDFVALUE_MAIN(lightRotatedPDF) * (1.f/8), temp);
 
 
     double hwssWeight = [self mis : gv : &lightRotatedPDF];

@@ -379,29 +379,6 @@ typedef struct ArPixelID {
             vcmGlobalValues.VCweight = VCweight;
 
 
-            [THREAD_RANDOM_GENERATOR reInitializeWith
-            :crc32_of_data(&px_id, sizeof(ArPixelID))
-            ];
-
-            [THREAD_RANDOM_GENERATOR setCurrentSequenceID
-            :startingSequenceID
-            ];
-            ArWavelength wavelength;
-
-            if (deterministicWavelengths) {
-                arwavelength_i_deterministic_init_w(
-                        art_gv,
-                        0,
-                        &wavelength
-                );
-            } else {
-                arwavelength_sd_init_w(
-                        art_gv,
-                        &spectralSamplingData,
-                        [THREAD_RANDOM_GENERATOR valueFromNewSequence],
-                        &wavelength
-                );
-            }
 
             for (int ylv = 0; ylv < YC(imageSize); ylv++) {
                 int y = ylv + threadOffset;
@@ -433,6 +410,29 @@ typedef struct ArPixelID {
 
 
 #ifndef MONOHERO
+                        [THREAD_RANDOM_GENERATOR reInitializeWith
+                        :crc32_of_data(&px_id, sizeof(ArPixelID))
+                        ];
+
+                        [THREAD_RANDOM_GENERATOR setCurrentSequenceID
+                        :startingSequenceID
+                        ];
+                        ArWavelength wavelength;
+
+                        if (deterministicWavelengths) {
+                            arwavelength_i_deterministic_init_w(
+                                    art_gv,
+                                    0,
+                                    &wavelength
+                            );
+                        } else {
+                            arwavelength_sd_init_w(
+                                    art_gv,
+                                    &spectralSamplingData,
+                                    [THREAD_RANDOM_GENERATOR valueFromNewSequence],
+                                    &wavelength
+                            );
+                        }
 
 
 #else
@@ -584,7 +584,7 @@ typedef struct ArPixelID {
 
                         ArPathVertex *currentState = arpv_alloc(art_gv);
 
-//                        ArWavelength wavelength;
+                        ArWavelength wavelength;
 
                         currentState;
 
@@ -607,7 +607,7 @@ typedef struct ArPixelID {
 
                         Ray3D ray;
                         ArReferenceFrame referenceFrame;
-//                        wavelength = tempWavelengthVertex->outgoingWavelength;
+                        wavelength = tempWavelengthVertex->outgoingWavelength;
                         ArLightAlphaSample *lightAlphaSample = arlightalphasample_alloc(art_gv);
                         arlightsample_d_init_unpolarised_l(art_gv, 0.0, lightAlphaSample->light);
                         lightAlphaSample->alpha = 1;

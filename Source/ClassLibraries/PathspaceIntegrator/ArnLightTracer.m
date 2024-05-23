@@ -1851,6 +1851,8 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnLightTracer)
             {
                 arlightsample_a_mul_l(art_gv, currentState->attenuationSample, vmContribution->light);
             }
+
+
             arlightsample_l_add_l(art_gv, vmContribution->light, lightalpha_r->light);
         }
 
