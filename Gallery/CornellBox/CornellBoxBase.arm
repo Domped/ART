@@ -4,7 +4,7 @@
 
 
 //#define MODE arpathtracermode_direction_sampling
-#define MODE arpathtracermode_mis
+#define MODE arvcmmode_vcm
 
 ArObj whiteReflectance(ART_GV * art_gv) {
     return 
@@ -308,9 +308,10 @@ ARM_MAIN_FUNCTION(CornellBoxBase)
 
             [ STOCHASTIC_BACKWARDS_PIXEL_SAMPLER
                 sampleProvider:
-                    [LIGHTTRACER
+                    [VCM
                         rayCaster:        STANDARD_RAYCASTER
                         maximalRecursion: 8
+                        mode:             arvcmmode_vcm
                         ]
                 sampleSplattingKernel: TENT_KERNEL
                 samplesPerPixel:       SAMPLES

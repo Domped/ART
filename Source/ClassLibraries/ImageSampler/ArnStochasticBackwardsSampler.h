@@ -31,12 +31,16 @@ ART_MODULE_INTERFACE(ArnStochasticBackwardsSampler)
 #import "ART_Scenegraph.h"
 
 #import "ArnImageSampler.h"
+#import "ArnVCM.h"
 
 /* ===========================================================================
     'ArnStochasticSampler'
 =========================================================================== */
 
 #define IMAGE_SAMPLER_MAX_SUBPIXEL_SAMPLES      1024
+#ifndef MODE
+    #define MODE arvcmmode_vcm
+#endif
 
 @protocol ArpPathspaceIntegratorSampling;
 @class ArNode;
@@ -57,6 +61,8 @@ ART_MODULE_INTERFACE(ArnStochasticBackwardsSampler)
     //   precomputed, and re-used for each pixel.
 
     //   An array with 'numberOfSubpixelSamples' entries.
+
+    ArVCMMode           vcmMode;
 
     Pnt2D         * sampleCoord;
 

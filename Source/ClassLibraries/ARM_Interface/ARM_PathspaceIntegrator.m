@@ -48,10 +48,10 @@ ART_NO_MODULE_SHUTDOWN_FUNCTION_NECESSARY
 
 @implementation ArnPathTracer ( ARM_Interface )
 
-- (id) rayCaster
-                        : (ArNode <ArpRayCaster> *) newRayCaster
+- (id) rayCaster: (ArNode <ArpRayCaster> *) newRayCaster
         maximalRecursion: (unsigned int) newMaximalRecursion
 {
+
     return
         [ self init
             :   newRayCaster
@@ -61,8 +61,7 @@ ART_NO_MODULE_SHUTDOWN_FUNCTION_NECESSARY
             ];
 }
 
-- (id) rayCaster
-                        : (ArNode <ArpRayCaster> *) newRayCaster
+- (id) rayCaster: (ArNode <ArpRayCaster> *) newRayCaster
         maximalRecursion: (unsigned int) newMaximalRecursion
         mode            : (ArPathTracerMode) newMode
 {
@@ -111,11 +110,12 @@ maximalRecursion: (unsigned int) newMaximalRecursion
 
 
 @implementation ArnVCM (ARM_Interface)
-- (id) rayCaster
-                : (ArNode <ArpRayCaster> *) newRayCaster
-maximalRecursion: (unsigned int) newMaximalRecursion
-mode            : (ArVCMMode) newMode
+
+- (id) rayCaster        : (ArNode <ArpRayCaster> *) newRayCaster
+       maximalRecursion : (unsigned int)            newMaximalRecursion
+       mode             : (ArVCMMode)               newMode
 {
+
     return
             [ self init
                     :   newRayCaster

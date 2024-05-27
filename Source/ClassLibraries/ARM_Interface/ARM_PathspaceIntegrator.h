@@ -66,9 +66,9 @@ ART_MODULE_INTERFACE(ARM_PathspaceIntegrator)
  * @param rayCaster         RayCaster       The raycaster to use.
  * @param maximalRecursion  int             The maxmium bounces of the path before terminating.
  */
-- (id) rayCaster: (ArNode <ArpRayCaster> *) newRayCaster
-        maximalRecursion: (unsigned int) newMaximalRecursion
-        ;
+- (id) rayCaster:        (ArNode <ArpRayCaster> *) newRayCaster
+       maximalRecursion: (unsigned int)            newMaximalRecursion
+       ;
 
 @end
 
@@ -88,11 +88,10 @@ ART_MODULE_INTERFACE(ARM_PathspaceIntegrator)
  * @param maximalRecursion  int             The maxmium bounces of the path before terminating.
  * @param mode    ArVCMMode       The VCM mode
  */
-- (id) rayCaster
-                : (ArNode <ArpRayCaster> *) newRayCaster
-maximalRecursion: (unsigned int) newMaximalRecursion
-mode            : (ArVCMMode) newMode
-;
+- (id) rayCaster:        (ArNode <ArpRayCaster> *) newRayCaster
+       maximalRecursion: (unsigned int)            newMaximalRecursion
+       mode:             (ArVCMMode)               newMode
+           ;
 
 @end
 /**
@@ -110,8 +109,7 @@ mode            : (ArVCMMode) newMode
  * @param rayCaster         RayCaster       The raycaster to use.
  * @param maximalRecursion  int             The maxmium bounces of the path before terminating.
  */
-- (id) rayCaster
-                        : (ArNode <ArpRayCaster> *) newRayCaster
+- (id) rayCaster: (ArNode <ArpRayCaster> *) newRayCaster
         maximalRecursion: (unsigned int) newMaximalRecursion
         ;
 

@@ -33,14 +33,12 @@ ART_MODULE_INTERFACE(ArnVCM)
 
 #define VCM_MAX_SCATTERING_EVENTS    128
 
-#define VC_ATTENUATIONS_ARRAY_LENGTH   VCM_MAX_SCATTERING_EVENTS + 1
-#define VC_CONTRIBUTIONS_ARRAY_LENGTH  VCM_MAX_SCATTERING_EVENTS + 1
-
 typedef enum ArVCMMode
 {
+    arvcmmode_lt         = 0x00,
     arvcmmode_vc         = 0x01,
     arvcmmode_vm         = 0x02,
-    arvcmmode_vcm        = 0x03
+    arvcmmode_vcm        = arvcmmode_vc | arvcmmode_vm
 } ArVCMMode;
 
 @interface ArnVCM
@@ -51,26 +49,25 @@ typedef enum ArVCMMode
 
 // temporary samples that are used throughout methods to compute
 // the final results for that step/approach
-ArAttenuationSample  * temporaryAttenuation;
-ArAttenuationSample  * temporaryMediaAttenuation;
-ArLightSample        * temporaryContribution;
-ArLightSample        * temporaryMediaContribution;
+    ArAttenuationSample  * temporaryAttenuation;
+    ArAttenuationSample  * temporaryMediaAttenuation;
+    ArLightSample        * temporaryContribution;
+    ArLightSample        * temporaryMediaContribution;
 
+    ArLightSample *tempEmissionSample;
+    ArLightSample *lightSampleConnection;
+    ArLightSample *initialLightSample;
+    ArLightSample *generatedLightSample;
+    ArAttenuationSample *pathAttenuation;
+
+    ArAttenuationSample *connectionSampleConnection;
+
+    ArAttenuationSample *cvtempSample;
+
+    ArAttenuationSample *cvtempSampleLight;
 // stores the intermediate results at individual path steps
 // the final result is computed as L_0, with
-//     L_i = C_i + M_i * A_i * L_(i+1)
-ArAttenuationSample  * allAttenuations[VC_ATTENUATIONS_ARRAY_LENGTH]; // A_i
-ArAttenuationSample  * allMediaAttenuations[VC_ATTENUATIONS_ARRAY_LENGTH]; // M_i
-ArLightSample        * allContributions[VC_CONTRIBUTIONS_ARRAY_LENGTH]; // C_i
 
-// indicates, whether the M_i is something else than a free transmission
-//    - if it isn't, the actual value of allMediaAttenuations[i] is undefined
-//        and should not be used
-unsigned int    nonclearMediaAttenuations[VC_ATTENUATIONS_ARRAY_LENGTH];
-// indicates, whether the C_i is something else than a zero contribution
-//    - if it isn't, the actual value of allContributions[i] is undefined
-//        and should not be used
-unsigned int    nonzeroContributions[VC_CONTRIBUTIONS_ARRAY_LENGTH];
 }
 
 - (id) init

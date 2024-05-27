@@ -124,6 +124,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnPathspaceIntegrator)
         : (unsigned int) newMaximalRecursion
         : (ArDistanceTrackingMode) newDistanceTrackingMode
 {
+
     self =
         [ super init
             :   HARD_NODE_REFERENCE(newRayCaster)

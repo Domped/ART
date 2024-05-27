@@ -73,6 +73,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnStochasticBackwardsSampler)
                     :newRandomValueGeneration
             ];
 
+    vcmMode = [newPathspaceIntegrator getIntegratorMode];
     deterministicWavelengths = NO;
     wavelengthSteps = 1;
 
@@ -312,42 +313,21 @@ typedef struct ArPixelID {
 
     NSAutoreleasePool *threadPool;
 
+    vcmMode = [THREAD_PATHSPACE_INTEGRATOR getIntegratorMode];
     threadPool = [[NSAutoreleasePool alloc] init];
-
-    //   The values for individual samples, obtained via the gathering estimator
-
-    //   We only need an array of pointers, as the actual gathering results
-    //   are grabbed from, and returned to, a freelist.
-
-
-    //TODO: After introducing multithreaded rendering, use this
-    //    ArPathspaceResult **sampleValue =
-    //            ALLOC_ARRAY(ArPathspaceResult *, numberOfImagesToWrite);
-
-
-    /* ------------------------------------------------------------------
-     We render scanlines until there is no unrendered scanline left.
-     ------------------------------------------------------------------ */
-
-    DEBUG_PIXEL_COUNT = 0;
     ArPixelID px_id;
-
     px_id.threadIndex = THREAD_INDEX;
     px_id.globalRandomSeed = arrandom_global_seed(art_gv);
+
 
     int threadStripWidth = YC(imageSize) / numberOfRenderThreads;
     int threadOffset = threadStripWidth * THREAD_INDEX;
 
 
     unsigned int pixelCount = 0;
-
     double baseRadius = 0.00665117893f;
 
-    NSLog(@"%d", numberOfSamplesPerThread);
-
-
-
-
+    NSLog(@"MODE %d", MODE);
     for(int lightIter = 0; lightIter < 1; lightIter++) {
         for (unsigned int i = 0; i < numberOfSamplesPerThread; i++) {
 
@@ -356,28 +336,21 @@ typedef struct ArPixelID {
 
             ArcHashgrid *hashgrid = [[ArcHashgrid alloc] init];
 
-            unsigned int sampleCount = 0;
             int subpixelIdx = i % numberOfSubpixelSamples;
-
             px_id.sampleIndex = i;
 
             double radius = baseRadius / (pow(i + 1, 0.5f * (1 - 0.75f)));
-
             radius = fmax(radius, 1e-7f);
             vmNormalization = 1.f / (M_SQR(radius) * M_PI * XC(imageSize) * YC(imageSize));
             double etaVCM = (M_PI * M_SQR(radius)) * XC(imageSize) * YC(imageSize);
-            VMweight = etaVCM;
-            VCweight = 1.0f / etaVCM;
 
-//            vmNormalization = 0;
-//            VMweight = 0;
-//            VCweight = 0;
+            VMweight = MODE & arvcmmode_vm ? etaVCM : 0;
+            VCweight = MODE & arvcmmode_vc ? 1.0f / etaVCM : 0;
 
             ArVCMGlobalValues vcmGlobalValues;
             vcmGlobalValues.vmNormalization = vmNormalization;
             vcmGlobalValues.VMweight = VMweight;
             vcmGlobalValues.VCweight = VCweight;
-
 
 
             for (int ylv = 0; ylv < YC(imageSize); ylv++) {
@@ -399,15 +372,10 @@ typedef struct ArPixelID {
 
                     for (int w = 0; w < wavelengthSteps; w++) {
 
-//                                            [ THREAD_RANDOM_GENERATOR reInitializeWith
-//                                                :   crc32_of_data( & px_id, sizeof(ArPixelID) )
-//                                                ];
-
                         BOOL validSample = FALSE;
 
                         Ray3D ray;
                         ArReferenceFrame referenceFrame;
-
 
 #ifndef MONOHERO
                         [THREAD_RANDOM_GENERATOR reInitializeWith
@@ -438,9 +406,6 @@ typedef struct ArPixelID {
 #else
                         arwavelength_d_init_w(art_gv, 550 NM, &wavelength);
 #endif
-
-
-                        sampleCount++;
                         [THREAD_PATHSPACE_INTEGRATOR generateLightPaths
                                 :art_gv
                                 :&ray
@@ -467,15 +432,9 @@ typedef struct ArPixelID {
             for (unsigned int p = 0; p < sizeArray; p++) {
                 ArPathVertex *pv = arpvptrdynarray_i(&pathVertexArray, p);
 
-//            XC(pv.worldHitPoint->worldspace_point) = 0.502949119f;
-//            YC(pv.worldHitPoint->worldspace_point) = -1.28001988f;
-//            ZC(pv.worldHitPoint->worldspace_point) = -0.381383151f;
-//
                 Ray3D cameraRay;
                 [camera getCameraRay:&cameraRay];
 
-
-                //
                 if (ARPV_OCCLUDED(*pv)) {
                     continue;
                 }
@@ -486,22 +445,16 @@ typedef struct ArPixelID {
                         :&pixelCoords
                 ];
 
-
-                if (XC(pixelCoords) > 511 || YC(pixelCoords) > 511 || XC(pixelCoords) < 0 || YC(pixelCoords) < 0) {
-
+                if(
+                        XC(pixelCoords) > XC(imageSize)-1 ||
+                        YC(pixelCoords) > YC(imageSize)-1 ||
+                        XC(pixelCoords) < 0 ||
+                        YC(pixelCoords) < 0)
                     continue;
-                }
-
-                if(XC(pixelCoords) == 0 && YC(pixelCoords) == 0)
-                {
-                    DEBUG_PIXEL_COUNT++;
-                }
 
                 if (splattingKernelWidth == 1) {
                     for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
                         PIXEL_SAMPLE_COUNT((int) XC(pixelCoords), (int) YC(pixelCoords), THREAD_INDEX, im) += 1.0;
-
-                        double s = arlightsample_l_max(art_gv, pv->cameraLightSample->light);
 
                         arlightalpha_wsd_sloppy_add_l(
                                 art_gv,
@@ -548,167 +501,173 @@ typedef struct ArPixelID {
                 pv->cameraLightSample = 0;
             }
 
-            [hashgrid Reserve:(XC(imageSize) * YC(imageSize))];
-            [hashgrid BuildHashgrid:&pathVertexArray :radius];
+            if(!(MODE & arvcmmode_lt))
+            {
+                if(MODE & arvcmmode_vm)
+                {
+                    [hashgrid Reserve:(XC(imageSize) * YC(imageSize))];
+                    [hashgrid BuildHashgrid:&pathVertexArray :radius];
 
-            hashgrid->vmNormalization = vmNormalization;
-            hashgrid->VMweight = VMweight;
-            hashgrid->VCweight = VCweight;
-
-            /* *
-             *
-             * @description: TRACE THE EYE RAYS
-             */
-            for (int ylv = 0; ylv < YC(imageSize); ylv++) {
-                int y = ylv + threadOffset;
-
-                if (y >= YC(imageSize)) {
-                    y = y - YC(imageSize);
+                    hashgrid->vmNormalization = vmNormalization;
+                    hashgrid->VMweight = VMweight;
+                    hashgrid->VCweight = VCweight;
                 }
 
-                YC(px_id.pixelCoord) = y + YC(imageOrigin);
 
-                /* -------------------------------------------------------------
-                     We render each pixel of the scanline.
-                ------------------------------------------------------------- */
+                /* *
+                 *
+                 * @description: TRACE THE EYE RAYS
+                 */
+                for (int ylv = 0; ylv < YC(imageSize); ylv++) {
+                    int y = ylv + threadOffset;
 
-                for (int x = x_start[y]; x < x_end[y]; x++) {
+                    if (y >= YC(imageSize)) {
+                        y = y - YC(imageSize);
+                    }
 
-                    XC(px_id.pixelCoord) = x + XC(imageOrigin);
+                    YC(px_id.pixelCoord) = y + YC(imageOrigin);
+
+                    /* -------------------------------------------------------------
+                         We render each pixel of the scanline.
+                    ------------------------------------------------------------- */
+
+                    for (int x = x_start[y]; x < x_end[y]; x++) {
+
+                        XC(px_id.pixelCoord) = x + XC(imageOrigin);
 
 //                if (x< 440)
 //                {
 //                    continue;
 //                }
-                    for (int w = 0; w < wavelengthSteps; w++) {
+                        for (int w = 0; w < wavelengthSteps; w++) {
 
-                        ArPathVertex *currentState = arpv_alloc(art_gv);
+                            ArPathVertex *currentState = arpv_alloc(art_gv);
 
-                        ArWavelength wavelength;
+                            ArWavelength wavelength;
 
-                        currentState;
+                            currentState;
 
-                        uint32_t rangeX, rangeY;
-                        rangeX = 0;
+                            uint32_t rangeX, rangeY;
+                            rangeX = 0;
 
-                        int pathIndex = x + y * XC(imageSize);
+                            int pathIndex = x + y * XC(imageSize);
 
-                        if (pathIndex > 0) {
-                            rangeX = pathEnds[pathIndex - 1];
-                        }
+                            if (pathIndex > 0) {
+                                rangeX = pathEnds[pathIndex - 1];
+                            }
 
-                        uint32_t ss = pathIndex - 2;
-                        while (rangeX >= arpvptrdynarray_size(&pathVertexArray)) {
-                            rangeX = pathEnds[ss];
-                            ss--;
-                        }
+                            uint32_t ss = pathIndex - 2;
+                            while (rangeX >= arpvptrdynarray_size(&pathVertexArray)) {
+                                rangeX = pathEnds[ss];
+                                ss--;
+                            }
 
-                        ArPathVertex *tempWavelengthVertex = arpvptrdynarray_i(&pathVertexArray, rangeX);
+                            ArPathVertex *tempWavelengthVertex = arpvptrdynarray_i(&pathVertexArray, rangeX);
 
-                        Ray3D ray;
-                        ArReferenceFrame referenceFrame;
-                        wavelength = tempWavelengthVertex->outgoingWavelength;
-                        ArLightAlphaSample *lightAlphaSample = arlightalphasample_alloc(art_gv);
-                        arlightsample_d_init_unpolarised_l(art_gv, 0.0, lightAlphaSample->light);
-                        lightAlphaSample->alpha = 1;
+                            Ray3D ray;
+                            ArReferenceFrame referenceFrame;
+                            wavelength = tempWavelengthVertex->outgoingWavelength;
+                            ArLightAlphaSample *lightAlphaSample = arlightalphasample_alloc(art_gv);
+                            arlightsample_d_init_unpolarised_l(art_gv, 0.0, lightAlphaSample->light);
+                            lightAlphaSample->alpha = 1;
 #ifdef MONOHERO
-                        arwavelength_d_init_w(art_gv, 550 NM, &wavelength);
+                            arwavelength_d_init_w(art_gv, 550 NM, &wavelength);
 #endif
-                        if ([camera getWorldspaceRay
-                                :&VEC2D(
-                                        XC(px_id.pixelCoord) + XC(sampleCoord[subpixelIdx]),
-                                        YC(px_id.pixelCoord) + YC(sampleCoord[subpixelIdx])
-                                )
-                                :THREAD_RANDOM_GENERATOR
-                                :&referenceFrame
-                                :&ray
-                        ]) {
-
-                            double cameraPDFA;
-                            [camera getSurfaceFactor
-                                    :&RAY3D_V(ray)
-                                    :0
-                                    :&VEC3D_X_UNIT
-                                    :&cameraPDFA
-                            ];
-
-                            currentState->dVCM = (512 * 512) / cameraPDFA;
-                            currentState->throughput = 1;
-                            currentState->incomingWavelength = wavelength;
-                            currentState->outgoingWavelength = wavelength;
-
-                            ArWavelength sample = wavelength;
-
-                            [THREAD_PATHSPACE_INTEGRATOR generateEyePaths
+                            if ([camera getWorldspaceRay
+                                    :&VEC2D(
+                                            XC(px_id.pixelCoord) + XC(sampleCoord[subpixelIdx]),
+                                            YC(px_id.pixelCoord) + YC(sampleCoord[subpixelIdx])
+                                    )
+                                    :THREAD_RANDOM_GENERATOR
+                                    :&referenceFrame
                                     :&ray
-                                    :camera
-                                    :&pathVertexArray
-                                    :&wavelength
-                                    :currentState
-                                    :                            pathEnds
-                                    :lightAlphaSample
-                                    :pathIndex
-                                    :hashgrid
-                                    :&vcmGlobalValues
-                            ];
-                        }
+                            ]) {
+
+                                double cameraPDFA;
+                                [camera getSurfaceFactor
+                                        :&RAY3D_V(ray)
+                                        :0
+                                        :&VEC3D_X_UNIT
+                                        :&cameraPDFA
+                                ];
+
+                                currentState->dVCM = (512 * 512) / cameraPDFA;
+                                currentState->throughput = 1;
+                                currentState->incomingWavelength = wavelength;
+                                currentState->outgoingWavelength = wavelength;
+
+                                ArWavelength sample = wavelength;
+
+                                [THREAD_PATHSPACE_INTEGRATOR generateEyePaths
+                                        :&ray
+                                        :camera
+                                        :&pathVertexArray
+                                        :&wavelength
+                                        :currentState
+                                        :                            pathEnds
+                                        :lightAlphaSample
+                                        :pathIndex
+                                        :hashgrid
+                                        :&vcmGlobalValues
+                                ];
+                            }
 
 
-                        if (arlightalphasample_l_valid(
-                                art_gv, lightAlphaSample)) {
+                            if (arlightalphasample_l_valid(
+                                    art_gv, lightAlphaSample)) {
 
-                            if (splattingKernelWidth == 1) {
-                                for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
-                                    PIXEL_SAMPLE_COUNT(x, y, THREAD_INDEX, im) += 1.0;
+                                if (splattingKernelWidth == 1) {
+                                    for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
+                                        PIXEL_SAMPLE_COUNT(x, y, THREAD_INDEX, im) += 1.0;
 
-                                    arlightalpha_wsd_sloppy_add_l(
-                                            art_gv,
-                                            lightAlphaSample,
-                                            &wavelength,
-                                            &spectralSplattingData,
-                                            3.0 DEGREES,
-                                            PIXEL_SAMPLE_VALUE(x, y, THREAD_INDEX, im)
-                                    );
-                                }
-                            } else {
-                                for (unsigned int l = 0; l < splattingKernelArea; l++) {
-                                    int cX = x + XC(sampleSplattingOffset[l]);
-                                    int cY = y + YC(sampleSplattingOffset[l]);
+                                        arlightalpha_wsd_sloppy_add_l(
+                                                art_gv,
+                                                lightAlphaSample,
+                                                &wavelength,
+                                                &spectralSplattingData,
+                                                3.0 DEGREES,
+                                                PIXEL_SAMPLE_VALUE(x, y, THREAD_INDEX, im)
+                                        );
+                                    }
+                                } else {
+                                    for (unsigned int l = 0; l < splattingKernelArea; l++) {
+                                        int cX = x + XC(sampleSplattingOffset[l]);
+                                        int cY = y + YC(sampleSplattingOffset[l]);
 
-                                    if (cX >= 0
-                                        && cX < XC(imageSize)
-                                        && cY >= 0
-                                        && cY < YC(imageSize)) {
-                                        for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
-                                            PIXEL_SAMPLE_COUNT(cX, cY, THREAD_INDEX, im) += SAMPLE_SPLATTING_FACTOR(
-                                                    subpixelIdx, l);
-
+                                        if (cX >= 0
+                                            && cX < XC(imageSize)
+                                            && cY >= 0
+                                            && cY < YC(imageSize)) {
                                             for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
+                                                PIXEL_SAMPLE_COUNT(cX, cY, THREAD_INDEX, im) += SAMPLE_SPLATTING_FACTOR(
+                                                        subpixelIdx, l);
 
-                                                arlightalpha_dwsd_mul_sloppy_add_l(
-                                                        art_gv,
-                                                        SAMPLE_SPLATTING_FACTOR(subpixelIdx, l),
-                                                        lightAlphaSample,
-                                                        &wavelength,
-                                                        &spectralSplattingData,
-                                                        5.0 DEGREES,
-                                                        THREAD_RESULT_PIXEL(cX, cY, im)
-                                                );
+                                                for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
+
+                                                    arlightalpha_dwsd_mul_sloppy_add_l(
+                                                            art_gv,
+                                                            SAMPLE_SPLATTING_FACTOR(subpixelIdx, l),
+                                                            lightAlphaSample,
+                                                            &wavelength,
+                                                            &spectralSplattingData,
+                                                            5.0 DEGREES,
+                                                            THREAD_RESULT_PIXEL(cX, cY, im)
+                                                    );
+                                                }
                                             }
                                         }
                                     }
                                 }
                             }
+
+                            arlightsample_free(art_gv, lightAlphaSample->light);
+                            arpv_free_pv(art_gv, currentState);
+                            FREE(currentState);
+                            currentState = 0;
                         }
-
-                        arlightsample_free(art_gv, lightAlphaSample->light);
-                        arpv_free_pv(art_gv, currentState);
-                        FREE(currentState);
-                        currentState = 0;
-                    }
-                } // x, XC(image)
-            } // y, YC(image)
-
+                    } // x, XC(image)
+                } // y, YC(image)
+            }
 
             NSLog(@"%d HASH", hashgrid->DEBUG_COUNT);
 

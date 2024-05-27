@@ -140,22 +140,20 @@ ArNode <ArpSampling2D> * standard_sampler_2D(
 
 @interface ArnStochasticBackwardsSampler ( ARM_Interface )
 
-- (id) sampleProvider
-        : (ArNode <ArpPathspaceIntegrator> *) newPathspaceIntegrator
-      samplesPerPixel         : (unsigned int) newNumberOfSamples
-randomValueGeneration   : (int) newRandomValueGeneration
+- (id) sampleProvider:          (ArNode <ArpPathspaceIntegrator> *) newPathspaceIntegrator
+       samplesPerPixel:         (unsigned int)                      newNumberOfSamples
+       randomValueGeneration:   (int)                               newRandomValueGeneration
 ;
 
-- (id) sampleProvider
-        : (ArNode <ArpPathspaceIntegrator> *) newPathspaceIntegrator
-sampleSplattingKernel   : (ArNode <ArpReconstructionKernel> *) newReconstructionKernel
-      samplesPerPixel         : (unsigned int) newNumberOfSamples
-randomValueGeneration   : (int) newRandomValueGeneration
-;
+- (id) sampleProvider:          (ArNode <ArpPathspaceIntegrator> *)  newPathspaceIntegrator
+       sampleSplattingKernel:   (ArNode <ArpReconstructionKernel> *) newReconstructionKernel
+       samplesPerPixel:         (unsigned int)                       newNumberOfSamples
+       randomValueGeneration:   (int)                                newRandomValueGeneration
+       ;
 @end
 
 /**
- * @brief Stochastic pixel sampler
+ * @brief Stochastic `backwards` pixel sampler
  *
  * @def [ STOCHASTIC_BACKWARDS_PIXEL_SAMPLER
  * @fdef    sampleProvider: samplesPerPixel: randomValueGeneration: ]
@@ -171,9 +169,10 @@ randomValueGeneration   : (int) newRandomValueGeneration
  * \begin{verbatim}
  *   [ STOCHASTIC_BACKWARDS_PIXEL_SAMPLER
  *       sampleProvider:
- *           [ LIGHTTRACER
+ *           [ VCM
  *               rayCaster:        STANDARD_RAYCASTER
  *               maximalRecursion: PATH_LENGTH
+ *               mode:             arvcmmode_vcm
  *           ]
  *       sampleSplattingKernel:   TENT_KERNEL
  *       samplesPerPixel:         SAMPLES

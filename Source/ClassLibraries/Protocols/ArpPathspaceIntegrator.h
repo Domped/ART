@@ -44,6 +44,9 @@ ART_MODULE_INTERFACE(ArpPathspaceIntegrator)
 - (int) numberOfSeparateEstimates
         ;
 
+- (int) getIntegratorMode
+        ;
+
 - (void) calculateLightSamples
         : (const Ray3D *)               sampling_ray
         : (const ArWavelength *)        wavelength
@@ -95,12 +98,10 @@ ART_MODULE_INTERFACE(ArpPathspaceIntegrator)
         : (ArVCMGlobalValues *)        pArVcmGlobalValues
 ;
 
-
-
 - (void) generateEyePaths
         : (const Ray3D *)               cameraPixelRay
         : (ArNode <ArpCamera>  *)       sampling_ray
-        : (ArPathVertexptrDynArray *)      lightPathsList
+        : (ArPathVertexptrDynArray *)   lightPathsList
         : (const ArWavelength *)        wavelength
         : (ArPathVertex *)              currentState
         : (uint32_t* )                  pathEnds

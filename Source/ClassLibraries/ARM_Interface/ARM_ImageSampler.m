@@ -196,10 +196,9 @@ ArNode <ArpSampling2D> * standard_sampler_2D(
 
 @implementation ArnStochasticBackwardsSampler ( ARM_Interface )
 
-- (id) sampleProvider
-                        : (ArNode <ArpPathspaceIntegrator> *) newPathspaceIntegrator
-      samplesPerPixel   : (unsigned int) newNumberOfSamples
-randomValueGeneration   : (int) newRandomValueGeneration
+- (id) sampleProvider           : (ArNode <ArpPathspaceIntegrator> *) newPathspaceIntegrator
+       samplesPerPixel          : (unsigned int)                      newNumberOfSamples
+       randomValueGeneration    : (int)                               newRandomValueGeneration
 {
     
     id  defaultReconstructionKernel =
@@ -213,11 +212,10 @@ randomValueGeneration   : (int) newRandomValueGeneration
     ];
 }
 
-- (id) sampleProvider
-                        : (ArNode <ArpPathspaceIntegrator> *) newPathspaceIntegrator
-sampleSplattingKernel   : (ArNode <ArpReconstructionKernel> *) newReconstructionKernel
-      samplesPerPixel   : (unsigned int) newNumberOfSamples
-randomValueGeneration   : (int) newRandomValueGeneration
+- (id) sampleProvider          : (ArNode <ArpPathspaceIntegrator> *)  newPathspaceIntegrator
+       sampleSplattingKernel   : (ArNode <ArpReconstructionKernel> *) newReconstructionKernel
+       samplesPerPixel         : (unsigned int)                       newNumberOfSamples
+       randomValueGeneration   : (int)                                newRandomValueGeneration
 {
     
         return [ self init

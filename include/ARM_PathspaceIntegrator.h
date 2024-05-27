@@ -79,7 +79,6 @@ ART_MODULE_INTERFACE(ARM_PathspaceIntegrator)
     ALLOC_OBJECT_AUTORELEASE(ArnVCM)
 @interface ArnVCM ( ARM_Interface )
 
-
 /**
  * @def [ VCM
  * @fdef    rayCaster: maximalRecursion: mode:]
@@ -88,11 +87,10 @@ ART_MODULE_INTERFACE(ARM_PathspaceIntegrator)
  * @param maximalRecursion  int             The maxmium bounces of the path before terminating.
  * @param mode    ArVCMMode       The VCM mode
  */
-- (id) rayCaster
-                : (ArNode <ArpRayCaster> *) newRayCaster
-maximalRecursion: (unsigned int) newMaximalRecursion
-mode            : (ArVCMMode) newMode
-;
+- (id) rayCaster        : (ArNode <ArpRayCaster> *) newRayCaster
+       maximalRecursion : (unsigned int)            newMaximalRecursion
+       mode             : (ArVCMMode)               newMode
+       ;
 
 @end
 /**
