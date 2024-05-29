@@ -1902,6 +1902,8 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
 
     for(; pathLength < 6; ++pathLength)
     {
+
+        gotPushed = false;
         if(pathLength == 0)
         {
             currentSubPathState.pathPDF = emitPDF;
@@ -2029,7 +2031,6 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
             arattenuationsample_a_init_a(gv, pathAttenuation, lightVertex->attenuationSample);
         }
 
-
         lightVertex->totalPathLength = pathLength;
 
         lightVertex->dVCM = currentSubPathState.dVCM;
@@ -2038,7 +2039,6 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
 
         lightVertex->incomingWavelength = previousWavelength;
         lightVertex->outgoingWavelength = currentWavelength;
-
 
         [self connectToCamera
                 : gv

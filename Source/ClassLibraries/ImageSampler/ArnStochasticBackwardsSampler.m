@@ -334,7 +334,9 @@ typedef struct ArPixelID {
             ArPathVertexptrDynArray pathVertexArray = arpvptrdynarray_init(1);
             uint32_t pathEnds[XC(imageSize) * YC(imageSize)];
 
-            ArcHashgrid *hashgrid = [[ArcHashgrid alloc] init];
+            ArcHashgrid *hashgrid;
+            if(MODE & arvcmmode_vm)
+                 hashgrid = [[ArcHashgrid alloc] init];
 
             int subpixelIdx = i % numberOfSubpixelSamples;
             px_id.sampleIndex = i;
@@ -450,7 +452,11 @@ typedef struct ArPixelID {
                         YC(pixelCoords) > YC(imageSize)-1 ||
                         XC(pixelCoords) < 0 ||
                         YC(pixelCoords) < 0)
+                {
+                    arlightalphasample_free(art_gv, pv->cameraLightSample);
+                    pv->cameraLightSample = 0;
                     continue;
+                }
 
                 if (splattingKernelWidth == 1) {
                     for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
@@ -660,7 +666,7 @@ typedef struct ArPixelID {
                                 }
                             }
 
-                            arlightsample_free(art_gv, lightAlphaSample->light);
+                            arlightalphasample_free(art_gv, lightAlphaSample);
                             arpv_free_pv(art_gv, currentState);
                             FREE(currentState);
                             currentState = 0;
@@ -669,7 +675,7 @@ typedef struct ArPixelID {
                 } // y, YC(image)
             }
 
-            NSLog(@"%d HASH", hashgrid->DEBUG_COUNT);
+            NSLog(@"FINISHED ITER %@", threadIndex);
 
 //            [hashgrid CLEAR];
 
