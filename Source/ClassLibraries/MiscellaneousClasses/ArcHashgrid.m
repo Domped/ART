@@ -71,7 +71,7 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
         :(unsigned int) numVertices
 {
 
-    NSLog(@"Reserve %d", numVertices);
+//    NSLog(@"Reserve %d", numVertices);
 
     DEBUG_COUNT = 0;
 }

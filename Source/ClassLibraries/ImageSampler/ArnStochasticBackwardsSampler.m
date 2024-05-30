@@ -680,6 +680,11 @@ typedef struct ArPixelID {
 //            [hashgrid CLEAR];
 
 
+            if(MODE & arvcmmode_vm)
+            {
+                [hashgrid dealloc];
+            }
+
             arpv_free_arr_itrsc(art_gv, &pathVertexArray);
             arpvptrdynarray_free_contents(&pathVertexArray);
 

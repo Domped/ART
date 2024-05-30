@@ -39,7 +39,7 @@ ART_MODULE_INTERFACE(ArnStochasticBackwardsSampler)
 
 #define IMAGE_SAMPLER_MAX_SUBPIXEL_SAMPLES      1024
 #ifndef MODE
-    #define MODE arvcmmode_vc
+    #define MODE arvcmmode_vcm
 #endif
 
 @protocol ArpPathspaceIntegratorSampling;
