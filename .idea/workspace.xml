@@ -11,18 +11,18 @@
   </component>
   <component name="CMakeRunConfigurationManager">
     <generated>
-      <config projectName="ART" targetName="art_imagediff" />
-      <config projectName="ART" targetName="arm2art" />
       <config projectName="ART" targetName="art_imagesnr" />
       <config projectName="ART" targetName="artist" />
+      <config projectName="ART" targetName="greymap" />
+      <config projectName="ART" targetName="art_imagetool" />
+      <config projectName="ART" targetName="impresario" />
+      <config projectName="ART" targetName="art_imagediff" />
+      <config projectName="ART" targetName="arm2art" />
       <config projectName="ART" targetName="AdvancedRenderingToolkit" />
       <config projectName="ART" targetName="bugblatter" />
-      <config projectName="ART" targetName="greymap" />
       <config projectName="ART" targetName="structureStressTest" />
-      <config projectName="ART" targetName="art_imagetool" />
       <config projectName="ART" targetName="polvis" />
       <config projectName="ART" targetName="tonemap" />
-      <config projectName="ART" targetName="impresario" />
     </generated>
   </component>
   <component name="CMakeSettings">
@@ -31,17 +31,23 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9d6451dd-56f5-4571-bf94-32a69572af15" name="Changes" comment="fixed memory leaks">
-      <change afterPath="$PROJECT_DIR$/Source/CommandLineTools/structureStressTest/CMakeLists.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/CommandLineTools/structureStressTest/structureStressTest.m" afterDir="false" />
+    <list default="true" id="9d6451dd-56f5-4571-bf94-32a69572af15" name="Changes" comment="structure stress test; hashgrid dealloc.">
+      <change afterPath="$PROJECT_DIR$/Source/ClassLibraries/MiscellaneousStructs/ArVCMSamplerInput.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxBase.arm" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxBase.arm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxBase.artcsp" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxBase.artcsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxBase.exr" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxBase.exr" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.artcsp" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.artcsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.exr" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.exr" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnImageSampler.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnImageSampler.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnImageSamplerBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnImageSamplerBase.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnImageSamplerBase.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnImageSamplerBase.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/MiscellaneousClasses/ArcHashgrid.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/MiscellaneousClasses/ArcHashgrid.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CommandLineTools/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CommandLineTools/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArPathVertex.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArPathVertex.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArPathVertex.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArPathVertex.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnVCM.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnVCM.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnVCM.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnVCM.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/SurfaceMaterial/ArnLambertSurfaceMaterial.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/SurfaceMaterial/ArnLambertSurfaceMaterial.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CommandLineTools/structureStressTest/structureStressTest.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CommandLineTools/structureStressTest/structureStressTest.m" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,6 +72,7 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -107,13 +114,13 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="CMake Application.structureStressTest">
-    <configuration name="AdvancedRenderingToolkit" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="AdvancedRenderingToolkit" CONFIG_NAME="Debug">
+  <component name="RunManager" selected="CMake Application.artist">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+    <configuration name="AdvancedRenderingToolkit" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="AdvancedRenderingToolkit" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -138,7 +145,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="artist" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxBase.arm -j 10" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="artist" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="artist">
+    <configuration name="artist" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm -j 32" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="artist" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="artist">
       <envs>
         <env name="LD_LIBRARY_PATH" value="$PROJECT_DIR$/cmake-build-debug/lib" />
       </envs>
@@ -211,6 +218,14 @@
       <workItem from="1716849686377" duration="1799000" />
       <workItem from="1716999419203" duration="2287000" />
       <workItem from="1717105868861" duration="3976000" />
+      <workItem from="1717497529734" duration="1000" />
+      <workItem from="1717497581847" duration="9140000" />
+      <workItem from="1717511862048" duration="110000" />
+      <workItem from="1717512267650" duration="1050000" />
+      <workItem from="1717514504211" duration="16000" />
+      <workItem from="1717526701892" duration="694000" />
+      <workItem from="1717527403609" duration="980000" />
+      <workItem from="1717532158449" duration="13671000" />
     </task>
     <task id="LOCAL-00001" summary="all working">
       <option name="closed" value="true" />

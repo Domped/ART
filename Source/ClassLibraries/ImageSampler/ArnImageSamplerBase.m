@@ -47,7 +47,7 @@ ART_NO_MODULE_SHUTDOWN_FUNCTION_NECESSARY
 
 pthread_mutex_t  * signal_handler_mutex;
 pthread_cond_t   * signal_handler_cond;
-
+pthread_cond_t   * signal_handler_lightpaths_cond;
 volatile sig_atomic_t  received_signal;
 
 int image_sampler_received_signal(
@@ -344,13 +344,15 @@ ARPACTION_DEFAULT_IMPLEMENTATION(ArnImageSamplerBase)
     }
 
     //   Init the mutex that will be grabbed by the write thread.
-    
+    pthread_mutex_init(&generationMutex, NULL);
     pthread_mutex_init( & writeThreadMutex, NULL );
     pthread_cond_init( & writeThreadCond, NULL);
-    
+    pthread_cond_init(&lightPathsCond, NULL);
+
     signal_handler_mutex = & writeThreadMutex;
     signal_handler_cond  = & writeThreadCond;
-    
+    signal_handler_lightpaths_cond = &lightPathsCond;
+
     outputImage =
         ALLOC_ARRAY(ArNode <ArpImageWriter> *, numberOfResultImages);
     
@@ -532,6 +534,17 @@ ARPACTION_DEFAULT_IMPLEMENTATION(ArnImageSamplerBase)
     (void) threadIndex;
     
     ART__VIRTUAL_METHOD__EXIT_WITH_ERROR
+}
+
+- (void) renderLightPathsFinished
+{
+
+    pthread_mutex_lock(&generationMutex);
+
+    lightPathsAreDone = YES;
+    pthread_cond_broadcast( & lightPathsCond );
+    pthread_mutex_unlock(&generationMutex);
+
 }
 
 - (void) renderProcHasFinished

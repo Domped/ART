@@ -1,9 +1,9 @@
 #ifndef SAMPLES
-    #define SAMPLES 200
+    #define SAMPLES 700
 #endif
 
 
-#define MODE arpathtracermode_light_sampling
+//#define MODE arpathtracermode_light_sampling
 //#define MODE arpathtracermode_mis
 
 
@@ -159,6 +159,7 @@ ArObj createTallBlock(ART_GV * art_gv) {
 
     ArObj blockMaterial = roughOrenNayar;
 
+
     return 
         [ block apply
             : vertices
@@ -170,32 +171,32 @@ ArObj createLight(ART_GV * art_gv) {
     Pnt3D * blockPoints = ALLOC_ARRAY( Pnt3D, 9);
 
 
-    //blockPoints[0] = PNT3D( -1.27029f, -1.28002f,  -1.30455f ); // left   top    rear
-    //blockPoints[1] = PNT3D(  1.28975f, -1.28002f,  -1.30455f ); // left   top    front
+    blockPoints[0] = PNT3D( -1.27029f, -1.28002f,  -1.30455f ); // left   top    rear
+    blockPoints[1] = PNT3D(  1.28975f, -1.28002f,  -1.30455f ); // left   top    front
 
-    //blockPoints[2] = PNT3D(  0.25f,  1.26002f,  -0.25f ); // left   bottom rear
-    //blockPoints[3] = PNT3D( -0.25f,  1.26002f,  -0.25f ); // left   bottom front
+    blockPoints[2] = PNT3D(  0.25f,  1.26002f,  -0.25f ); // left   bottom rear
+    blockPoints[3] = PNT3D( -0.25f,  1.26002f,  -0.25f ); // left   bottom front
 
 
-    //blockPoints[4] = PNT3D( -1.27029f, -1.28002f, 1.25549f ); // right  top    rear
-    //blockPoints[5] = PNT3D(  1.28975f, -1.28002f, 1.25549f ); // right  top    front
+    blockPoints[4] = PNT3D( -1.27029f, -1.28002f, 1.25549f ); // right  top    rear
+    blockPoints[5] = PNT3D(  1.28975f, -1.28002f, 1.25549f ); // right  top    front
 
-    //blockPoints[6] = PNT3D(  0.25f,  1.26002f,  0.25f  ); // right  bottom rear
-    //blockPoints[7] = PNT3D( -0.25f,  1.26002f,   0.25f ); // right  bottom front
+    blockPoints[6] = PNT3D(  0.25f,  1.26002f,  0.25f  ); // right  bottom rear
+    blockPoints[7] = PNT3D( -0.25f,  1.26002f,   0.25f ); // right  bottom front
 
     /////////////////////////////////////
-    blockPoints[0] = PNT3D( -0.69083f, -0.660441f,  -0.156858f ); // left   top    rear
-    blockPoints[1] = PNT3D(  -0.232487f, -0.660441f,  -0.156858f ); // left   top    front
-
-    blockPoints[2] = PNT3D(  -0.232487f,  -1.11878f,  -0.156858f ); // left   bottom rear
-    blockPoints[3] = PNT3D( -0.69083f,  -1.11878f,  -0.156858f ); // left   bottom front
-
-
-    blockPoints[4] = PNT3D( -0.69083f, -0.660441f, -0.231655f ); // right  top    rear
-    blockPoints[5] = PNT3D(  -0.232487f, -0.660441f, -0.231655f ); // right  top    front
-
-    blockPoints[6] = PNT3D(  -0.232487f,  -1.11878f,  -0.231655f  ); // right  bottom rear
-    blockPoints[7] = PNT3D( -0.69083f,  -1.11878f,   -0.231655f ); // right  bottom front
+//    blockPoints[0] = PNT3D( -0.69083f, -0.660441f,  -0.156858f ); // left   top    rear
+//    blockPoints[1] = PNT3D(  -0.232487f, -0.660441f,  -0.156858f ); // left   top    front
+//
+//    blockPoints[2] = PNT3D(  -0.232487f,  -1.11878f,  -0.156858f ); // left   bottom rear
+//    blockPoints[3] = PNT3D( -0.69083f,  -1.11878f,  -0.156858f ); // left   bottom front
+//
+//
+//    blockPoints[4] = PNT3D( -0.69083f, -0.660441f, -0.231655f ); // right  top    rear
+//    blockPoints[5] = PNT3D(  -0.232487f, -0.660441f, -0.231655f ); // right  top    front
+//
+//    blockPoints[6] = PNT3D(  -0.232487f,  -1.11878f,  -0.231655f  ); // right  bottom rear
+//    blockPoints[7] = PNT3D( -0.69083f,  -1.11878f,   -0.231655f ); // right  bottom front
 
 
 
@@ -211,8 +212,8 @@ ArObj createLight(ART_GV * art_gv) {
             NULL,
             NULL
             );
-    
-    ArObj block = QUADRANGLE(0, 1, 2, 3);
+
+    ArObj block = QUADRANGLE(2,6,7,3);
 
     ArObj blockMaterial = LAMBERT_EMITTER  (lightSpectrum(art_gv), 1.0 );
 
@@ -327,9 +328,10 @@ ARM_MAIN_FUNCTION(CornellBox)
 
             [ STOCHASTIC_BACKWARDS_PIXEL_SAMPLER
                 sampleProvider:
-                    [LIGHTTRACER
+                    [VCM
                         rayCaster:        STANDARD_RAYCASTER
                         maximalRecursion: 9
+                        mode: arvcmmode_vcm
                         ]
                 sampleSplattingKernel: TENT_KERNEL
                 samplesPerPixel:       SAMPLES

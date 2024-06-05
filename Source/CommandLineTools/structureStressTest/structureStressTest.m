@@ -286,7 +286,15 @@ int structureStressTest(
         ART_GV   * art_gv
 )
 {
+    pthread_attr_t attr;
+    size_t stack_size;
 
+    pthread_attr_init(&attr);
+    pthread_attr_getstacksize(&attr, &stack_size);
+    pthread_attr_destroy(&attr);
+
+    printf("Default stack size: %zu bytes\n", stack_size);
+    return 1;
     bool allValid = true;
     for( int i = 0; i < 20; i++ )
     {

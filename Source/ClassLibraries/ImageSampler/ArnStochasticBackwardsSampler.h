@@ -39,7 +39,7 @@ ART_MODULE_INTERFACE(ArnStochasticBackwardsSampler)
 
 #define IMAGE_SAMPLER_MAX_SUBPIXEL_SAMPLES      1024
 #ifndef MODE
-    #define MODE arvcmmode_vcm
+    #define MODE arvcmmode_vc
 #endif
 
 @protocol ArpPathspaceIntegratorSampling;
@@ -114,6 +114,9 @@ ART_MODULE_INTERFACE(ArnStochasticBackwardsSampler)
     //   number of WLs div 4 in the deterministic case, precomputed
 
     int             wavelengthSteps;
+
+    ArPathVertexptrDynArray  LightPaths;
+    uint32_t pathEnds[512 * 512];
 }
 
 - (id) init

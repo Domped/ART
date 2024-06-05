@@ -240,9 +240,39 @@ ARPACTION_DEFAULT_IMPLEMENTATION(ArnImageSampler)
 
     [ sampleCounter start ];
 
+//    ArPathVertexptrDynArray lightPathsList = arpvptrdynarray_init(20);
+//    ArPathVertex* lightPath = ALLOC( ArPathVertex );
+
+//    arpvptrdynarray_push(&lightPathsList, lightPath);
+//    pthread_cond_init(&lightPathsCond, NULL);
+//
+//    BOOL LightPathsGenerated = false;
+//
+//    pthread_mutex_lock(&generationMutex);
+//    NSValue * lightPathsListValue = [ NSValue valueWithPointer: &lightPathsList ];
+//    if( ! art_thread_detach(@selector(renderLightPathsProc:), self, lightPathsListValue))
+//        ART_ERRORHANDLING_FATAL_ERROR(
+//            "could not detach rendering thread"
+//            );
+//
+//    lightPathsAreDone = NO;
+//
+//    while(!lightPathsAreDone)
+//    {
+//        pthread_cond_wait( & lightPathsCond, & generationMutex );
+//    }
+
+    pthread_barrier_init(&renderBarrier, NULL, numberOfRenderThreads);
     for ( unsigned int i = 0; i < numberOfRenderThreads; i++ )
     {
+
+        ArcVCMSamplerInput samplerInput;
         ArcUnsignedInteger  * index = [ ALLOC_INIT_OBJECT(ArcUnsignedInteger) : i ];
+
+        samplerInput.lightPaths = 0;
+        samplerInput.threadIndex = index;
+
+        NSValue * threadInput = [ NSValue valueWithPointer: &samplerInput ];
 
         if ( ! art_thread_detach(@selector(renderProc:), self,  index))
             ART_ERRORHANDLING_FATAL_ERROR(
@@ -669,6 +699,17 @@ ARPACTION_DEFAULT_IMPLEMENTATION(ArnImageSampler)
     //   Release the mutex
     
     pthread_mutex_unlock( & tonemapAndOpenThreadMutex );
+}
+
+- (void) renderLightPathsFinished
+{
+
+    pthread_mutex_lock(&generationMutex);
+
+    lightPathsAreDone = YES;
+    pthread_cond_signal( & lightPathsCond );
+    pthread_mutex_unlock(&generationMutex);
+
 }
 
 - (void) renderProcHasFinished

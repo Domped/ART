@@ -31,6 +31,7 @@ ART_MODULE_INTERFACE(ArnImageSamplerBase)
 #import "ART_Scenegraph.h"
 #import "ART_ImageData.h"
 
+#include "ArVCMSamplerInput.h"
 /* ===========================================================================
     'ArnImageSamplerBase'
 =========================================================================== */
@@ -69,10 +70,15 @@ ART_MODULE_INTERFACE(ArnImageSamplerBase)
     IVec2D                                imageSize;
     IPnt2D                                imageOrigin;
     int                                 * threadStatus;
+    int                                 * lightPathsStatus;
     double                                writeThreadWallClockDuration;
     BOOL                                  renderingThreadsAreDone;
+    BOOL                                  lightPathsAreDone;
     pthread_mutex_t                       writeThreadMutex;
+    pthread_mutex_t                       generationMutex;
     pthread_cond_t                        writeThreadCond;
+    pthread_cond_t                        lightPathsCond;
+    pthread_barrier_t                     renderBarrier;
     int                                 * x_start;
     int                                 * x_end;
 
@@ -92,6 +98,16 @@ ART_MODULE_INTERFACE(ArnImageSamplerBase)
 
 - (void) renderProc
         : (ArcUnsignedInteger *) threadIndex
+        ;
+
+- (void) renderProcVCM
+        : (NSValue *) input
+        ;
+
+- (void) renderLightPathsProc
+        : (NSValue *) input
+        ;
+- (void) renderLightPathsFinished
         ;
 
 - (void) renderProcHasFinished

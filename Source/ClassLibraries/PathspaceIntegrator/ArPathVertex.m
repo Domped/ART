@@ -56,11 +56,11 @@ void arpv_free_pv(const ART_GV *art_gv, ArPathVertex *pv)
         pv->lightSample = 0;
     }
 
-//    if(pv->cameraLightSample)
-//    {
-//        arlightalphasample_free(art_gv, pv->cameraLightSample);
-//        pv->cameraLightSample = 0;
-//    }
+    if(pv->cameraLightSample)
+    {
+        arlightalphasample_free(art_gv, pv->cameraLightSample);
+        pv->cameraLightSample = 0;
+    }
 
     if(pv->attenuationSample && pv->totalPathLength > 0)
     {

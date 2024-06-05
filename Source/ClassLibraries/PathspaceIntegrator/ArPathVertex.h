@@ -117,6 +117,8 @@ typedef struct ArPathVertex
     Vec3D worldNormal;
 
     Vec3D incomingDirection;
+
+    ArWavelength initialWavelength;
 }
 
 ArPathVertex;

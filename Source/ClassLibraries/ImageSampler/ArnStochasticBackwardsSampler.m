@@ -73,7 +73,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnStochasticBackwardsSampler)
                     :newRandomValueGeneration
             ];
 
-    vcmMode = [newPathspaceIntegrator getIntegratorMode];
+//    vcmMode = [newPathspaceIntegrator getIntegratorMode];
     deterministicWavelengths = NO;
     wavelengthSteps = 1;
 
@@ -307,12 +307,187 @@ typedef struct ArPixelID {
     }
 }
 
-- (void)renderProc
-        :(ArcUnsignedInteger *)threadIndex {
-    //   Autorelease pool for this thread to keep Cocoa happy
+- (void) splatRenderLightPaths
+    : (ArcUnsignedInteger*) threadIndex
+    : (int) subpixelIdx
+{
+    unsigned int sizeArray = arpvptrdynarray_size(&LightPaths);
 
+    for (unsigned int p = 0; p < sizeArray; p++) {
+        ArPathVertex *pv = arpvptrdynarray_i(&LightPaths, p);
+
+        Ray3D cameraRay;
+        [camera getCameraRay:&cameraRay];
+
+        if (ARPV_OCCLUDED(*pv)) {
+            continue;
+        }
+
+        Vec2D pixelCoords;
+        [camera getPixelCoordinates
+                :&pv->worldHitPoint->worldspace_point
+                :&pixelCoords
+        ];
+
+        if(
+                XC(pixelCoords) > XC(imageSize)-1 ||
+                YC(pixelCoords) > YC(imageSize)-1 ||
+                XC(pixelCoords) < 0 ||
+                YC(pixelCoords) < 0)
+        {
+            continue;
+        }
+
+        if (splattingKernelWidth == 1) {
+            for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
+                PIXEL_SAMPLE_COUNT((int) XC(pixelCoords), (int) YC(pixelCoords), THREAD_INDEX, im) += 1.0;
+
+                arlightalpha_wsd_sloppy_add_l(
+                        art_gv,
+                        pv->cameraLightSample,
+                        &pv->cameraWavelength,
+                        &spectralSplattingData,
+                        3.0 DEGREES,
+                        PIXEL_SAMPLE_VALUE((int) XC(pixelCoords), (int) YC(pixelCoords), THREAD_INDEX, im)
+                );
+            }
+        } else {
+            for (unsigned int l = 0; l < splattingKernelArea; l++) {
+                int x = XC(pixelCoords);
+                int y = YC(pixelCoords);
+
+                int cX = x + XC(sampleSplattingOffset[l]);
+                int cY = y + YC(sampleSplattingOffset[l]);
+
+                if (cX >= 0
+                    && cX < XC(imageSize)
+                    && cY >= 0
+                    && cY < YC(imageSize)) {
+                    for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
+                        PIXEL_SAMPLE_COUNT(cX, cY, THREAD_INDEX, im) += SAMPLE_SPLATTING_FACTOR(subpixelIdx, l);
+
+                        for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
+
+                            arlightalpha_dwsd_mul_sloppy_add_l(
+                                    art_gv,
+                                    SAMPLE_SPLATTING_FACTOR(subpixelIdx, l),
+                                    pv->cameraLightSample,
+                                    &pv->cameraWavelength,
+                                    &spectralSplattingData,
+                                    5.0 DEGREES,
+                                    THREAD_RESULT_PIXEL(cX, cY, im)
+                            );
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+- (void) renderLightPaths
+        : (uint32_t *)        pathEnds
+        : (ArVCMGlobalValues) vcmGlobalValues
+{
+    NSAutoreleasePool *threadPool;
+    threadPool = [[NSAutoreleasePool alloc] init];
+    ArcUnsignedInteger  * threadIndex = [ ALLOC_INIT_OBJECT(ArcUnsignedInteger) : 0 ];
+
+//    ArPathVertexptrDynArray *pathVertexArray = [input pointerValue];
+
+    if(arpvptrdynarray_size(&LightPaths) > 1)
+    {
+        arpv_free_arr_itrsc(art_gv, &LightPaths);
+        arpvptrdynarray_free_contents(&LightPaths);
+    }
+
+    LightPaths = arpvptrdynarray_init(1);
+    ArPixelID px_id;
+    px_id.threadIndex = THREAD_INDEX;
+    px_id.globalRandomSeed = arrandom_global_seed(art_gv);
+
+    int subpixelIdx = 0 % numberOfSubpixelSamples;
+    px_id.sampleIndex = 0;
+
+    for (int ylv = 0; ylv < YC(imageSize); ylv++) {
+        int y = ylv;
+
+        if (y >= YC(imageSize)) {
+            y = y - YC(imageSize);
+        }
+
+        YC(px_id.pixelCoord) = y + YC(imageOrigin);
+
+        /* -------------------------------------------------------------
+             We render each pixel of the scanline.
+        ------------------------------------------------------------- */
+
+        for (int x = x_start[y]; x < x_end[y]; x++) {
+
+            XC(px_id.pixelCoord) = x + XC(imageOrigin);
+
+//                if (x< 440)
+//                {
+//                    continue;
+//                }
+            for (int w = 0; w < wavelengthSteps; w++) {
+
+            }
+            [THREAD_RANDOM_GENERATOR reInitializeWith
+            :crc32_of_data(&px_id, sizeof(ArPixelID))
+            ];
+
+            [THREAD_RANDOM_GENERATOR setCurrentSequenceID
+            :startingSequenceID
+            ];
+            ArWavelength wavelength;
+
+            if (deterministicWavelengths) {
+                arwavelength_i_deterministic_init_w(
+                        art_gv,
+                        0,
+                        &wavelength
+                );
+            } else {
+                arwavelength_sd_init_w(
+                        art_gv,
+                        &spectralSamplingData,
+                        [THREAD_RANDOM_GENERATOR valueFromNewSequence],
+                        &wavelength
+                );
+            }
+            BOOL validSample = FALSE;
+
+            Ray3D ray;
+            ArReferenceFrame referenceFrame;
+
+            [THREAD_PATHSPACE_INTEGRATOR generateLightPaths
+                    :art_gv
+                    :&ray
+                    :camera
+                    :&LightPaths
+                    :&wavelength
+                    :pathEnds
+                    :x + y * XC(imageSize)
+                    :0
+                    :&vcmGlobalValues
+            ];
+
+        }
+    }
+
+    NSLog(@"LIGHT PATHS DONE");
+    [self renderLightPathsFinished];
+
+}
+- (void) renderProc
+        : (ArcUnsignedInteger*) threadIndex
+{
     NSAutoreleasePool *threadPool;
 
+//    ArcVCMSamplerInput *threadInput = [input pointerValue];
+//
+//    ArcUnsignedInteger* threadIndex = threadInput->threadIndex;
     vcmMode = [THREAD_PATHSPACE_INTEGRATOR getIntegratorMode];
     threadPool = [[NSAutoreleasePool alloc] init];
     ArPixelID px_id;
@@ -323,196 +498,51 @@ typedef struct ArPixelID {
     int threadStripWidth = YC(imageSize) / numberOfRenderThreads;
     int threadOffset = threadStripWidth * THREAD_INDEX;
 
-
     unsigned int pixelCount = 0;
     double baseRadius = 0.00665117893f;
 
-    NSLog(@"MODE %d", MODE);
+    NSLog(@"MODE %d", THREAD_INDEX);
     for(int lightIter = 0; lightIter < 1; lightIter++) {
         for (unsigned int i = 0; i < numberOfSamplesPerThread; i++) {
-
-            ArPathVertexptrDynArray pathVertexArray = arpvptrdynarray_init(1);
-            uint32_t pathEnds[XC(imageSize) * YC(imageSize)];
 
             ArcHashgrid *hashgrid;
             if(MODE & arvcmmode_vm)
                  hashgrid = [[ArcHashgrid alloc] init];
-
             int subpixelIdx = i % numberOfSubpixelSamples;
             px_id.sampleIndex = i;
 
             double radius = baseRadius / (pow(i + 1, 0.5f * (1 - 0.75f)));
             radius = fmax(radius, 1e-7f);
-            vmNormalization = 1.f / (M_SQR(radius) * M_PI * XC(imageSize) * YC(imageSize));
+            vmNormalization = MODE & arvcmmode_vm ? 1.f / (M_SQR(radius) * M_PI * XC(imageSize) * YC(imageSize)) : 0;
             double etaVCM = (M_PI * M_SQR(radius)) * XC(imageSize) * YC(imageSize);
 
             VMweight = MODE & arvcmmode_vm ? etaVCM : 0;
-            VCweight = MODE & arvcmmode_vc ? 1.0f / etaVCM : 0;
+            VCweight = MODE & arvcmmode_vm ? 1.0f / etaVCM : 0;
 
             ArVCMGlobalValues vcmGlobalValues;
             vcmGlobalValues.vmNormalization = vmNormalization;
             vcmGlobalValues.VMweight = VMweight;
             vcmGlobalValues.VCweight = VCweight;
 
+            pthread_barrier_wait(&renderBarrier);
 
-            for (int ylv = 0; ylv < YC(imageSize); ylv++) {
-                int y = ylv + threadOffset;
+            if(THREAD_INDEX == 0)
+            {
+                [self renderLightPaths :pathEnds : vcmGlobalValues ];
+            }
 
-                if (y >= YC(imageSize)) {
-                    y = y - YC(imageSize);
-                }
-
-                YC(px_id.pixelCoord) = y + YC(imageOrigin);
-
-                /* -------------------------------------------------------------
-                     We render each pixel of the scanline.
-                ------------------------------------------------------------- */
-
-                for (int x = x_start[y]; x < x_end[y]; x++) {
-
-                    XC(px_id.pixelCoord) = x + XC(imageOrigin);
-
-                    for (int w = 0; w < wavelengthSteps; w++) {
-
-                        BOOL validSample = FALSE;
-
-                        Ray3D ray;
-                        ArReferenceFrame referenceFrame;
-
-#ifndef MONOHERO
-                        [THREAD_RANDOM_GENERATOR reInitializeWith
-                        :crc32_of_data(&px_id, sizeof(ArPixelID))
-                        ];
-
-                        [THREAD_RANDOM_GENERATOR setCurrentSequenceID
-                        :startingSequenceID
-                        ];
-                        ArWavelength wavelength;
-
-                        if (deterministicWavelengths) {
-                            arwavelength_i_deterministic_init_w(
-                                    art_gv,
-                                    0,
-                                    &wavelength
-                            );
-                        } else {
-                            arwavelength_sd_init_w(
-                                    art_gv,
-                                    &spectralSamplingData,
-                                    [THREAD_RANDOM_GENERATOR valueFromNewSequence],
-                                    &wavelength
-                            );
-                        }
-
-
-#else
-                        arwavelength_d_init_w(art_gv, 550 NM, &wavelength);
-#endif
-                        [THREAD_PATHSPACE_INTEGRATOR generateLightPaths
-                                :art_gv
-                                :&ray
-                                :camera
-                                :&pathVertexArray
-                                :&wavelength
-                                :                              pathEnds
-                                :x + y * XC(imageSize)
-                                :0
-                                :&vcmGlobalValues
-                        ];
-
-                    }
-
-
-                }
-
-            } // y, YC(image)
-
+            pthread_barrier_wait(&renderBarrier);
 
             uint32_t max = 0;
-            unsigned int sizeArray = arpvptrdynarray_size(&pathVertexArray);
 
-            for (unsigned int p = 0; p < sizeArray; p++) {
-                ArPathVertex *pv = arpvptrdynarray_i(&pathVertexArray, p);
-
-                Ray3D cameraRay;
-                [camera getCameraRay:&cameraRay];
-
-                if (ARPV_OCCLUDED(*pv)) {
-                    continue;
-                }
-
-                Vec2D pixelCoords;
-                [camera getPixelCoordinates
-                        :&pv->worldHitPoint->worldspace_point
-                        :&pixelCoords
-                ];
-
-                if(
-                        XC(pixelCoords) > XC(imageSize)-1 ||
-                        YC(pixelCoords) > YC(imageSize)-1 ||
-                        XC(pixelCoords) < 0 ||
-                        YC(pixelCoords) < 0)
-                {
-                    arlightalphasample_free(art_gv, pv->cameraLightSample);
-                    pv->cameraLightSample = 0;
-                    continue;
-                }
-
-                if (splattingKernelWidth == 1) {
-                    for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
-                        PIXEL_SAMPLE_COUNT((int) XC(pixelCoords), (int) YC(pixelCoords), THREAD_INDEX, im) += 1.0;
-
-                        arlightalpha_wsd_sloppy_add_l(
-                                art_gv,
-                                pv->cameraLightSample,
-                                &pv->cameraWavelength,
-                                &spectralSplattingData,
-                                3.0 DEGREES,
-                                PIXEL_SAMPLE_VALUE((int) XC(pixelCoords), (int) YC(pixelCoords), THREAD_INDEX, im)
-                        );
-                    }
-                } else {
-                    for (unsigned int l = 0; l < splattingKernelArea; l++) {
-                        int x = XC(pixelCoords);
-                        int y = YC(pixelCoords);
-
-                        int cX = x + XC(sampleSplattingOffset[l]);
-                        int cY = y + YC(sampleSplattingOffset[l]);
-
-                        if (cX >= 0
-                            && cX < XC(imageSize)
-                            && cY >= 0
-                            && cY < YC(imageSize)) {
-                            for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
-                                PIXEL_SAMPLE_COUNT(cX, cY, THREAD_INDEX, im) += SAMPLE_SPLATTING_FACTOR(subpixelIdx, l);
-
-                                for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
-
-                                    arlightalpha_dwsd_mul_sloppy_add_l(
-                                            art_gv,
-                                            SAMPLE_SPLATTING_FACTOR(subpixelIdx, l),
-                                            pv->cameraLightSample,
-                                            &pv->cameraWavelength,
-                                            &spectralSplattingData,
-                                            5.0 DEGREES,
-                                            THREAD_RESULT_PIXEL(cX, cY, im)
-                                    );
-                                }
-                            }
-                        }
-                    }
-                }
-
-                arlightalphasample_free(art_gv, pv->cameraLightSample);
-                pv->cameraLightSample = 0;
-            }
+            [self splatRenderLightPaths : threadIndex : subpixelIdx];
 
             if(!(MODE & arvcmmode_lt))
             {
                 if(MODE & arvcmmode_vm)
                 {
                     [hashgrid Reserve:(XC(imageSize) * YC(imageSize))];
-                    [hashgrid BuildHashgrid:&pathVertexArray :radius];
+                    [hashgrid BuildHashgrid:&LightPaths :radius];
 
                     hashgrid->vmNormalization = vmNormalization;
                     hashgrid->VMweight = VMweight;
@@ -524,6 +554,7 @@ typedef struct ArPixelID {
                  *
                  * @description: TRACE THE EYE RAYS
                  */
+                int iterations = 0;
                 for (int ylv = 0; ylv < YC(imageSize); ylv++) {
                     int y = ylv + threadOffset;
 
@@ -547,11 +578,10 @@ typedef struct ArPixelID {
 //                }
                         for (int w = 0; w < wavelengthSteps; w++) {
 
+                            iterations++;
                             ArPathVertex *currentState = arpv_alloc(art_gv);
 
                             ArWavelength wavelength;
-
-                            currentState;
 
                             uint32_t rangeX, rangeY;
                             rangeX = 0;
@@ -563,16 +593,16 @@ typedef struct ArPixelID {
                             }
 
                             uint32_t ss = pathIndex - 2;
-                            while (rangeX >= arpvptrdynarray_size(&pathVertexArray)) {
+                            while (rangeX >= arpvptrdynarray_size(&LightPaths)) {
                                 rangeX = pathEnds[ss];
                                 ss--;
                             }
 
-                            ArPathVertex *tempWavelengthVertex = arpvptrdynarray_i(&pathVertexArray, rangeX);
+                            ArPathVertex *tempWavelengthVertex = arpvptrdynarray_i(&LightPaths, rangeX);
 
                             Ray3D ray;
                             ArReferenceFrame referenceFrame;
-                            wavelength = tempWavelengthVertex->outgoingWavelength;
+                            wavelength = tempWavelengthVertex->incomingWavelength;
                             ArLightAlphaSample *lightAlphaSample = arlightalphasample_alloc(art_gv);
                             arlightsample_d_init_unpolarised_l(art_gv, 0.0, lightAlphaSample->light);
                             lightAlphaSample->alpha = 1;
@@ -607,7 +637,7 @@ typedef struct ArPixelID {
                                 [THREAD_PATHSPACE_INTEGRATOR generateEyePaths
                                         :&ray
                                         :camera
-                                        :&pathVertexArray
+                                        :&LightPaths
                                         :&wavelength
                                         :currentState
                                         :                            pathEnds
@@ -673,20 +703,13 @@ typedef struct ArPixelID {
                         }
                     } // x, XC(image)
                 } // y, YC(image)
+                NSLog(@"ITERATIONS %d ", iterations);
             }
-
-            NSLog(@"FINISHED ITER %@", threadIndex);
-
-//            [hashgrid CLEAR];
-
 
             if(MODE & arvcmmode_vm)
             {
                 [hashgrid dealloc];
             }
-
-            arpv_free_arr_itrsc(art_gv, &pathVertexArray);
-            arpvptrdynarray_free_contents(&pathVertexArray);
 
             if (THREAD_INDEX == 0) {
                 [sampleCounter step

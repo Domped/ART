@@ -149,6 +149,7 @@ ARPSURFACEMATERIAL_DEFAULT_WAVELENGTH_SHIFTING_SURFACETYPE_IMPLEMENTATION(
     {
         if ( [ SUB_COLOUR isFluorescent ] )
         {
+
             ArSpectralSample attenuation;
             if(![ SUB_SPECTRUM2D attenuationForWavelengthShift
                     :   incomingDirectionAndLocation
