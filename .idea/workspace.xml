@@ -31,23 +31,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9d6451dd-56f5-4571-bf94-32a69572af15" name="Changes" comment="structure stress test; hashgrid dealloc.">
-      <change afterPath="$PROJECT_DIR$/Source/ClassLibraries/MiscellaneousStructs/ArVCMSamplerInput.h" afterDir="false" />
+    <list default="true" id="9d6451dd-56f5-4571-bf94-32a69572af15" name="Changes" comment="split threads">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.artcsp" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.artcsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.exr" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.exr" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnImageSampler.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnImageSampler.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnImageSamplerBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnImageSamplerBase.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnImageSamplerBase.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnImageSamplerBase.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArPathVertex.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArPathVertex.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArPathVertex.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArPathVertex.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnVCM.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnVCM.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnVCM.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnVCM.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/SurfaceMaterial/ArnLambertSurfaceMaterial.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/SurfaceMaterial/ArnLambertSurfaceMaterial.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/CommandLineTools/structureStressTest/structureStressTest.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CommandLineTools/structureStressTest/structureStressTest.m" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,11 +104,6 @@
   }
 }]]></component>
   <component name="RunManager" selected="CMake Application.artist">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="AdvancedRenderingToolkit" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="AdvancedRenderingToolkit" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -225,7 +209,10 @@
       <workItem from="1717514504211" duration="16000" />
       <workItem from="1717526701892" duration="694000" />
       <workItem from="1717527403609" duration="980000" />
-      <workItem from="1717532158449" duration="13671000" />
+      <workItem from="1717532158449" duration="13942000" />
+      <workItem from="1717623153146" duration="2772000" />
+      <workItem from="1717759081708" duration="69000" />
+      <workItem from="1717759162390" duration="6978000" />
     </task>
     <task id="LOCAL-00001" summary="all working">
       <option name="closed" value="true" />
@@ -259,7 +246,15 @@
       <option name="project" value="LOCAL" />
       <updated>1717009200402</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="split threads">
+      <option name="closed" value="true" />
+      <created>1717546095010</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1717546095010</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -285,7 +280,8 @@
     <MESSAGE value="all working" />
     <MESSAGE value="file cleanup; vcm.h/m updated" />
     <MESSAGE value="fixed memory leaks" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed memory leaks" />
+    <MESSAGE value="split threads" />
+    <option name="LAST_COMMIT_MESSAGE" value="split threads" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -304,6 +300,11 @@
           <url>file://$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnPathspaceIntegrator.m</url>
           <line>126</line>
           <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.m</url>
+          <line>78</line>
+          <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

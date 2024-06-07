@@ -98,6 +98,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnStochasticBackwardsSampler)
             :numberOfResultImages
     ];
 
+    pthread_mutex_init(&LightPathsMutex, NULL);
     //   splatting kernel properties
 
     splattingKernelWidth = [RECONSTRUCTION_KERNEL supportSize];
@@ -179,6 +180,8 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnStochasticBackwardsSampler)
                         = v - splattingKernelOffset;
             }
     }
+
+
 }
 
 - (id)copy {
@@ -386,100 +389,108 @@ typedef struct ArPixelID {
 }
 
 - (void) renderLightPaths
-        : (uint32_t *)        pathEnds
-        : (ArVCMGlobalValues) vcmGlobalValues
+        : (uint32_t *)                  pathEnds
+        : (ArVCMGlobalValues)           vcmGlobalValues
+        : (ArcUnsignedInteger*)         threadIndex
+        : (ArPathVertexptrDynArray*)    renderBucket
 {
     NSAutoreleasePool *threadPool;
     threadPool = [[NSAutoreleasePool alloc] init];
-    ArcUnsignedInteger  * threadIndex = [ ALLOC_INIT_OBJECT(ArcUnsignedInteger) : 0 ];
 
 //    ArPathVertexptrDynArray *pathVertexArray = [input pointerValue];
-
-    if(arpvptrdynarray_size(&LightPaths) > 1)
+    if(arpvptrdynarray_size(renderBucket) > 1)
     {
-        arpv_free_arr_itrsc(art_gv, &LightPaths);
-        arpvptrdynarray_free_contents(&LightPaths);
+        arpvptrdynarray_free_contents(renderBucket);
     }
 
-    LightPaths = arpvptrdynarray_init(1);
-    ArPixelID px_id;
-    px_id.threadIndex = THREAD_INDEX;
-    px_id.globalRandomSeed = arrandom_global_seed(art_gv);
+    const int TILE_COUNT = XC(imageSize) * YC(imageSize) / TILE_SIZE;
+    if(threadIndex->value > TILE_COUNT)
+    {
+        return;
+    }
 
-    int subpixelIdx = 0 % numberOfSubpixelSamples;
-    px_id.sampleIndex = 0;
+    const int TILE_COUNT_X = XC(imageSize) / TILE_SIZE;
+    const int TILE_COUNT_Y = YC(imageSize) / TILE_SIZE;
 
-    for (int ylv = 0; ylv < YC(imageSize); ylv++) {
-        int y = ylv;
+    int iterations = 0;
+    for(int tile = threadIndex->value; tile < TILE_COUNT; tile += M_MIN(numberOfRenderThreads, TILE_COUNT))
+    {
+        int x_tile = tile % TILE_COUNT_X;
+        int y_tile = tile / TILE_COUNT_X;
 
-        if (y >= YC(imageSize)) {
-            y = y - YC(imageSize);
-        }
+        int x_start = x_tile * TILE_SIZE;
+        int y_start = y_tile * TILE_SIZE;
 
-        YC(px_id.pixelCoord) = y + YC(imageOrigin);
+        int x_end = M_MIN(x_start + TILE_SIZE, XC(imageSize));
+        int y_end = M_MIN(y_start + TILE_SIZE, YC(imageSize));
 
-        /* -------------------------------------------------------------
-             We render each pixel of the scanline.
-        ------------------------------------------------------------- */
+        for (int x = x_start; x < x_end; x++) {
+            for (int y = y_start; y < y_end; y++) {
+                iterations++;
 
-        for (int x = x_start[y]; x < x_end[y]; x++) {
+//            [THREAD_RANDOM_GENERATOR reInitializeWith
+//            :crc32_of_data(&px_id, sizeof(ArPixelID))
+//            ];
 
-            XC(px_id.pixelCoord) = x + XC(imageOrigin);
+                [THREAD_RANDOM_GENERATOR setCurrentSequenceID
+                :startingSequenceID
+                ];
+                ArWavelength wavelength;
 
-//                if (x< 440)
-//                {
-//                    continue;
-//                }
-            for (int w = 0; w < wavelengthSteps; w++) {
+                if (deterministicWavelengths) {
+                    arwavelength_i_deterministic_init_w(
+                            art_gv,
+                            0,
+                            &wavelength
+                    );
+                } else {
+                    arwavelength_sd_init_w(
+                            art_gv,
+                            &spectralSamplingData,
+                            [THREAD_RANDOM_GENERATOR valueFromNewSequence],
+                            &wavelength
+                    );
+                }
+                BOOL validSample = FALSE;
+
+                Ray3D ray;
+                ArReferenceFrame referenceFrame;
+
+                [THREAD_PATHSPACE_INTEGRATOR generateLightPaths
+                        :art_gv
+                        :&ray
+                        :camera
+                        :renderBucket
+                        :&wavelength
+                        :pathEnds
+                        :x + y * XC(imageSize)
+                        :0
+                        :&vcmGlobalValues
+                ];
 
             }
-            [THREAD_RANDOM_GENERATOR reInitializeWith
-            :crc32_of_data(&px_id, sizeof(ArPixelID))
-            ];
-
-            [THREAD_RANDOM_GENERATOR setCurrentSequenceID
-            :startingSequenceID
-            ];
-            ArWavelength wavelength;
-
-            if (deterministicWavelengths) {
-                arwavelength_i_deterministic_init_w(
-                        art_gv,
-                        0,
-                        &wavelength
-                );
-            } else {
-                arwavelength_sd_init_w(
-                        art_gv,
-                        &spectralSamplingData,
-                        [THREAD_RANDOM_GENERATOR valueFromNewSequence],
-                        &wavelength
-                );
-            }
-            BOOL validSample = FALSE;
-
-            Ray3D ray;
-            ArReferenceFrame referenceFrame;
-
-            [THREAD_PATHSPACE_INTEGRATOR generateLightPaths
-                    :art_gv
-                    :&ray
-                    :camera
-                    :&LightPaths
-                    :&wavelength
-                    :pathEnds
-                    :x + y * XC(imageSize)
-                    :0
-                    :&vcmGlobalValues
-            ];
-
         }
     }
 
-    NSLog(@"LIGHT PATHS DONE");
     [self renderLightPathsFinished];
 
 }
+
+- (void) fillLightPaths
+    : (ArPathVertexptrDynArray *) lightPathsBucket
+    : (ArcUnsignedInteger*) threadIndex
+{
+    LightPaths;
+    pthread_mutex_lock(&LightPathsMutex);
+    int threadAccessOffset = threadIndex->value * arpvptrdynarray_size(lightPathsBucket);
+    for(uint32_t threadStart = 0; threadStart < arpvptrdynarray_size(lightPathsBucket); threadStart++)
+    {
+        ArPathVertex *pv = arpvptrdynarray_i(lightPathsBucket, threadStart);
+        arpvptrdynarray_push(&LightPaths, pv);
+    }
+    pthread_mutex_unlock(&LightPathsMutex);
+}
+
 - (void) renderProc
         : (ArcUnsignedInteger*) threadIndex
 {
@@ -502,12 +513,15 @@ typedef struct ArPixelID {
     double baseRadius = 0.00665117893f;
 
     NSLog(@"MODE %d", THREAD_INDEX);
+
+    ArPathVertexptrDynArray renderBucket = arpvptrdynarray_init(0);
     for(int lightIter = 0; lightIter < 1; lightIter++) {
         for (unsigned int i = 0; i < numberOfSamplesPerThread; i++) {
 
             ArcHashgrid *hashgrid;
             if(MODE & arvcmmode_vm)
                  hashgrid = [[ArcHashgrid alloc] init];
+
             int subpixelIdx = i % numberOfSubpixelSamples;
             px_id.sampleIndex = i;
 
@@ -526,10 +540,20 @@ typedef struct ArPixelID {
 
             pthread_barrier_wait(&renderBarrier);
 
-            if(THREAD_INDEX == 0)
-            {
-                [self renderLightPaths :pathEnds : vcmGlobalValues ];
+            if(threadIndex->value == 0) {
+                if (arpvptrdynarray_size(&LightPaths) > 1) {
+                    arpv_free_arr_itrsc(art_gv, &LightPaths);
+                    arpvptrdynarray_free_contents(&LightPaths);
+                }
+
+                LightPaths = arpvptrdynarray_init(0);
             }
+
+            pthread_barrier_wait(&renderBarrier);
+            [self renderLightPaths :pathEnds : vcmGlobalValues: threadIndex : &renderBucket];
+            pthread_barrier_wait(&renderBarrier);
+
+            [self fillLightPaths : &renderBucket : threadIndex];
 
             pthread_barrier_wait(&renderBarrier);
 
