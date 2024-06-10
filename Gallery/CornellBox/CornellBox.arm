@@ -1,5 +1,5 @@
 #ifndef SAMPLES
-    #define SAMPLES 700
+    #define SAMPLES 2
 #endif
 
 

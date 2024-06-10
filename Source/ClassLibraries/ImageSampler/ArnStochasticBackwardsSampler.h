@@ -39,10 +39,10 @@ ART_MODULE_INTERFACE(ArnStochasticBackwardsSampler)
 
 #define IMAGE_SAMPLER_MAX_SUBPIXEL_SAMPLES      1024
 #ifndef MODE
-    #define MODE arvcmmode_lt
+    #define MODE arvcmmode_vc
 #endif
 
-#define TILE_SIZE 128
+#define TILE_SIZE 64
 
 @protocol ArpPathspaceIntegratorSampling;
 @class ArNode;
@@ -118,7 +118,7 @@ ART_MODULE_INTERFACE(ArnStochasticBackwardsSampler)
     int             wavelengthSteps;
 
     ArPathVertexptrDynArray  LightPaths;
-    uint32_t pathEnds[512 * 512];
+
 
     pthread_mutex_t   LightPathsMutex;
 

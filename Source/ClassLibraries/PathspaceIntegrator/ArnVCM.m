@@ -1612,7 +1612,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
         {
             break;
         }
-
+//
         {
 
             if([self directIllumination
@@ -1640,7 +1640,9 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
         if(pathIndex > 0)
         {
             rangeX = pathEnds[pathIndex - 1];
+
         }
+        rangeX;
         rangeY = pathEnds[pathIndex];
 
         for (uint32_t i = rangeX; i < rangeY; ++i)

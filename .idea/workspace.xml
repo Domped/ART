@@ -31,12 +31,14 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9d6451dd-56f5-4571-bf94-32a69572af15" name="Changes" comment="split threads">
+    <list default="true" id="9d6451dd-56f5-4571-bf94-32a69572af15" name="Changes" comment="thread mode: tiling;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.artcsp" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.artcsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.exr" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.exr" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnVCM.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnVCM.m" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,6 +111,11 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="arm2art" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="arm2art" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="arm2art">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -129,7 +136,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="artist" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm -j 32" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="artist" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="artist">
+    <configuration name="artist" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm -j 2" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="artist" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="artist">
       <envs>
         <env name="LD_LIBRARY_PATH" value="$PROJECT_DIR$/cmake-build-debug/lib" />
       </envs>
@@ -213,6 +220,7 @@
       <workItem from="1717623153146" duration="2772000" />
       <workItem from="1717759081708" duration="69000" />
       <workItem from="1717759162390" duration="6978000" />
+      <workItem from="1718045932973" duration="9798000" />
     </task>
     <task id="LOCAL-00001" summary="all working">
       <option name="closed" value="true" />
