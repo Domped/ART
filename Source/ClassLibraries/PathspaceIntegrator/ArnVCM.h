@@ -35,9 +35,9 @@ ART_MODULE_INTERFACE(ArnVCM)
 
 typedef enum ArVCMMode
 {
-    arvcmmode_lt         = 0x00,
-    arvcmmode_vc         = 0x01,
-    arvcmmode_vm         = 0x02,
+    arvcmmode_lt         = 0x01,
+    arvcmmode_vc         = 0x02,
+    arvcmmode_vm         = 0x04,
     arvcmmode_vcm        = arvcmmode_vc | arvcmmode_vm
 } ArVCMMode;
 

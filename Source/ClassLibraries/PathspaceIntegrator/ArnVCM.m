@@ -455,8 +455,6 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
            : & wavelengthPDF
            ])
        return NO;
-
-   
    // invert the direction to point towards the light source, as opposed to away from it
    
    // combine the pdf of sampling the light source point and of sampling the wavelength shift
@@ -650,14 +648,14 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
         return NO;
 
     double cos_factor = ARDIRECTIONCOSINE_COSINE(sampledDirection);
-//    if (! ARPDFVALUE_IS_INFINITE(*samplePDF))
-//    {
-//        cos_factor = M_ABS( ARDIRECTIONCOSINE_COSINE(sampledDirection) );
-//    }
-//    else
-//    {
-//        cos_factor = 1.0;
-//    }
+    if (! ARPDFVALUE_IS_INFINITE(*samplePDF))
+    {
+        cos_factor = M_ABS( ARDIRECTIONCOSINE_COSINE(sampledDirection) );
+    }
+    else
+    {
+        cos_factor = 1.0;
+    }
 
     *cosTheta = cos_factor;
 
@@ -749,7 +747,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
     ArDirectionCosine sampledDirection;
     ArPDFValue reversePDF;
     if( ! [ currentPoint sampleScattering
-            :   arpathdirection_from_eye
+            :   arpathdirection_from_light
             : & sgc
             :   wavelength
             :   newWavelength
@@ -787,14 +785,14 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
     // russian roulette against medium * reflectivity * cos / pdf
     ArSpectralSample continuationProbability;
     sps_ss_mul_s(art_gv, & mul_factor, & reflectivity, & continuationProbability);
-    if(lastMediumReflectivity)
-        sps_s_mul_s(art_gv, lastMediumReflectivity, & continuationProbability);
+//    if(lastMediumReflectivity)
+//        sps_s_mul_s(art_gv, lastMediumReflectivity, & continuationProbability);
     sps_dd_clamp_s(art_gv, 0.0, 1.0, & continuationProbability); // clamp at max 1.0
 
     double  russianRouletteSample =
             [ RANDOM_GENERATOR valueFromNewSequence ];
 
-    // decide according to the continuationProbability of hero wavelength only
+//     decide according to the continuationProbability of hero wavelength only
 //    if ( russianRouletteSample > SPS_CI(continuationProbability, 0) )
 //        return NO;
 
@@ -886,6 +884,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
         : (const ArWavelength *)              incomingWavelength
         : (ArWavelength *)                    outgoingWavelength
         : (ArPDFValue *)                     pdf
+        : (ArPDFValue *)                     wavelengthPDF
 {
 
     Ray3D cameraRay;
@@ -907,13 +906,12 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
 
 
     ArWavelength newWavelength;
-    ArPDFValue wavelengthPDF;
     if( ! [ currentPoint sampleWavelengthShift
             :   arpathdirection_from_light
             : & sgc
             :   incomingWavelength
             : & newWavelength
-            : & wavelengthPDF
+            :   wavelengthPDF
     ])
         return NO;
 
@@ -941,15 +939,15 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
         return NO;
     }
 
-    arpdfvalue_p_reverse_concat_p(
-            & wavelengthPDF,
-            & cameraPDF
-    );
-
-    arpdfvalue_p_reverse_concat_p(
-            & wavelengthPDF,
-            & reverseCameraPDF
-    );
+//    arpdfvalue_p_reverse_concat_p(
+//            & wavelengthPDF,
+//            & cameraPDF
+//    );
+//
+//    arpdfvalue_p_reverse_concat_p(
+//            & wavelengthPDF,
+//            & reverseCameraPDF
+//    );
 
     *pdf = reverseCameraPDF;
 
@@ -1042,6 +1040,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
 
 //            ArAttenuationSample* tempAtten = arattenuationsample_alloc(art_gv);
             ArWavelength outgoingWavelength;
+            ArPDFValue wavelengthPDF;
             ArPDFValue cameraReversePDF = ARPDFVALUE_UNIT_INFINITY;
             if( ! [self calculateCameraAttenuationContributions
                     :temporaryAttenuation
@@ -1051,6 +1050,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
                     :incomingWavelength
                     :&outgoingWavelength
                     :&cameraReversePDF
+                    :&wavelengthPDF
             ])
             {
                 connectionVertex->occluded = true;
@@ -1085,9 +1085,6 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
                             ( pArVcmGlobalValues->VMweight + currentState->dVCM + currentState->dVC * ARPDFVALUE_MAIN(cameraReversePDF));
 //            arpdfvalue_d_mul_p(wLightLeft, &cameraReversePDF);
 
-
-//            NSLog(@"wLight: %f", wLight);
-
             double hwssWeight = [self mis : &currentState->pathPDF];
 
             if(HERO_SAMPLES_TO_SPLAT == 1)
@@ -1096,17 +1093,24 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
             }
 
             double misWeight = 1.f / (wLight + 1.f);
-//            if(pArVcmGlobalValues->VCweight == 0 && pArVcmGlobalValues->VMweight == 0)
-//            {
-//                misWeight = 1;
-//            }
 
+            if(MODE & arvcmmode_lt)
+            {
+                misWeight = 1;
+            }
 //            misWeight = 1;
             ArSpectralSample sample = SPS4(currentState->throughput);
 
             arpdfvalue_p_div_s(&currentState->pathPDF, &sample);
 
+
+
             div *= surfaceFactor;
+            if(!ARPDFVALUE_IS_INFINITE(wavelengthPDF))
+            {
+                arpdfvalue_p_div_s(&wavelengthPDF, &sample);
+//                div /= ARPDFVALUE_MAIN(wavelengthPDF);
+            }
 
             connectionVertex->cameraLightSample = arlightalphasample_alloc(gv);
             if(pathLength > 0)
@@ -1118,18 +1122,12 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
                                         ( SPS_CI(sample, 0) * misWeight  * hwssWeight) / div,
                                         temporaryAttenuation);
 
-//            arlightsample_d_mul_l(art_gv,
-//                                  hwssWeight,
-//                                  connectionVertex->cameraLightSample->light);
-
             arlightsample_l_init_l(gv, generatedLightSample, connectionVertex->cameraLightSample->light);
             arlightsample_a_mul_l(gv,
                                   temporaryAttenuation,
                                   connectionVertex->cameraLightSample->light);
 
-
             connectionVertex->worldHitPoint = worldHitPoint;
-//            arlightsample_l_init_l(art_gv, init, connectionVertex->cameraLightSample->light);
 
         }
 
@@ -1225,19 +1223,38 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
     ArSamplingRegion samplingRegion;
     ArPDFValue emissionPDF, directPDF;
 
+    ArWavelength newWavelength;
+    ArPDFValue wavelengthPDF;
+    if( ! [ eyeState->worldHitPoint
+              sampleWavelengthShift
+            :   arpathdirection_from_eye
+            : & sgc
+            :  & eyeState->incomingWavelength
+            : & newWavelength
+            : & wavelengthPDF
+    ])
+        return NO;
+
     double distance;
-    [LIGHTSOURCE_COLLECTION sampleLightsource
+    if(![LIGHTSOURCE_COLLECTION sampleLightsource
             : eyeState->worldHitPoint
             : &lssc
-            : &eyeState->outgoingWavelength
+            : &newWavelength
             : &samplingRegion
             :&lightSourcePoint
             :&lightDirection
             : &directPDF
             : &emissionPDF
             : temporaryContribution
-    ];
+    ])
+    {
+        RELEASE_OBJECT(lightSourcePoint);
+        return NO;
+    }
 
+
+    arpdfvalue_p_reverse_concat_p(&wavelengthPDF, &emissionPDF);
+    arpdfvalue_p_reverse_concat_p(&wavelengthPDF, &directPDF);
 
     Vec3D directionToLight;
     vec3d_v_negate_v(&lightDirection.vector, &directionToLight);
@@ -1249,6 +1266,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
                 : &lightSourcePoint->worldspace_point
                 : &distanceT] == YES)
     {
+        RELEASE_OBJECT(lightSourcePoint);
         return NO;
     }
 
@@ -1262,19 +1280,22 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
             &eyeState->worldNormal,
             &directionToLight));
 
-    [eyeState->worldHitPoint evaluateScattering
+    if(![eyeState->worldHitPoint evaluateScattering
             : & directionToLight
             :   arpathdirection_from_eye
             : & sgc
             : & eyeState->incomingWavelength
-            : & eyeState->outgoingWavelength
+            : & newWavelength
             : & toLightcosine
             : & volumeMaterial
             : & eyeForwardPDF_W
             : & eyeReversePDF_W
             :   temporaryAttenuation
-    ];
-
+    ])
+    {
+        RELEASE_OBJECT(lightSourcePoint);
+        return NO;
+    }
 
     float wLight = ARPDFVALUE_MAIN(eyeForwardPDF_W)
                    / (lightPickProbability * ARPDFVALUE_MAIN(directPDF));
@@ -1460,8 +1481,6 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
 
     arattenuationsample_d_mul_a(art_gv, misWeight * geometryTerm * hwssWeight, cvtempSampleLight);
 
-
-
     arattenuationsample_a_init_a(art_gv, cvtempSampleLight, connectionSample);
 
     return YES;
@@ -1555,33 +1574,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
     currentState->pathPDF = ARPDFVALUE_ONE;
 
     bool pushed = false;
-//
-//    ArLightSample* lightSample = arlightsample_alloc(art_gv);
-//    arlightsample_d_init_unpolarised_l(art_gv, 0.0, lightSample);
-//
-//    ArcSurfacePoint * incomingSourcePoint;
-//    ArDirectionCosine incomingDirection = ARDIRECTIONCOSINE(VEC3D_INVALID, 0);
-//    ArSamplingRegion samplingRegion;
-//    ArPDFValue emitPDF;
-//    ArPDFValue directPDF;
-//    if( ![ LIGHTSOURCE_COLLECTION generateRandomDirection
-//            : & lssc
-//            : & samplingRegion
-//            : & incomingSourcePoint
-//            : & incomingDirection
-//            : & emitPDF /* optional */
-//            : & directPDF
-//            :  wavelength
-//            :  lightSample
-//    ])
-//    {
-//        return NO;
-//    }
-//    ArLightIntensitySample intensitySample;
-//    arlightsample_l_init_i(art_gv, lightSample, &intensitySample);
-
-//    NSLog(@"STARTING SAMPLE %f, %f, %f, %f", SPS_CI(intensitySample, 0), SPS_CI(intensitySample, 1), SPS_CI(intensitySample, 2), SPS_CI(intensitySample, 3));
-    for (unsigned int pathLength = 0; pathLength < 6; pathLength++)
+    for (unsigned int pathLength = 0; pathLength < 10; pathLength++)
     {
 
         currentState->totalPathLength = pathLength;
@@ -1615,7 +1608,10 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
             break; // we cannot return from infinite sphere
         }
         //update VCM values
-        double cosTheta = fabs([currentPoint getThetaFix]);
+        double cosTheta = [currentPoint getThetaFix];
+        if(cosTheta < 0)
+            break;
+
         {
             currentState->dVCM *= M_SQR(intersection->t);
             currentState->dVCM /= cosTheta;
@@ -1634,24 +1630,25 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
         }
 //
 //
-
-
         {
 
-            [self directIllumination
+            if([self directIllumination
                     : currentState
                     : temporaryContribution
                     : temporaryMediaAttenuation
                     : pArVcmGlobalValues
-            ];
+            ])
+            {
 
-            arlightsample_d_mul_l(art_gv,
-                                  currentState->throughput,
-                                  temporaryContribution);
+                arlightsample_d_mul_l(art_gv,
+                                      currentState->throughput,
+                                      temporaryContribution);
 
-            arlightsample_d_div_l(art_gv, ARPDFVALUE_MAIN(currentState->pathPDF), temporaryContribution);
+                arlightsample_d_div_l(art_gv, ARPDFVALUE_MAIN(currentState->pathPDF), temporaryContribution);
 
-            arlightsample_l_add_l(art_gv, temporaryContribution, lightalpha_r->light);
+                arlightsample_l_add_l(art_gv, temporaryContribution, lightalpha_r->light);
+            }
+
         }
 
 
@@ -1678,7 +1675,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
 //                continue;
 //            }
 
-            if(lightVertex->totalPathLength + pathLength + 1 > 10)
+            if(lightVertex->totalPathLength + pathLength + 1 > 16)
                 break;
 
             if([self connectVertices
@@ -1760,7 +1757,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
 
         currentState->incomingWavelength = currentState->outgoingWavelength;
 
-        if( pathLength < 6 - 1) {
+        if( pathLength < 10) {
             double cos;
             //conduct random walk step, generating new ray and wavelength
             if (![self randomWalkPT
@@ -1876,8 +1873,6 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
     {
         return NO;
     }
-    double ss = arlightsample_l_max(gv, initialLightSample);
-    ss;
 
     ARLIGHTALPHASAMPLE_LIGHT(lightAlphaSample) = initialLightSample;
     ARLIGHTALPHASAMPLE_ALPHA(lightAlphaSample) = 1.0f;
@@ -1888,10 +1883,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
 
     bool shouldBreak = false;
 
-    int lastNonzeroIndex = -1;
-
     Vec3D intersectionNormal;
-    Vec3D originNormal = ARCINTERSECTION_WORLDSPACE_NORMAL(incomingSourcePoint);
 
     ArcPointContext* originPoint =  incomingSourcePoint;
     bool gotPushed = false;
@@ -1900,7 +1892,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
 
     unsigned int pathLength = 0;
 
-    for(; pathLength < 6; ++pathLength)
+    for(; pathLength < 10; ++pathLength)
     {
 
         gotPushed = false;
@@ -1911,11 +1903,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
 //
             //UPDATE THE VERTEX CONNECTION and VCM VALUES
             currentSubPathState.dVC = incomingDirection.cosine / ARPDFVALUE_MAIN(emitPDF);
-
-            ArPDFValue vcm;
-//            arpdfvalue_pp_div_p(&lightSourcePDF, &currentState->pathPDF, &vcm);
             currentSubPathState.dVCM = ARPDFVALUE_MAIN(directPDF) / ARPDFVALUE_MAIN(emitPDF);
-
             currentSubPathState.dVM = currentSubPathState.dVC * pArVcmGlobalValues->VCweight;
 
             arlightsample_l_init_l(gv, initialLightSample, generatedLightSample);
@@ -1958,37 +1946,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
         }
         arlightsample_free(gv, temporaryEmission);
 
-        ArSpectralSample mediumReflectivity; // to store the reflectivity divided by their respective pdfs
-        ArPDFValue distanceProbability, volumeProbability;
-        unsigned int volumeHasContribution;
-        unsigned int clearMedia;
-
-        [ self sampleVolumeTransmittanceAndDistance
-                :   volumeMaterial
-                : & ray
-                :   arpathdirection_from_eye
-                :   !intersection ? MATH_HUGE_DOUBLE : ARCINTERSECTION_T(intersection)
-                :   wavelength
-                : & distanceProbability
-                : & volumeProbability
-                :   temporaryMediaAttenuation
-                : & mediumReflectivity
-                : & clearMedia
-                :   temporaryContribution
-                : & volumeHasContribution
-        ];
-
-        if ( volumeHasContribution) {
-
-            arlightsample_l_add_l(gv, temporaryContribution, generatedLightSample);
-
-            arattenuationsample_a_mul_a(gv, temporaryMediaAttenuation, pathAttenuation);
-        }
-
-//        arpdfvalue_p_reverse_concat_p(&distanceProbability, &currentState->pathPDF);
-
         intersectionNormal = ARCINTERSECTION_WORLDSPACE_NORMAL(intersection);
-        originNormal = intersectionNormal;
 
         if ( [ ARCINTERSECTION_SHAPE(intersection)
                 isMemberOfClass
@@ -2006,7 +1964,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
             shouldBreak = true;
             break;
         }
-
+        else
         {
             currentSubPathState.dVCM *= M_SQR(intersection->t);
 
@@ -2056,7 +2014,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
         gotPushed = true;
 
         // continue only if there is a possibility to encounter any more light samples
-        if ( pathLength < 6 - 1 )
+        if ( pathLength < 10 )
         {
             previousWavelength = currentWavelength;
 

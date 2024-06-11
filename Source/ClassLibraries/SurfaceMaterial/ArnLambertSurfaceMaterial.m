@@ -167,7 +167,17 @@ ARPSURFACEMATERIAL_DEFAULT_WAVELENGTH_SHIFTING_SURFACETYPE_IMPLEMENTATION(
                       sampleProbability
                     );
             }
-            // todo: reverseSampleProbability
+
+            if(reverseSampleProbability)
+            {
+                ArPDFValue holder = *sampleProbability;
+                arpdfvalue_d_mul_p(
+                        INCOMING_COSINE_WORLDSPACE / MATH_PI,
+                        &holder
+                );
+
+                *reverseSampleProbability = holder;
+            }
             
             ARATTENUATIONSAMPLE_VVV_PD_C_INIT_DEPOLARISING_A(
                 & INCOMING_VECTOR_WORLDSPACE,
@@ -312,7 +322,18 @@ ARPSURFACEMATERIAL_DEFAULT_WAVELENGTH_SHIFTING_SURFACETYPE_IMPLEMENTATION(
               SAMPLED_COSINE_WORLDSPACE / MATH_PI, // probability of direction
               sampleProbability
             );
-        
+
+        if(reverseSampleProbability)
+        {
+            ArPDFValue holder = *sampleProbability;
+            arpdfvalue_d_mul_p(
+                  INCOMING_COSINE_WORLDSPACE / MATH_PI,
+                  &holder
+                );
+
+            *reverseSampleProbability = holder;
+        }
+
         // todo: reverseSampleProbability
         
         ARATTENUATIONSAMPLE_VVV_PD_C_INIT_DEPOLARISING_A(

@@ -322,7 +322,7 @@ ART_NO_MODULE_SHUTDOWN_FUNCTION_NECESSARY
         :   &cosine];
 
     ARDIRECTIONCOSINE_VECTOR(*generatedDirection) = tmp;
-    ARDIRECTIONCOSINE_COSINE(*generatedDirection) =cosine;
+    ARDIRECTIONCOSINE_COSINE(*generatedDirection) = cosine;
 
     unsigned int ins = 0;
     double allArea = 0;
