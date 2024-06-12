@@ -99,6 +99,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnStochasticBackwardsSampler)
     ];
 
     pthread_mutex_init(&LightPathsMutex, NULL);
+    pthread_mutex_init(&HashgridsMutex, NULL);
     //   splatting kernel properties
 
     splattingKernelWidth = [RECONSTRUCTION_KERNEL supportSize];
@@ -310,6 +311,60 @@ typedef struct ArPixelID {
     }
 }
 
+-(void) splatOntoImage
+        :(ArcUnsignedInteger *) threadIndex
+        :(ArLightAlphaSample *) lightSample
+        :(ArWavelength *)       wavelength
+        :(int)                  subpixelIdx
+        :(int)                  x_pixel
+        :(int)                  y_pixel
+{
+    if (splattingKernelWidth == 1) {
+        for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
+            PIXEL_SAMPLE_COUNT((int) x_pixel, (int) y_pixel, THREAD_INDEX, im) += 1.0;
+
+            arlightalpha_wsd_sloppy_add_l(
+                    art_gv,
+                    lightSample,
+                    wavelength,
+                    &spectralSplattingData,
+                    3.0 DEGREES,
+                    PIXEL_SAMPLE_VALUE((int) x_pixel, (int) y_pixel, THREAD_INDEX, im)
+            );
+        }
+    } else {
+        for (unsigned int l = 0; l < splattingKernelArea; l++) {
+            int x = x_pixel;
+            int y = y_pixel;
+
+            int cX = x + XC(sampleSplattingOffset[l]);
+            int cY = y + YC(sampleSplattingOffset[l]);
+
+            if (cX >= 0
+                && cX < XC(imageSize)
+                && cY >= 0
+                && cY < YC(imageSize)) {
+                for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
+                    PIXEL_SAMPLE_COUNT(cX, cY, THREAD_INDEX, im) += SAMPLE_SPLATTING_FACTOR(subpixelIdx, l);
+
+                    for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
+
+                        arlightalpha_dwsd_mul_sloppy_add_l(
+                                art_gv,
+                                SAMPLE_SPLATTING_FACTOR(subpixelIdx, l),
+                                lightSample,
+                                wavelength,
+                                &spectralSplattingData,
+                                5.0 DEGREES,
+                                THREAD_RESULT_PIXEL(cX, cY, im)
+                        );
+                    }
+                }
+            }
+        }
+    }
+}
+
 - (void)splatRenderLightPaths
         :(ArcUnsignedInteger *)threadIndex
         :(int)subpixelIdx
@@ -340,51 +395,15 @@ typedef struct ArPixelID {
             continue;
         }
 
-        arlightsample_d_mul_l(art_gv, numberOfRenderThreads, pv->cameraLightSample->light);
-        if (splattingKernelWidth == 1) {
-            for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
-                PIXEL_SAMPLE_COUNT((int) XC(pixelCoords), (int) YC(pixelCoords), THREAD_INDEX, im) += 1.0;
-
-                arlightalpha_wsd_sloppy_add_l(
-                        art_gv,
-                        pv->cameraLightSample,
-                        &pv->cameraWavelength,
-                        &spectralSplattingData,
-                        3.0 DEGREES,
-                        PIXEL_SAMPLE_VALUE((int) XC(pixelCoords), (int) YC(pixelCoords), THREAD_INDEX, im)
-                );
-            }
-        } else {
-            for (unsigned int l = 0; l < splattingKernelArea; l++) {
-                int x = XC(pixelCoords);
-                int y = YC(pixelCoords);
-
-                int cX = x + XC(sampleSplattingOffset[l]);
-                int cY = y + YC(sampleSplattingOffset[l]);
-
-                if (cX >= 0
-                    && cX < XC(imageSize)
-                    && cY >= 0
-                    && cY < YC(imageSize)) {
-                    for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
-                        PIXEL_SAMPLE_COUNT(cX, cY, THREAD_INDEX, im) += SAMPLE_SPLATTING_FACTOR(subpixelIdx, l);
-
-                        for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
-
-                            arlightalpha_dwsd_mul_sloppy_add_l(
-                                    art_gv,
-                                    SAMPLE_SPLATTING_FACTOR(subpixelIdx, l),
-                                    pv->cameraLightSample,
-                                    &pv->cameraWavelength,
-                                    &spectralSplattingData,
-                                    5.0 DEGREES,
-                                    THREAD_RESULT_PIXEL(cX, cY, im)
-                            );
-                        }
-                    }
-                }
-            }
-        }
+//        arlightsample_d_mul_l(art_gv, numberOfRenderThreads, pv->cameraLightSample->light);
+        [self splatOntoImage
+                :threadIndex
+                :pv->cameraLightSample
+                :&pv->incomingWavelength
+                :subpixelIdx
+                :(int) XC(pixelCoords)
+                :(int) YC(pixelCoords)
+        ];
     }
 }
 
@@ -506,13 +525,14 @@ typedef struct ArPixelID {
     unsigned int pixelCount = 0;
     double baseRadius = 0.00665117893f;
 
-    NSLog(@"MODE %d", THREAD_INDEX);
-
     ArPathVertexptrDynArray renderBucket = arpvptrdynarray_init(0);
     for (int lightIter = 0; lightIter < 1; lightIter++) {
         for (unsigned int i = 0; i < numberOfSamplesPerThread; i++) {
 
-            ArcHashgrid *hashgrid;
+            pthread_mutex_lock(&LightPathsMutex);
+            lightPathsSizes = 0;
+            pthread_mutex_unlock(&LightPathsMutex);
+
             if (MODE & arvcmmode_vm)
                 hashgrid = [[ArcHashgrid alloc] init];
 
@@ -536,37 +556,13 @@ typedef struct ArPixelID {
             vcmGlobalValues.vmNormalization = vmNormalization;
             vcmGlobalValues.VMweight = VMweight;
             vcmGlobalValues.VCweight = VCweight;
-
-
-//            if (threadIndex->value == 0) {
-//                if (arpvptrdynarray_size(&LightPaths) > 1) {
-//                    arpv_free_arr_itrsc(art_gv, &LightPaths);
-//                    arpvptrdynarray_free_contents(&LightPaths);
-//                }
-//
-//                LightPaths = arpvptrdynarray_init(0);
-//            }
-
-
-            [self renderLightPaths:pathEnds :vcmGlobalValues :threadIndex :&renderBucket];
+//            [self renderLightPaths:pathEnds :vcmGlobalValues :threadIndex :&renderBucket];
 //            pthread_barrier_wait(&renderBarrier);
 //
 //            [self fillLightPaths : &renderBucket : threadIndex];
 //
 //            pthread_barrier_wait(&renderBarrier);
-            uint32_t max = 0;
-
-//            [self splatRenderLightPaths:threadIndex :subpixelIdx :&renderBucket];
-
-            if (!(MODE & arvcmmode_lt)) {
-                if (MODE & arvcmmode_vm) {
-                    [hashgrid Reserve:(XC(imageSize) * YC(imageSize))];
-                    [hashgrid BuildHashgrid:&LightPaths :radius];
-
-                    hashgrid->vmNormalization = vmNormalization;
-                    hashgrid->VMweight = VMweight;
-                    hashgrid->VCweight = VCweight;
-                }
+            {
 
                 const int TILE_COUNT = XC(imageSize) * YC(imageSize) / TILE_SIZE;
                 if (threadIndex->value > TILE_COUNT) {
@@ -592,31 +588,49 @@ typedef struct ArPixelID {
                         for (int x = x_start; x < x_end; x++) {
                             for (int w = 0; w < wavelengthSteps; w++) {
 
-                                ArPathVertex *currentState = arpv_alloc(art_gv);
-
+                                [THREAD_RANDOM_GENERATOR setCurrentSequenceID
+                                :startingSequenceID
+                                ];
                                 ArWavelength wavelength;
 
-                                uint32_t rangeX, rangeY;
-                                rangeX = 0;
-
-                                int pathIndex = x + y * XC(imageSize);
-
-                                if (pathIndex > 0) {
-                                    rangeX = pathEnds[pathIndex - 1];
-
+                                if (deterministicWavelengths) {
+                                    arwavelength_i_deterministic_init_w(
+                                            art_gv,
+                                            0,
+                                            &wavelength
+                                    );
+                                } else {
+                                    arwavelength_sd_init_w(
+                                            art_gv,
+                                            &spectralSamplingData,
+                                            [THREAD_RANDOM_GENERATOR valueFromNewSequence],
+                                            &wavelength
+                                    );
                                 }
-
-                                uint32_t ss = pathIndex - 2;
-                                while (rangeX >= arpvptrdynarray_size(&renderBucket)) {
-                                    rangeX = pathEnds[ss];
-                                    ss--;
-                                }
-
-                                ArPathVertex *tempWavelengthVertex = arpvptrdynarray_i(&renderBucket, rangeX);
+                                BOOL validSample = FALSE;
 
                                 Ray3D ray;
                                 ArReferenceFrame referenceFrame;
-                                wavelength = tempWavelengthVertex->incomingWavelength;
+
+                                uint32_t currentPathStart = arpvptrdynarray_size(&renderBucket);
+                                [THREAD_PATHSPACE_INTEGRATOR generateLightPaths
+                                        :art_gv
+                                        :&ray
+                                        :camera
+                                        :&renderBucket
+                                        :&wavelength
+                                        :pathEnds
+                                        :x + y * XC(imageSize)
+                                        :0
+                                        :&vcmGlobalValues
+                                ];
+
+                                if(MODE & arvcmmode_lt)
+                                {
+                                    continue;
+                                }
+
+                                ArPathVertex *currentState = arpv_alloc(art_gv);
 
                                 ArLightAlphaSample *lightAlphaSample = arlightalphasample_alloc(art_gv);
                                 arlightsample_d_init_unpolarised_l(art_gv, 0.0, lightAlphaSample->light);
@@ -644,7 +658,6 @@ typedef struct ArPixelID {
                                     currentState->incomingWavelength = wavelength;
                                     currentState->outgoingWavelength = wavelength;
 
-                                    ArWavelength sample = wavelength;
 
                                     [THREAD_PATHSPACE_INTEGRATOR generateEyePaths
                                             :&ray
@@ -654,69 +667,16 @@ typedef struct ArPixelID {
                                             :currentState
                                             :pathEnds
                                             :lightAlphaSample
-                                            :pathIndex
+                                            :currentPathStart
                                             :hashgrid
                                             :&vcmGlobalValues
                                     ];
-                                }
-
-
-                                if (arlightalphasample_l_valid(
-                                        art_gv, lightAlphaSample)) {
-//
-                                    arlightalphasample_d_mul_l(
-                                            art_gv,
-                                            numberOfRenderThreads,
-                                            lightAlphaSample
-                                    );
-
-                                    if (splattingKernelWidth == 1) {
-                                        for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
-                                            PIXEL_SAMPLE_COUNT(x, y, THREAD_INDEX, im) += 1.0;
-
-                                            arlightalpha_wsd_sloppy_add_l(
-                                                    art_gv,
-                                                    lightAlphaSample,
-                                                    &wavelength,
-                                                    &spectralSplattingData,
-                                                    3.0 DEGREES,
-                                                    PIXEL_SAMPLE_VALUE(x, y, THREAD_INDEX, im)
-                                            );
-                                        }
-                                    } else {
-                                        for (unsigned int l = 0; l < splattingKernelArea; l++) {
-                                            int cX = x + XC(sampleSplattingOffset[l]);
-                                            int cY = y + YC(sampleSplattingOffset[l]);
-
-                                            if (cX >= 0
-                                                && cX < XC(imageSize)
-                                                && cY >= 0
-                                                && cY < YC(imageSize)) {
-                                                pthread_mutex_lock(&LightPathsMutex);
-                                                for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
-                                                    PIXEL_SAMPLE_COUNT(cX, cY, THREAD_INDEX,
-                                                                       im) += SAMPLE_SPLATTING_FACTOR(
-                                                            subpixelIdx, l);
-
-                                                    for (unsigned int im = 0; im < numberOfImagesToWrite; im++) {
-
-                                                        arlightalpha_dwsd_mul_sloppy_add_l(
-                                                                art_gv,
-                                                                SAMPLE_SPLATTING_FACTOR(subpixelIdx, l),
-                                                                lightAlphaSample,
-                                                                &wavelength,
-                                                                &spectralSplattingData,
-                                                                5.0 DEGREES,
-                                                                THREAD_RESULT_PIXEL(cX, cY, im)
-                                                        );
-                                                    }
-                                                }
-                                                pthread_mutex_unlock(&LightPathsMutex);
-                                            }
-                                        }
+                                    if(arlightsample_l_valid(art_gv, lightAlphaSample->light))
+                                    {
+                                        arlightalphasample_d_mul_l(art_gv, numberOfRenderThreads, lightAlphaSample);
+                                        [self splatOntoImage:threadIndex :lightAlphaSample :&wavelength :subpixelIdx :x :y];
                                     }
                                 }
-
                                 arlightalphasample_free(art_gv, lightAlphaSample);
                                 arpv_free_pv(art_gv, currentState);
                                 FREE(currentState);
@@ -726,15 +686,153 @@ typedef struct ArPixelID {
                         }
                     }
                 }
-                if (MODE & arvcmmode_vm) {
-                    [hashgrid dealloc];
+
+
+            }
+
+
+            if (MODE & arvcmmode_vm) {
+
+                if(THREAD_INDEX == 0)
+                {
+                    if (MODE & arvcmmode_vm) {
+                        hashgrid->vmNormalization = vmNormalization;
+                        hashgrid->VMweight = VMweight;
+                        hashgrid->VCweight = VCweight;
+                    }
+
+                    LightPaths = arpvptrdynarray_init(0);
+                }
+                pthread_barrier_wait(&renderBarrier);
+
+                pthread_mutex_lock(&LightPathsMutex);
+                for(int iiPath = 0; iiPath < arpvptrdynarray_size(&renderBucket); iiPath++)
+                {
+                    ArPathVertex *pv = arpvptrdynarray_i(&renderBucket, iiPath);
+                    arpvptrdynarray_push(&LightPaths, pv);
                 }
 
-                if (THREAD_INDEX == 0) {
-                    [sampleCounter step
-                    :numberOfRenderThreads
-                    ];
+                pthread_mutex_unlock(&LightPathsMutex);
+                pthread_barrier_wait(&renderBarrier);
+
+                if(THREAD_INDEX == 0)
+                {
+                    [hashgrid BuildHashgrid:&LightPaths :radius];
                 }
+                pthread_barrier_wait(&renderBarrier);
+
+                const int TILE_COUNT = XC(imageSize) * YC(imageSize) / TILE_SIZE;
+                if (threadIndex->value > TILE_COUNT) {
+                    break;
+                }
+
+                const int TILE_COUNT_X = XC(imageSize) / TILE_SIZE;
+                const int TILE_COUNT_Y = YC(imageSize) / TILE_SIZE;
+                int iterations = 0;
+                for (int tile = threadIndex->value;
+                     tile < TILE_COUNT; tile += M_MIN(numberOfRenderThreads, TILE_COUNT)) {
+                    int x_tile = tile % TILE_COUNT_X;
+                    int y_tile = tile / TILE_COUNT_Y;
+
+                    int x_start = x_tile * TILE_SIZE;
+                    int y_start = y_tile * TILE_SIZE;
+
+                    int x_end = M_MIN(x_start + TILE_SIZE, XC(imageSize));
+                    int y_end = M_MIN(y_start + TILE_SIZE, YC(imageSize));
+
+
+                    for (int y = y_start; y < y_end; y++) {
+                        for (int x = x_start; x < x_end; x++) {
+                            ArPathVertex *currentState = arpv_alloc(art_gv);
+
+                            Ray3D ray;
+                            ArReferenceFrame referenceFrame;
+                            ArWavelength wavelength;
+
+                            if (deterministicWavelengths) {
+                                arwavelength_i_deterministic_init_w(
+                                        art_gv,
+                                        0,
+                                        &wavelength
+                                );
+                            } else {
+                                arwavelength_sd_init_w(
+                                        art_gv,
+                                        &spectralSamplingData,
+                                        [THREAD_RANDOM_GENERATOR valueFromNewSequence],
+                                        &wavelength
+                                );
+                            }
+                            ArLightAlphaSample *lightAlphaSample = arlightalphasample_alloc(art_gv);
+                            arlightsample_d_init_unpolarised_l(art_gv, 0.0, lightAlphaSample->light);
+                            lightAlphaSample->alpha = 1;
+                            if ([camera getWorldspaceRay
+                                    :&VEC2D(
+                                            x + XC(imageOrigin) + XC(sampleCoord[subpixelIdx]),
+                                            y + YC(imageOrigin) + YC(sampleCoord[subpixelIdx])
+                                    )
+                                    :THREAD_RANDOM_GENERATOR
+                                    :&referenceFrame
+                                    :&ray
+                            ]) {
+
+                                double cameraPDFA;
+                                [camera getSurfaceFactor
+                                        :&RAY3D_V(ray)
+                                        :0
+                                        :&VEC3D_X_UNIT
+                                        :&cameraPDFA
+                                ];
+
+                                currentState->dVCM = (512 * 512) / cameraPDFA;
+                                currentState->throughput = 1;
+                                currentState->incomingWavelength = wavelength;
+                                currentState->outgoingWavelength = wavelength;
+
+
+                                [THREAD_PATHSPACE_INTEGRATOR evaluatePhotonMaps
+                                        :art_gv
+                                        :&ray
+                                        :currentState
+                                        :lightAlphaSample
+                                        :hashgrid
+                                        :&LightPaths
+                                        :&vcmGlobalValues
+                                ];
+
+                                if(arlightsample_l_valid(art_gv, lightAlphaSample->light))
+                                {
+                                    arlightalphasample_d_mul_l(art_gv, numberOfRenderThreads, lightAlphaSample);
+                                    [self splatOntoImage:threadIndex :lightAlphaSample :&wavelength :subpixelIdx :x :y];
+                                }
+
+                            }
+
+                            arlightalphasample_free(art_gv, lightAlphaSample);
+                            arpv_free_pv(art_gv, currentState);
+                            FREE(currentState);
+                            currentState = 0;
+                        }
+                    }
+                }
+
+                pthread_barrier_wait(&renderBarrier);
+                if(THREAD_INDEX == 0)
+                    [hashgrid dealloc];
+
+            }
+
+            pthread_barrier_wait(&renderBarrier);
+            if (arpvptrdynarray_size(&renderBucket) > 1) {
+                [self splatRenderLightPaths:threadIndex :subpixelIdx :&renderBucket];
+                arpv_free_arr_itrsc(art_gv, &renderBucket);
+                arpvptrdynarray_free_contents(&renderBucket);
+            }
+
+            if (THREAD_INDEX == 0) {
+                [sampleCounter step
+                :numberOfRenderThreads
+                ];
             }
         }
 

@@ -363,7 +363,7 @@ ARPACTION_DEFAULT_IMPLEMENTATION(ArnImageSampler)
     do
     {
         pthread_cond_wait( & writeThreadCond, & writeThreadMutex );
-        
+        NSLog(@"FINISHED ");
         //   we splice all the thread images, and write them to disk
         
         unsigned int  overallNumberOfPixels = YC(imageSize) * XC(imageSize);
@@ -519,7 +519,7 @@ ARPACTION_DEFAULT_IMPLEMENTATION(ArnImageSampler)
                     {
                         arlightalpha_d_mul_l(
                               art_gv,
-                              1.0 / (numberOfSamplesPerThread * numberOfRenderThreads),
+                              1.0 / (numberOfSamplesPerThread),
                               compositeScanline->data[x]
                             );
 

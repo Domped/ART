@@ -39,10 +39,10 @@ ART_MODULE_INTERFACE(ArnStochasticBackwardsSampler)
 
 #define IMAGE_SAMPLER_MAX_SUBPIXEL_SAMPLES      1024
 #ifndef MODE
-    #define MODE arvcmmode_vc
+    #define MODE arvcmmode_lt
 #endif
 
-#define TILE_SIZE 64
+#define TILE_SIZE 32
 
 @protocol ArpPathspaceIntegratorSampling;
 @class ArNode;
@@ -118,10 +118,11 @@ ART_MODULE_INTERFACE(ArnStochasticBackwardsSampler)
     int             wavelengthSteps;
 
     ArPathVertexptrDynArray  LightPaths;
+    ArcHashgrid *hashgrid;
 
-
+    int lightPathsSizes;
     pthread_mutex_t   LightPathsMutex;
-
+    pthread_mutex_t   HashgridsMutex;
 }
 
 - (id) init

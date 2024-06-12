@@ -298,21 +298,8 @@ ART_NO_MODULE_SHUTDOWN_FUNCTION_NECESSARY
     /* -----------------------------------------------------------
        Generate random direction
      ------------------------------------------------------------*/
-
-
-
-//    Vec3D hemisphereDirection = vec3d_hem_dir(randomSeedX, randomSeedY);
-
-    double normalSide = [RANDOM_GENERATOR valueFromNewSequence];
-
     Vec3D pathNormal = ARCSURFACEPOINT_WORLDSPACE_NORMAL(*generatedPoint);
 
-//    if(normalSide > 0.5)
-//    {
-//        vec3d_v_negate_v(&pathNormal, &pathNormal);
-//    }
-
-    //TODO: TEMP
     Vec3D tmp = VEC3D_X_UNIT;
     
     double cosine;
@@ -322,7 +309,7 @@ ART_NO_MODULE_SHUTDOWN_FUNCTION_NECESSARY
         :   &cosine];
 
     ARDIRECTIONCOSINE_VECTOR(*generatedDirection) = tmp;
-    ARDIRECTIONCOSINE_COSINE(*generatedDirection) =cosine;
+    ARDIRECTIONCOSINE_COSINE(*generatedDirection) = cosine;
 
     unsigned int ins = 0;
     double allArea = 0;
@@ -345,10 +332,10 @@ ART_NO_MODULE_SHUTDOWN_FUNCTION_NECESSARY
 //    );
 
 
-    arpdfvalue_d_init_p(cosinePDF * (1.0f / allArea), pointPDF);
+    arpdfvalue_d_init_p(cosinePDF * (1.0f / area), pointPDF);
     //    arpdfvalue_d_mul_p(cosinePDF, pointPDF);
     
-    arpdfvalue_d_init_p( (1.f/allArea), emissionProbability);
+    arpdfvalue_d_init_p( (1.f/area), emissionProbability);
 //    ArDirectionCosine negatedDirection;
 //
 //    vec3d_v_negate_v(

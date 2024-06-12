@@ -96,6 +96,19 @@ ART_MODULE_INTERFACE(ArpPathspaceIntegrator)
         : (uint32_t )                  pathIndex
         : (ArLightAlphaSample *)       lightalpha_r
         : (ArVCMGlobalValues *)        pArVcmGlobalValues
+        ;
+
+- (void) generateLightPaths
+        : (ART_GV *)                   art_gv
+        : (const Ray3D *)              cameraPixelRay
+        : (ArNode <ArpCamera>  *)      sampling_ray
+        : (ArPathVertexptrDynArray *)     lightPathsList
+        : (const ArWavelength *)       wavelength
+        : (uint32_t* )                 pathEnds
+        : (uint32_t )                  pathIndex
+        : (ArLightAlphaSample *)       lightalpha_r
+        : (ArVCMGlobalValues *)        pArVcmGlobalValues
+        : (uint32_t)                   currentPathStart
 ;
 
 - (void) generateEyePaths
@@ -105,12 +118,21 @@ ART_MODULE_INTERFACE(ArpPathspaceIntegrator)
         : (const ArWavelength *)        wavelength
         : (ArPathVertex *)              currentState
         : (uint32_t* )                  pathEnds
-        : (      ArLightAlphaSample *)  lightalpha_r
+        : (ArLightAlphaSample *)        lightalpha_r
         : (uint32_t )                   pathIndex
         : (ArcHashgrid *)               hashgrid
         : (ArVCMGlobalValues *)         pArVcmGlobalValues
         ;
 
+- (void) evaluatePhotonMaps
+        : (ART_GV *)                    art_gv
+        : (const Ray3D *)               cameraPixelRay
+        : (ArPathVertex *)              currentState
+        : (ArLightAlphaSample *)        lightalpha_r
+        : (ArcHashgrid *)               hashgrid
+        : (ArPathVertexptrDynArray *)   lightPathsList
+        : (ArVCMGlobalValues *)         pArVcmGlobalValues
+        ;
 @end
 
 // ===========================================================================

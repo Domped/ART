@@ -31,14 +31,20 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9d6451dd-56f5-4571-bf94-32a69572af15" name="Changes" comment="thread mode: tiling;">
+    <list default="true" id="9d6451dd-56f5-4571-bf94-32a69572af15" name="Changes" comment="almost fluorescent">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.artcsp" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.artcsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.exr" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.exr" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnImageSampler.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnImageSampler.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/MiscellaneousClasses/ArcHashgrid.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/MiscellaneousClasses/ArcHashgrid.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/MiscellaneousClasses/ArcHashgrid.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/MiscellaneousClasses/ArcHashgrid.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArcAreaLightsourceRaySampling.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArcAreaLightsourceRaySampling.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnVCM.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnVCM.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/LightsourceSamplingCommonMacros.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/LightsourceSamplingCommonMacros.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/Protocols/ArpPathspaceIntegrator.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/Protocols/ArpPathspaceIntegrator.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +91,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "CMake Application.artist.executor": "Run",
+    "CMake Application.artist.executor": "Debug",
     "CMake Application.structureStressTest.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.RadMigrateCodeStyle": "true",
@@ -100,7 +106,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "settings.editor.selected.configurable": "Console",
     "structure.view.defaults.are.configured": "true",
     "vue.rearranger.settings.migration": "true"
   }
@@ -111,7 +117,12 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+    <configuration name="AdvancedRenderingToolkit" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="AdvancedRenderingToolkit" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="arm2art" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="arm2art" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="arm2art">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -126,6 +137,16 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="art_imagediff" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="art_imagediff" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="art_imagediff">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="art_imagesnr" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="art_imagesnr" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="art_imagesnr">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="art_imagesnr" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="art_imagesnr" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="art_imagesnr">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -136,10 +157,28 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="artist" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm -j 2" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="artist" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="artist">
+    <configuration name="art_imagetool" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="art_imagetool" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="art_imagetool">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="artist" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm -j 32" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="artist" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="artist">
       <envs>
         <env name="LD_LIBRARY_PATH" value="$PROJECT_DIR$/cmake-build-debug/lib" />
       </envs>
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="artist" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm -j 32" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="artist" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="artist">
+      <envs>
+        <env name="LD_LIBRARY_PATH" value="$PROJECT_DIR$/cmake-build-debug/lib" />
+      </envs>
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="bugblatter" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="bugblatter" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="bugblatter">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -154,6 +193,16 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="greymap" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="greymap" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="greymap">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="impresario" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="impresario" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="impresario">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="impresario" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="impresario" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="impresario">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -164,7 +213,22 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="polvis" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="polvis" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="polvis">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="structureStressTest" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="structureStressTest" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="structureStressTest">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="structureStressTest" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="structureStressTest" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="structureStressTest">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="tonemap" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="tonemap" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="tonemap">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -221,6 +285,10 @@
       <workItem from="1717759081708" duration="69000" />
       <workItem from="1717759162390" duration="6978000" />
       <workItem from="1718045932973" duration="9798000" />
+      <workItem from="1718216861496" duration="2076000" />
+      <workItem from="1718219913848" duration="2307000" />
+      <workItem from="1718222783834" duration="30000" />
+      <workItem from="1718222850086" duration="3033000" />
     </task>
     <task id="LOCAL-00001" summary="all working">
       <option name="closed" value="true" />
@@ -316,5 +384,9 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

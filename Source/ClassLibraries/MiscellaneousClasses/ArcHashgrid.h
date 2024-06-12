@@ -76,6 +76,15 @@ double                                VCweight;
         : (ART_GV *) gv
         ;
 
+-(void) CalculateBoundingBoxesForThread
+        :(ArPathVertexptrDynArray *)  vertices
+        ;
+
+- (void) CalculateOverallBoundingBox
+        : (Vec3D*) min
+        : (Vec3D*) max
+        ;
+
 - (void) BuildHashgrid
         : (ArPathVertexptrDynArray *) vertices
         : (double)         radius

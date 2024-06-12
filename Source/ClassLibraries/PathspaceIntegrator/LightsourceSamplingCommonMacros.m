@@ -39,8 +39,6 @@
     
     
     (_localVec) = VEC3D(x, y, z);
-    z = fmax(z, 1e-6f);
-
     vec3d_v_trafo3d_v( & (_localVec), & (local2world), (_worldVec) );
     *cosine = z;
     

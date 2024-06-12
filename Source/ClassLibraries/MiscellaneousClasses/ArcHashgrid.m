@@ -71,9 +71,60 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
         :(unsigned int) numVertices
 {
 
-//    NSLog(@"Reserve %d", numVertices);
+    for(uint32_t x= 0; x < CELL_SIZE; x++ )
+    {
+        for(uint32_t y= 0; y < CELL_SIZE; y++ )
+        {
+            for(uint32_t z= 0; z < CELL_SIZE; z++ )
+            {
+                cells[x][y][z] = ariholderdynarray_init(1);
+            }
+        }
+    }
 
-    DEBUG_COUNT = 0;
+    self->bboxMin = VEC3D(1e36f, 1e36f, 1e36f);
+    self->bboxMax = VEC3D(-1e36f, -1e36f, -1e36f);
+}
+
+-(void) CalculateBoundingBoxesForThread
+        :(ArPathVertexptrDynArray *)  vertices
+{
+
+    Vec3D min = VEC3D(1e36f, 1e36f, 1e36f);
+    Vec3D max = VEC3D(-1e36f, -1e36f, -1e36f);
+
+    for (unsigned int i = 0; i < arpvptrdynarray_size(vertices); i++)
+    {
+        ArPathVertex *pv = arpvptrdynarray_i(vertices, i);
+
+        Pnt3D pos = pv->worldHitPoint->worldspace_point;
+
+        for(uint32_t j = 0; j < 3; j++)
+        {
+            VEC3D_I(min, j) = fmin( VEC3D_I(min, j), PNT3D_I(pos, j));
+            VEC3D_I(max, j) = fmax( VEC3D_I(max, j), PNT3D_I(pos, j));
+        }
+
+    }
+    vec3d_d_mul_v(1.1f, &max);
+    vec3d_d_mul_v(1.1f, &min);
+
+    [self CalculateOverallBoundingBox: &min : &max];
+}
+
+- (void) CalculateOverallBoundingBox
+        : (Vec3D*) min
+        : (Vec3D*) max
+{
+    for(uint32_t j = 0; j < 3; j++)
+    {
+        VEC3D_I(self->bboxMin, j) = fmin(VEC3D_I(self->bboxMin, j), VEC3D_I(*min, j));
+        VEC3D_I(self->bboxMax, j) = fmax(VEC3D_I(self->bboxMax, j), VEC3D_I(*max, j));
+    }
+
+    cellsize[0] = fabs(VEC3D_I(self->bboxMax, 0) - VEC3D_I(self->bboxMin, 0)) / CELL_SIZE;
+    cellsize[1] = fabs(VEC3D_I(self->bboxMax, 1) - VEC3D_I(self->bboxMin, 1)) / CELL_SIZE;
+    cellsize[2] = fabs(VEC3D_I(self->bboxMax, 2) - VEC3D_I(self->bboxMin, 2)) / CELL_SIZE;
 }
 
 - (void)BuildHashgrid
@@ -142,6 +193,7 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
 //    }
 
     return;
+
 }
 
 - (void) GetCellRange
@@ -312,7 +364,6 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
 //    double misW = 1;
 
     ArLightSample *tempLightSample = arlightsample_alloc(gv);
-    arlightsample_d_init_unpolarised_l(gv, 1.0, tempLightSample);
 
     if(particle->totalPathLength > 0)
     {
