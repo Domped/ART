@@ -1789,7 +1789,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
 
     unsigned int pathLength = 0;
 
-    for(; pathLength < 1; ++pathLength)
+    for(; pathLength < 6; ++pathLength)
     {
         gotPushed = false;
         if(pathLength == 0)
