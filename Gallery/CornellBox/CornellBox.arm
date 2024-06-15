@@ -1,5 +1,5 @@
 #ifndef SAMPLES
-#define SAMPLES 130000
+#define SAMPLES 2000
 #endif
 
 
@@ -164,10 +164,10 @@ ArObj createTallBlock(ART_GV * art_gv) {
 
     ArObj roughOrenNayar = OREN_NAYAR_SURFACE_CONST( SPHERECOLOUR, 30 DEGREES );
 
-//    ArObj blockMaterial = LAMBERT_REFLECTOR( synthFluoB );
+    ArObj blockMaterial = LAMBERT_REFLECTOR( synthFluoB );
 
 //    ArObj blockMaterial = LAMBERT_REFLECTOR( FLUORESCENT_RED_PLAIN );
-    ArObj blockMaterial = LAMBERT_REFLECTOR(redReflectance(art_gv));
+//    ArObj blockMaterial = LAMBERT_REFLECTOR(redReflectance(art_gv));
 
     return
     [ block apply
@@ -346,7 +346,7 @@ ARM_MAIN_FUNCTION(CornellBox)
         [VCM
         rayCaster:        STANDARD_RAYCASTER
         maximalRecursion: 9
-        mode: arvcmmode_lt
+        mode: arvcmmode_vm
         ]
         sampleSplattingKernel: TENT_KERNEL
         samplesPerPixel:       SAMPLES

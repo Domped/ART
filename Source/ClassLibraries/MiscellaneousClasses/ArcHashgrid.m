@@ -268,9 +268,10 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
                     Vec3D distVec;
                     vec3d_pp_sub_v(&particle->worldHitPoint->worldspace_point, &position, &distVec);
 
-                    int areWavelengthDependent = arwavelength_ww_equal_ranged(gv,
-                                                                               &currentState->outgoingWavelength,
-                                                                              &particle->outgoingWavelength);
+                    int areWavelengthDependent = arwavelength_ww_equal_ranged(&currentState->outgoingWavelength,
+                                                                              &particle->outgoingWavelength,
+                                                                              5 NM
+                                                                              );
 
                     if(areWavelengthDependent == -1)
                         continue;

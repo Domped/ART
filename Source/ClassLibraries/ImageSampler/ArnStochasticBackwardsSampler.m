@@ -532,10 +532,6 @@ typedef struct ArPixelID {
             pthread_mutex_lock(&LightPathsMutex);
             lightPathsSizes = 0;
             pthread_mutex_unlock(&LightPathsMutex);
-
-            if (MODE & arvcmmode_vm)
-                hashgrid = [[ArcHashgrid alloc] init];
-
             int subpixelIdx = i % numberOfSubpixelSamples;
             px_id.sampleIndex = i;
 
@@ -566,7 +562,7 @@ typedef struct ArPixelID {
 
                 const int TILE_COUNT = XC(imageSize) * YC(imageSize) / TILE_SIZE;
                 if (threadIndex->value > TILE_COUNT) {
-                    return;
+                    break;
                 }
 
                 const int TILE_COUNT_X = XC(imageSize) / TILE_SIZE;
@@ -631,10 +627,10 @@ typedef struct ArPixelID {
                                 }
 
                                 ArPathVertex *currentState = arpv_alloc(art_gv);
-
                                 ArLightAlphaSample *lightAlphaSample = arlightalphasample_alloc(art_gv);
                                 arlightsample_d_init_unpolarised_l(art_gv, 0.0, lightAlphaSample->light);
                                 lightAlphaSample->alpha = 1;
+
                                 if ([camera getWorldspaceRay
                                         :&VEC2D(
                                                 x + XC(imageOrigin) + XC(sampleCoord[subpixelIdx]),
@@ -673,7 +669,7 @@ typedef struct ArPixelID {
                                     ];
                                     if(arlightsample_l_valid(art_gv, lightAlphaSample->light))
                                     {
-                                        arlightalphasample_d_mul_l(art_gv, numberOfRenderThreads, lightAlphaSample);
+//                                        arlightalphasample_d_mul_l(art_gv, numberOfRenderThreads, lightAlphaSample);
                                         [self splatOntoImage:threadIndex :lightAlphaSample :&wavelength :subpixelIdx :x :y];
                                     }
                                 }
@@ -696,6 +692,9 @@ typedef struct ArPixelID {
                 if(THREAD_INDEX == 0)
                 {
                     if (MODE & arvcmmode_vm) {
+
+                        hashgrid = [[ArcHashgrid alloc] init];
+
                         hashgrid->vmNormalization = vmNormalization;
                         hashgrid->VMweight = VMweight;
                         hashgrid->VCweight = VCweight;
@@ -723,7 +722,7 @@ typedef struct ArPixelID {
 
                 const int TILE_COUNT = XC(imageSize) * YC(imageSize) / TILE_SIZE;
                 if (threadIndex->value > TILE_COUNT) {
-                    break;
+                    continue;
                 }
 
                 const int TILE_COUNT_X = XC(imageSize) / TILE_SIZE;
@@ -802,7 +801,7 @@ typedef struct ArPixelID {
 
                                 if(arlightsample_l_valid(art_gv, lightAlphaSample->light))
                                 {
-                                    arlightalphasample_d_mul_l(art_gv, numberOfRenderThreads, lightAlphaSample);
+//                                    arlightalphasample_d_mul_l(art_gv, numberOfRenderThreads, lightAlphaSample);
                                     [self splatOntoImage:threadIndex :lightAlphaSample :&wavelength :subpixelIdx :x :y];
                                 }
 
@@ -822,9 +821,8 @@ typedef struct ArPixelID {
 
             }
 
-            pthread_barrier_wait(&renderBarrier);
             if (arpvptrdynarray_size(&renderBucket) > 1) {
-                [self splatRenderLightPaths:threadIndex :subpixelIdx :&renderBucket];
+//                [self splatRenderLightPaths:threadIndex :subpixelIdx :&renderBucket];
                 arpv_free_arr_itrsc(art_gv, &renderBucket);
                 arpvptrdynarray_free_contents(&renderBucket);
             }

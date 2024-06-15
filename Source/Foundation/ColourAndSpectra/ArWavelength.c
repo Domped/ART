@@ -185,15 +185,15 @@ int arwavelength_ww_equal(
 }
 
 int arwavelength_ww_equal_ranged(
-        const ART_GV        * art_gv,
         const ArWavelength  * w0,
-        const ArWavelength  * w1
+        const ArWavelength  * w1,
+        double                range
 )
 {
 
     for(unsigned int i = 0; i < 4; i++)
     {
-        if(fabs(ARWL_WI(*w0, 0) - ARWL_WI(*w1, i)) <= 5 NM)
+        if(fabs(ARWL_WI(*w0, 0) - ARWL_WI(*w1, i)) <= range)
         {
             return i;
         }

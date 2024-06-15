@@ -163,13 +163,29 @@ ARPSURFACEMATERIAL_DEFAULT_WAVELENGTH_SHIFTING_SURFACETYPE_IMPLEMENTATION(
             
             if(sampleProbability)
             {
-                arpdfvalue_d_mul_p(
+                arpdfvalue_d_init_p(
                       OUTGOING_COSINE_WORLDSPACE / MATH_PI,
                       sampleProbability
                     );
+
+//                arpdfvalue_d_mul_p(
+//                        1.f / (2 * 10 NM),
+//                        sampleProbability);
             }
             // todo: reverseSampleProbability
-            
+            if(reverseSampleProbability)
+            {
+                *reverseSampleProbability = *sampleProbability;
+                arpdfvalue_d_init_p(
+                      INCOMING_COSINE_WORLDSPACE / MATH_PI,
+                      reverseSampleProbability
+                    );
+
+//                arpdfvalue_d_mul_p(
+//                        1.f / (2 * 10 NM),
+//                        reverseSampleProbability);
+            }
+
             ARATTENUATIONSAMPLE_VVV_PD_C_INIT_DEPOLARISING_A(
                 & INCOMING_VECTOR_WORLDSPACE,
                 & SURFACE_NORMAL_WORLDSPACE,
@@ -205,7 +221,10 @@ ARPSURFACEMATERIAL_DEFAULT_WAVELENGTH_SHIFTING_SURFACETYPE_IMPLEMENTATION(
                       reverseSampleProbability
                     );
             }
-            
+
+//            arpdfvalue_d_mul_p(1.0/( 2 * 10 NM), sampleProbability);
+//            arpdfvalue_d_mul_p(1.0/( 2 * 10 NM), reverseSampleProbability);
+
             if ( LIGHT_SUBSYSTEM_IS_IN_POLARISATION_MODE )
             {
                 ArReferenceFrame  refframe_entry, refframe_exit;
@@ -309,11 +328,14 @@ ARPSURFACEMATERIAL_DEFAULT_WAVELENGTH_SHIFTING_SURFACETYPE_IMPLEMENTATION(
                 ])
             return NO;
         
-        arpdfvalue_d_mul_p(
+        arpdfvalue_d_init_p(
               SAMPLED_COSINE_WORLDSPACE / MATH_PI, // probability of direction
               sampleProbability
             );
-        
+
+        arpdfvalue_d_mul_p(
+                1.f / (2 * 10 NM),
+                sampleProbability);
         // todo: reverseSampleProbability
         
         ARATTENUATIONSAMPLE_VVV_PD_C_INIT_DEPOLARISING_A(
@@ -341,7 +363,15 @@ ARPSURFACEMATERIAL_DEFAULT_WAVELENGTH_SHIFTING_SURFACETYPE_IMPLEMENTATION(
                   reverseSampleProbability
                 );
         }
-        
+
+        arpdfvalue_d_mul_p(
+                1.f / (2 * 10 NM),
+                sampleProbability);
+
+        arpdfvalue_d_mul_p(
+                1.f / (2 * 10 NM),
+                reverseSampleProbability);
+
         if ( LIGHT_SUBSYSTEM_IS_IN_POLARISATION_MODE )
         {
             ArReferenceFrame  refframe_entry, refframe_exit;
