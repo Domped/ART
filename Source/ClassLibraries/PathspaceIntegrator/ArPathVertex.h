@@ -5,6 +5,7 @@
 #import "ArPDFValue.h"
 #import "ArcPointContext.h"
 #import "ArpRayEndpoint.h"
+#import "ArpLightsourceSampling.h"
 
 @class ArcIntersection;
 
@@ -59,6 +60,8 @@ ART_MODULE_INTERFACE(ArPathVertex)
     Vec3D worldNormal;
 
     Vec3D incomingDirection;
+
+
 }
 @end;
 

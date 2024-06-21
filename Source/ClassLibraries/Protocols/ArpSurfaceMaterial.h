@@ -300,7 +300,6 @@ ArBSDFSamplingConstraint;
         : (ArDirectionCosine *) emissionDirection
         : (ArPDFValue *) sampleProbability
         ;
-
 /* ---------------------------------------------------------------------------
     'calculateAlbedoSampleAtWavelength'
         The surface albedo at the chosen location and wavelength.
@@ -309,6 +308,9 @@ ArBSDFSamplingConstraint;
         : (      ArcSurfacePoint *) emissionLocation
         : (const ArWavelength *) wavelength
         : (      ArSpectralSample *) albedo
+        ;
+
+-(BOOL) isFluorescent
         ;
 
 @end

@@ -424,6 +424,11 @@ ART_NO_MODULE_SHUTDOWN_FUNCTION_NECESSARY
     return fabs(ZC(localIncoming)) < 1e-6f ? -1.0 : fabs(ZC(localIncoming));
 }
 
+- (BOOL)isFluorescent {
+
+    return [ARCINTERSECTION_SURFACE_MATERIAL(self) isFluorescent];
+}
+
 @end
 
 // ===========================================================================

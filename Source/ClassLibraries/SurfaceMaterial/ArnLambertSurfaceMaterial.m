@@ -117,6 +117,7 @@ ARPSURFACEMATERIAL_DEFAULT_WAVELENGTH_SHIFTING_SURFACETYPE_IMPLEMENTATION(
                 : & dummyAttenuation
                 :   shiftProbability
                 ];
+
     }
     else
     {
@@ -197,14 +198,14 @@ ARPSURFACEMATERIAL_DEFAULT_WAVELENGTH_SHIFTING_SURFACETYPE_IMPLEMENTATION(
         }
         else
         {
-            if ( ! arwavelength_ww_equal(
-                        art_gv,
-                        incomingWavelength,
-                        outgoingWavelength
-                  ) )
-            {
-                return NO;
-            }
+//            if ( ! arwavelength_ww_equal(
+//                        art_gv,
+//                        incomingWavelength,
+//                        outgoingWavelength
+//                  ) )
+//            {
+//                return NO;
+//            }
             
             if ( sampleProbability )
             {
@@ -221,9 +222,6 @@ ARPSURFACEMATERIAL_DEFAULT_WAVELENGTH_SHIFTING_SURFACETYPE_IMPLEMENTATION(
                       reverseSampleProbability
                     );
             }
-
-//            arpdfvalue_d_mul_p(1.0/( 2 * 10 NM), sampleProbability);
-//            arpdfvalue_d_mul_p(1.0/( 2 * 10 NM), reverseSampleProbability);
 
             if ( LIGHT_SUBSYSTEM_IS_IN_POLARISATION_MODE )
             {
@@ -327,17 +325,27 @@ ARPSURFACEMATERIAL_DEFAULT_WAVELENGTH_SHIFTING_SURFACETYPE_IMPLEMENTATION(
                 :   sampleProbability
                 ])
             return NO;
-        
-        arpdfvalue_d_init_p(
+
+        float multiplier = 1;
+
+        arpdfvalue_d_mul_p(
               SAMPLED_COSINE_WORLDSPACE / MATH_PI, // probability of direction
               sampleProbability
             );
-
-        arpdfvalue_d_mul_p(
-                1.f / (2 * 10 NM),
-                sampleProbability);
         // todo: reverseSampleProbability
-        
+//        arpdfvalue_d_mul_p(multiplier / (2 * 10), sampleProbability);
+
+        if(reverseSampleProbability)
+        {
+            arpdfvalue_d_mul_p(
+                    INCOMING_COSINE_WORLDSPACE / MATH_PI,
+                    reverseSampleProbability
+            );
+
+//            arpdfvalue_d_mul_p(multiplier / (2 * 10), reverseSampleProbability);
+        }
+
+
         ARATTENUATIONSAMPLE_VVV_PD_C_INIT_DEPOLARISING_A(
             & INCOMING_VECTOR_WORLDSPACE,
             & SURFACE_NORMAL_WORLDSPACE,
@@ -355,22 +363,18 @@ ARPSURFACEMATERIAL_DEFAULT_WAVELENGTH_SHIFTING_SURFACETYPE_IMPLEMENTATION(
               SAMPLED_COSINE_WORLDSPACE / MATH_PI,
               sampleProbability
             );
-        
+
+//        arpdfvalue_d_mul_p(1.f / (2 * 10), sampleProbability);
+
         if(reverseSampleProbability)
         {
             arpdfvalue_d_init_p(
                   INCOMING_COSINE_WORLDSPACE / MATH_PI,
                   reverseSampleProbability
                 );
+
+//            arpdfvalue_d_mul_p(1.f / (2 * 10), reverseSampleProbability);
         }
-
-        arpdfvalue_d_mul_p(
-                1.f / (2 * 10 NM),
-                sampleProbability);
-
-        arpdfvalue_d_mul_p(
-                1.f / (2 * 10 NM),
-                reverseSampleProbability);
 
         if ( LIGHT_SUBSYSTEM_IS_IN_POLARISATION_MODE )
         {
@@ -411,6 +415,10 @@ ARPSURFACEMATERIAL_DEFAULT_WAVELENGTH_SHIFTING_SURFACETYPE_IMPLEMENTATION(
         );
     
     return YES;
+}
+
+- (BOOL)isFluorescent {
+    return [SUB_COLOUR isFluorescent];
 }
 
 @end

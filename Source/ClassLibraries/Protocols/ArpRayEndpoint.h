@@ -89,6 +89,8 @@ ART_MODULE_INTERFACE(ArpRayEndpoint)
         : (      ArAttenuationSample *) attenuationSample
         ;
 
+- (BOOL) isFluorescent
+        ;
 
 - (double) getThetaFix
         ;
