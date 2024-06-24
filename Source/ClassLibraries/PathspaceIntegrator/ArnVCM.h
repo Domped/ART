@@ -66,6 +66,9 @@ typedef enum ArVCMMode
 
     ArAttenuationSample *cvtempSampleLight;
 
+    ArAttenuationSample *actuallyUsedAttenuation;
+    ArLightSample *actuallyUsedLightSample;
+
     double wavelengthMollifierParameter;
 // stores the intermediate results at individual path steps
 // the final result is computed as L_0, with

@@ -255,6 +255,12 @@ ARPSURFACEMATERIAL_DEFAULT_EMITTER_SURFACETYPE_IMPLEMENTATION
         );
 }
 
+- (BOOL)isFluorescent
+{
+
+    return NO;
+}
+
 @end
 
 // ===========================================================================

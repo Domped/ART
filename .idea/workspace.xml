@@ -36,16 +36,12 @@
       <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.artcsp" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.artcsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.exr" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.exr" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/EmissiveSurfaceMaterial/ArnLambertEmissiveSurfaceMaterial.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/EmissiveSurfaceMaterial/ArnLambertEmissiveSurfaceMaterial.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/EmissiveSurfaceMaterial/ArnLambertEmissiveSurfaceMaterialConst.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/EmissiveSurfaceMaterial/ArnLambertEmissiveSurfaceMaterialConst.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/MiscellaneousClasses/ArcIntersection.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/MiscellaneousClasses/ArcIntersection.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArPathVertex.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArPathVertex.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnLightsourceCollectionSampling.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnLightsourceCollectionSampling.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnVCM.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnVCM.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnVCM.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnVCM.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/Protocols/ArpRayEndpoint.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/Protocols/ArpRayEndpoint.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/Protocols/ArpSurfaceMaterial.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/Protocols/ArpSurfaceMaterial.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/SurfaceMaterial/ArnLambertSurfaceMaterial.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/SurfaceMaterial/ArnLambertSurfaceMaterial.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Foundation/ColourAndSpectra/ArWavelength.c" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Foundation/ColourAndSpectra/ArWavelength.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,6 +111,11 @@
   }
 }</component>
   <component name="RunManager" selected="CMake Application.artist">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="AdvancedRenderingToolkit" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="AdvancedRenderingToolkit" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -165,7 +166,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="artist" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm -j 32 -m" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="artist" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="artist">
+    <configuration name="artist" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm -j 32" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="artist" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="artist">
       <envs>
         <env name="LD_LIBRARY_PATH" value="$PROJECT_DIR$/cmake-build-debug/lib" />
       </envs>
@@ -326,7 +327,17 @@
       <workItem from="1718881466430" duration="12522000" />
       <workItem from="1718896340732" duration="884000" />
       <workItem from="1718913286440" duration="6048000" />
-      <workItem from="1718985563684" duration="1000" />
+      <workItem from="1718985563684" duration="113000" />
+      <workItem from="1719083989245" duration="5954000" />
+      <workItem from="1719164362671" duration="4469000" />
+      <workItem from="1719215676732" duration="20000" />
+      <workItem from="1719215704402" duration="8273000" />
+      <workItem from="1719228498282" duration="2000" />
+      <workItem from="1719228576035" duration="3000" />
+      <workItem from="1719228786740" duration="7000" />
+      <workItem from="1719246433174" duration="1000" />
+      <workItem from="1719246715474" duration="4000" />
+      <workItem from="1719246798655" duration="3475000" />
     </task>
     <task id="LOCAL-00001" summary="all working">
       <option name="closed" value="true" />
@@ -392,7 +403,15 @@
       <option name="project" value="LOCAL" />
       <updated>1718455860070</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="fluorescence testing">
+      <option name="closed" value="true" />
+      <created>1718985573168</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1718985573168</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -452,9 +471,9 @@
           <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnVCM.m</url>
-          <line>777</line>
-          <option name="timeStamp" value="29" />
+          <url>file://$PROJECT_DIR$/Source/ClassLibraries/EmissiveSurfaceMaterial/ArnLambertEmissiveSurfaceMaterialConst.m</url>
+          <line>259</line>
+          <option name="timeStamp" value="31" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

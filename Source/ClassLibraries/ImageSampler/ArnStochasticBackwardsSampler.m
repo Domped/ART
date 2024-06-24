@@ -822,7 +822,7 @@ typedef struct ArPixelID {
             }
 
             if (arpvptrdynarray_size(&renderBucket) > 1) {
-                [self splatRenderLightPaths:threadIndex :subpixelIdx :&renderBucket];
+//                [self splatRenderLightPaths:threadIndex :subpixelIdx :&renderBucket];
                 arpv_free_arr_itrsc(art_gv, &renderBucket);
                 arpvptrdynarray_free_contents(&renderBucket);
             }

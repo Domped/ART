@@ -164,7 +164,7 @@ ARPSURFACEMATERIAL_DEFAULT_WAVELENGTH_SHIFTING_SURFACETYPE_IMPLEMENTATION(
             
             if(sampleProbability)
             {
-                arpdfvalue_d_init_p(
+                arpdfvalue_d_mul_p(
                       OUTGOING_COSINE_WORLDSPACE / MATH_PI,
                       sampleProbability
                     );
@@ -177,7 +177,7 @@ ARPSURFACEMATERIAL_DEFAULT_WAVELENGTH_SHIFTING_SURFACETYPE_IMPLEMENTATION(
             if(reverseSampleProbability)
             {
                 *reverseSampleProbability = *sampleProbability;
-                arpdfvalue_d_init_p(
+                arpdfvalue_d_mul_p(
                       INCOMING_COSINE_WORLDSPACE / MATH_PI,
                       reverseSampleProbability
                     );
