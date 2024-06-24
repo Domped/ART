@@ -1360,7 +1360,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
 
         double cameraCosine = fabs(vec3d_vv_dot(&currentVertex->worldNormal, &direction));
 
-        if(currentVertex->worldHitPoint.isFluorescent)
+        if([currentVertex->worldHitPoint isFluorescent])
         {
 //            ArPDFValue shiftProbab;
 //            [currentVertex->worldHitPoint calculateWavelengthShiftProbability
@@ -1383,7 +1383,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
                 : & direction
                 :   arpathdirection_from_light
                 : & sgc
-                : & currentVertex->incomingWavelength
+                :   wavelengthsToReset
                 :   wavelengthsToReset
                 : & cameraCosine
                 : & volumeMaterial
@@ -1423,6 +1423,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
         ])
         {
             RELEASE_OBJECT(lightSourcePoint);
+            return;
         };
 
         arlightsample_l_init_l(art_gv, temporaryContribution, resetLightSample);
@@ -1434,7 +1435,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
     {
         ArPathVertex * tempVertex = arpvptrdynarray_i(lightPathsList, index);
         arattenuationsample_a_mul_a(art_gv, tempVertex->attenuationSample, cumulatedNewAttenuation);
-        arpdfvalue_p_concat_p(&tempVertex->pathPDF, cumulatedNewPDF);
+//        arpdfvalue_p_concat_p(&tempVertex->pathPDF, cumulatedNewPDF);
         arlightsample_l_init_l(art_gv, tempVertex->lightSample->light, resetLightSample);
     }
 }
@@ -1482,7 +1483,6 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
             fabs(vec3d_vv_dot(&eyeState->worldNormal,
                               &direction));
 
-
     ArPDFValue actuallyUsedPathPDF;
 
     ArWavelength newWavelengthPT;
@@ -1504,7 +1504,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
 //        }
 //    }
 //
-    if(!([lightVertex->worldHitPoint isFluorescent] && currentIndex > lightBeginningIndex))
+    if(![lightVertex->worldHitPoint isFluorescent] && currentIndex > lightBeginningIndex)
     {
 
         [self resetWavelengthsAlongLightPath
@@ -1518,6 +1518,13 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
                 : actuallyUsedLightSample
                 : &actuallyUsedPathPDF
         ];
+    }
+    else
+    {
+        if(lightVertex->totalPathLength > 0)
+            arattenuationsample_a_init_a(art_gv, lightVertex->attenuationSample, actuallyUsedAttenuation);
+        arlightsample_l_init_l(art_gv, lightVertex->lightSample->light, actuallyUsedLightSample);
+        actuallyUsedPathPDF = lightVertex->pathPDF;
     }
 
     ArNode<ArpVolumeMaterial> * volumeMaterial;
@@ -1538,7 +1545,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
 
     if (!validPT)
         return NO;
-
+//
     arpdfvalue_p_reverse_concat_p(&wavelengthPDFPT, &eyeForwardPDF_W);
     arpdfvalue_p_reverse_concat_p(&wavelengthPDFPT, &eyeReversePDF_W);
 
@@ -1551,7 +1558,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
             : & directionTo
             :   arpathdirection_from_light
             : & sgc
-            : & lightVertex->incomingWavelength
+            : [lightVertex->worldHitPoint isFluorescent] ? &lightVertex->incomingWavelength : & newWavelengthPT
             : & newWavelengthPT
             : & lightCosine
             : & l_volumeMaterial
@@ -1738,21 +1745,21 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
 
         {
 
-//            if([self directIllumination
-//                    : currentState
-//                    : temporaryContribution
-//                    : temporaryMediaAttenuation
-//                    : pArVcmGlobalValues
-//            ])
-//            {
-//                arlightsample_d_mul_l(art_gv,
-//                                      currentState->throughput,
-//                                      temporaryContribution);
-//
-//                arlightsample_d_div_l(art_gv, ARPDFVALUE_MAIN(currentState->pathPDF), temporaryContribution);
-//
-//                arlightsample_l_add_l(art_gv, temporaryContribution, lightalpha_r->light);
-//            }
+            if([self directIllumination
+                    : currentState
+                    : temporaryContribution
+                    : temporaryMediaAttenuation
+                    : pArVcmGlobalValues
+            ])
+            {
+                arlightsample_d_mul_l(art_gv,
+                                      currentState->throughput,
+                                      temporaryContribution);
+
+                arlightsample_d_div_l(art_gv, ARPDFVALUE_MAIN(currentState->pathPDF), temporaryContribution);
+
+                arlightsample_l_add_l(art_gv, temporaryContribution, lightalpha_r->light);
+            }
 
         }
 

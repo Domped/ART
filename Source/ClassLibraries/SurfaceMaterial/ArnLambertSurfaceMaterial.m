@@ -198,14 +198,14 @@ ARPSURFACEMATERIAL_DEFAULT_WAVELENGTH_SHIFTING_SURFACETYPE_IMPLEMENTATION(
         }
         else
         {
-//            if ( ! arwavelength_ww_equal(
-//                        art_gv,
-//                        incomingWavelength,
-//                        outgoingWavelength
-//                  ) )
-//            {
-//                return NO;
-//            }
+            if ( ! arwavelength_ww_equal(
+                        art_gv,
+                        incomingWavelength,
+                        outgoingWavelength
+                  ) )
+            {
+                return NO;
+            }
             
             if ( sampleProbability )
             {
