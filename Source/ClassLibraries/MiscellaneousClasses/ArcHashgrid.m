@@ -358,9 +358,8 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
 
 
     double wLight = particle->dVCM * VCweight + particle->dVM * ARPDFVALUE_MAIN(eyeForwardPDF_W);
-
     double wCamera = currentState->dVCM * VCweight + currentState->dVM * ARPDFVALUE_MAIN(eyeReversePDF_W);
-    double misW = 1.f / (wLight + 1.f + wCamera);
+    double misW = VCweight != 0 ? 1.f / (wLight + 1.f + wCamera) : 1.f;
 //    double misW = 1;
 
     ArLightSample *tempLightSample = arlightsample_alloc(gv);

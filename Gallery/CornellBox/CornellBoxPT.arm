@@ -326,7 +326,7 @@ ARM_MAIN_FUNCTION(CornellBoxPT)
                 sampleProvider:
                     [PATHTRACER
                         rayCaster:        STANDARD_RAYCASTER
-                        maximalRecursion: 9
+                        maximalRecursion: 6
                         ]
                 sampleSplattingKernel: TENT_KERNEL
                 samplesPerPixel:       SAMPLES

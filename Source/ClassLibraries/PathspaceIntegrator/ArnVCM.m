@@ -2117,6 +2117,8 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
             }
 
             arlightalphasample_free(gv, vmContribution);
+
+
         }
 
         currentState->incomingWavelength = currentState->outgoingWavelength;

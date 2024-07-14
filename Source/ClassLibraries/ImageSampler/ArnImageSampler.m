@@ -517,17 +517,21 @@ ARPACTION_DEFAULT_IMPLEMENTATION(ArnImageSampler)
 
                     if ( pixelSampleCount > 0.0 )
                     {
-                        arlightalpha_d_mul_l(
-                              art_gv,
-                              1.0 / (numberOfSamplesPerThread),
-                              compositeScanline->data[x]
-                            );
 
-//                        arlightalpha_d_mul_l(di
-//                              art_gv,
-//                              1.0 / pixelSampleCount,
-//                              compositeScanline->data[x]
-//                            );
+                        if(MODE & arvcmmode_vm && !(MODE & arvcmmode_vc))
+                        {
+                            arlightalpha_d_mul_l(
+                                    art_gv,
+                                    1.0 / pixelSampleCount,
+                                    compositeScanline->data[x]
+                            );
+                        } else {
+                            arlightalpha_d_mul_l(
+                                    art_gv,
+                                    1.0 / (numberOfSamplesPerThread),
+                                    compositeScanline->data[x]
+                            );
+                        }
                     }
 
                     compositeScanline->data[x]->alpha = 1.0f;

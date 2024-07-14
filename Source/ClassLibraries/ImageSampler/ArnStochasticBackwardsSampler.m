@@ -507,8 +507,8 @@ typedef struct ArPixelID {
 
 - (void)renderProc
         :(ArcUnsignedInteger *)threadIndex {
-    NSAutoreleasePool *threadPool;
 
+    NSAutoreleasePool *threadPool;
 //    ArcVCMSamplerInput *threadInput = [input pointerValue];
 //
 //    ArcUnsignedInteger* threadIndex = threadInput->threadIndex;
@@ -524,7 +524,6 @@ typedef struct ArPixelID {
 
     unsigned int pixelCount = 0;
     double baseRadius = 0.00665117893f;
-
     ArPathVertexptrDynArray renderBucket = arpvptrdynarray_init(0);
     for (int lightIter = 0; lightIter < 1; lightIter++) {
         for (unsigned int i = 0; i < numberOfSamplesPerThread; i++) {
@@ -533,7 +532,7 @@ typedef struct ArPixelID {
             lightPathsSizes = 0;
             pthread_mutex_unlock(&LightPathsMutex);
 
-            if (MODE & arvcmmode_vm)
+            if (MODE & arvcmmode_vm && THREAD_INDEX == 0)
                 hashgrid = [[ArcHashgrid alloc] init];
 
             int subpixelIdx = i % numberOfSubpixelSamples;
@@ -541,7 +540,7 @@ typedef struct ArPixelID {
 
             double radius = baseRadius / (pow(i + 1, 0.5f * (1 - 0.75f)));
             radius = fmax(radius, 1e-7f);
-            vmNormalization = MODE & arvcmmode_vm ? 1.f / (M_SQR(radius) * M_PI * XC(imageSize) * YC(imageSize)) : 0;
+            vmNormalization = 1.f / (M_SQR(radius) * M_PI * XC(imageSize) * YC(imageSize));
             double etaVCM = (M_PI * M_SQR(radius)) * XC(imageSize) * YC(imageSize);
             uint32_t pathEnds[XC(imageSize) * YC(imageSize)];
 
@@ -550,7 +549,7 @@ typedef struct ArPixelID {
             }
 
             VMweight = MODE & arvcmmode_vm ? etaVCM : 0;
-            VCweight = MODE & arvcmmode_vm ? 1.0f / etaVCM : 0;
+            VCweight = MODE & arvcmmode_vc ? 1.0f / etaVCM : 0;
 
             ArVCMGlobalValues vcmGlobalValues;
             vcmGlobalValues.vmNormalization = vmNormalization;
@@ -561,7 +560,8 @@ typedef struct ArPixelID {
 //
 //            [self fillLightPaths : &renderBucket : threadIndex];
 //
-//            pthread_barrier_wait(&renderBarrier);
+            pthread_barrier_wait(&renderBarrier);
+
             {
 
                 const int TILE_COUNT = XC(imageSize) * YC(imageSize) / TILE_SIZE;
@@ -625,11 +625,10 @@ typedef struct ArPixelID {
                                         :&vcmGlobalValues
                                 ];
 
-                                if(MODE & arvcmmode_lt)
+                                if(!(MODE & arvcmmode_vc))
                                 {
                                     continue;
                                 }
-
                                 ArPathVertex *currentState = arpv_alloc(art_gv);
 
                                 ArLightAlphaSample *lightAlphaSample = arlightalphasample_alloc(art_gv);
@@ -673,7 +672,7 @@ typedef struct ArPixelID {
                                     ];
                                     if(arlightsample_l_valid(art_gv, lightAlphaSample->light))
                                     {
-                                        arlightalphasample_d_mul_l(art_gv, numberOfRenderThreads, lightAlphaSample);
+//                                        arlightalphasample_d_mul_l(art_gv, numberOfRenderThreads, lightAlphaSample);
                                         [self splatOntoImage:threadIndex :lightAlphaSample :&wavelength :subpixelIdx :x :y];
                                     }
                                 }
@@ -689,7 +688,6 @@ typedef struct ArPixelID {
 
 
             }
-
 
             if (MODE & arvcmmode_vm) {
 
@@ -723,7 +721,7 @@ typedef struct ArPixelID {
 
                 const int TILE_COUNT = XC(imageSize) * YC(imageSize) / TILE_SIZE;
                 if (threadIndex->value > TILE_COUNT) {
-                    break;
+                    continue;
                 }
 
                 const int TILE_COUNT_X = XC(imageSize) / TILE_SIZE;
@@ -802,7 +800,6 @@ typedef struct ArPixelID {
 
                                 if(arlightsample_l_valid(art_gv, lightAlphaSample->light))
                                 {
-                                    arlightalphasample_d_mul_l(art_gv, numberOfRenderThreads, lightAlphaSample);
                                     [self splatOntoImage:threadIndex :lightAlphaSample :&wavelength :subpixelIdx :x :y];
                                 }
 
@@ -824,7 +821,10 @@ typedef struct ArPixelID {
 
             pthread_barrier_wait(&renderBarrier);
             if (arpvptrdynarray_size(&renderBucket) > 1) {
-                [self splatRenderLightPaths:threadIndex :subpixelIdx :&renderBucket];
+
+                if(!( MODE & arvcmmode_vm && !(MODE & arvcmmode_vc))) {
+                    [self splatRenderLightPaths:threadIndex :subpixelIdx :&renderBucket];
+                }
                 arpv_free_arr_itrsc(art_gv, &renderBucket);
                 arpvptrdynarray_free_contents(&renderBucket);
             }

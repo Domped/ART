@@ -32,13 +32,612 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9d6451dd-56f5-4571-bf94-32a69572af15" name="Changes" comment="full tiling; minor adjustments">
-      <change afterPath="$PROJECT_DIR$/.dockerignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.artcsp" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.artcsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.exr" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.exr" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxPT.arm" beforeDir="false" afterPath="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxPT.arm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnImageSampler.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnImageSampler.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/MiscellaneousClasses/ArcHashgrid.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/MiscellaneousClasses/ArcHashgrid.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnPathTracer.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnPathTracer.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnVCM.m" beforeDir="false" afterPath="$PROJECT_DIR$/Source/ClassLibraries/PathspaceIntegrator/ArnVCM.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CommandLineTools/arm2art/arm2art" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CommandLineTools/arm2art/arm2art" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CommandLineTools/art_imagediff/art_imagediff" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CommandLineTools/art_imagediff/art_imagediff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CommandLineTools/art_imagesnr/art_imagesnr" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CommandLineTools/art_imagesnr/art_imagesnr" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CommandLineTools/art_imagetool/art_imagetool" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CommandLineTools/art_imagetool/art_imagetool" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CommandLineTools/artist/CornellBox" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CommandLineTools/artist/artist" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CommandLineTools/artist/artist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CommandLineTools/bugblatter/bugblatter" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CommandLineTools/bugblatter/bugblatter" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CommandLineTools/greymap/greymap" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CommandLineTools/greymap/greymap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CommandLineTools/impresario/impresario" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CommandLineTools/impresario/impresario" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CommandLineTools/polvis/polvis" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CommandLineTools/polvis/polvis" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/CommandLineTools/tonemap/tonemap" beforeDir="false" afterPath="$PROJECT_DIR$/Source/CommandLineTools/tonemap/tonemap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ARM_Action.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ARM_ActionSequence.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ARM_Camera.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ARM_Colour.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ARM_EnvironmentMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ARM_Expression.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ARM_Foundation.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ARM_Image.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ARM_ImageSampler.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ARM_Lightsource.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ARM_PathspaceIntegrator.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ARM_PhaseFunction.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ARM_RayCasting.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ARM_Scenegraph.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ARM_Shape.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ARM_SkyModel.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ARM_SurfaceMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ARM_Trafo.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ARM_VolumeData.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ARM_VolumeMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_ARM_Interface.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_ActionSequence.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_BinaryFileIO.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_CRC32.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_Camera.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_ClassLibraries.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_ColourAndSpectra.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_DefaultEmissiveSurfaceMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_DefaultEnvironmentMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_DefaultSurfaceMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_DefaultVolumeMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_EmissiveSurfaceMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_EnvironmentMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_EnvironmentVariables.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_ErrorCodes.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_ErrorHandling.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_Expression.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_File.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_Foundation.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_Foundation_ColourAndSpectra.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_Foundation_Datastructures.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_Foundation_Geometry.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_Foundation_LightAndAttenuation.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_Foundation_Math.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_Foundation_ObjectiveC.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_Foundation_Physics.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_Foundation_System.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_GV.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_ImageActions.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_ImageData.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_ImageFileFormat.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_ImageSampler.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_LibraryManagement.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_Lightsource.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_MiscellaneousClasses.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_MiscellaneousStructs.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_ModuleManagement.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_Parse_File.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_Parser.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_PathAndDirectoryTools.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_PathspaceIntegrator.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_PhaseFunction.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_Physics.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_Protocols.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_RayCasting.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_RayCastingAcceleration.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_Scenegraph.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_Shape.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_SkyModel.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_SurfaceMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_SystemDatatypes.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_SystemFunctions.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_Trafo.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_Version.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_VolumeData.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_VolumeIntegrator.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ART_VolumeMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ActionsForPolarisationImages.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/AdvancedRenderingToolkit.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ApplicationSupport.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArArray.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArArray_ImplementationMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArArray_InterfaceMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArAttenuation.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArAttenuationSample.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArAttribute.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArBSDFSample.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArCIEColourConversions.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArCIELab.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArCIELabUInt.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArCIELch.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArCIELuv.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArCIEXYZ.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArCIEXYZA.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArCIExy.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArCIExyY.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArCMF.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArColourSpace.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArColourTransform.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArCrosstalk.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArCrosstalk500.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArCrosstalkSample.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArDataType.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArDataType_PostDefinitionMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArDataType_PreDefinitionMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArDifferentialGeometry.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArDirectAttenuation.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArDirectAttenuationSample.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArDirectionCosine.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArDynArray.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArDynArray_ImplementationMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArDynArray_InterfaceMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArFFT.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArFreeList.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArGrey.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArHSV.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArHashTable.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArHosekSkyModel.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArHosekSkyModelData_CIEXYZ.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArHosekSkyModelData_RGB.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArHosekSkyModelData_Spectral.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArHosekSkyModel_ART_frontend.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArIntersectionList.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArLight.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArLightAlpha.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArLightAlphaSample.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArLightAndAttenuationSubsystemManagement.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArLightIntensity.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArLightIntensitySample.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArLightSample.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArList.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArMMDirectAttenuation.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArMMDirectAttenuationSample.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArMuellerMatrix.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArMuellerMatrixSample.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArMuellerMatrix_GSLSettings.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArNode.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArNodeOperation.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArNodeRef.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArNodeRefDynArray.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArNode_ARM_CSG_Operators.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArNode_ARM_GenericAttributes.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArNode_ARM_SpecificAttributes.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArNode_CSGPrint.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArNode_CSG_Operators.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArNode_Counting.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArNode_NodeSetup.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArNode_Numbering.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArNode_ObjectStatistics.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArNode_ReadData.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArObjRef.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArObjRefDynArray.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArOpNode.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArOrder.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArPDFValue.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArPSSpectrum.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArPathVertex.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArPathspaceResult.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArPlainDirectAttenuation.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArPlainDirectAttenuationSample.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArPlainLight.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArPlainLightSample.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArPolynomial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArPragueSkyModel.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArPragueSkyModel_ART_frontend.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArProgress.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArRGB.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArRGBA.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArRGBUInt.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArRSSpectrum.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArRSSpectrum2D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArRandom.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArRayTree.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArReferenceFrame.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArSGL.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArSVLight.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArSVLightSample.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArSamplingRegion.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArSingleton.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArSpectralIntensity.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArSpectralSample.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArSpectrum.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArSpectrum11.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArSpectrum18.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArSpectrum46.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArSpectrum500.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArSpectrum8.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArSpectrumSubsystemManagement.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArStokesVector.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArStokesVectorSample.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArString.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArStringArray.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArSurfacePointMappingMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArSurfaceType.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArSymbol.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArTable.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArTable_ImplementationMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArTable_InterfaceMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArTime.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArTraversalState.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArTreePath.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArVector.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArWavelength.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/AraBBox.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/AraCombinedAttributes.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/AraEnvironmentMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/AraFaceMap.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/AraRules.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/AraSurfaceMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/AraTrafo.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/AraTrafo3D_SurfaceMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/AraVariables.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/AraVertices.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/AraVolumeMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/AraWorld.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcAmbientLightsource.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcAreaLightsource.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcBBoxCache.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcBinaryCoder.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcComplexSkydomeLightsource.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcEvaluationEnvironment.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcFileProbe.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcFileStream.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcFreelist.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcGruenschlossHalton.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcHashgrid.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcImageMetrics.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcInfiniteSphereLightsource.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcIntersection.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcLightsource.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcMeasurementEstimators.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcMessageQueue.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcObjCCoder.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcObject.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcObject_derived_from_NSObject.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcObject_derived_from_Object.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcOption.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcParameterRange.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcParameterisation.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcPhaseInterfaceCache.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcPhaseInterfaceIsotropic.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcPointContext.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcPointInSpace.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcPointLightsource.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcRandomGenerator.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcRayCounter.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcRayEndpoint.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcReporter.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcSampleCounter.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcSkydomeLightsource.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcSurfacePoint.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcSurfacePointForShape.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcTevIntegration.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArcUnsignedInteger.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArfARTCSP.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArfARTGSC.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArfARTRAW.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArfArm.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArfBFC.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArfGreyCSV.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArfHeightfield.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArfICCProfile.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArfJPEG.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArfMeasurementArchive.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArfNative.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArfOpenEXRRGB.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArfOpenEXRSpectral.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArfOpenEXRWrapper.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArfPLY.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArfRAWRasterImage.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArfRasterImage.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArfRasterImageImplementationMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArfTIFF.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArfVol.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnActionSequence.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnAdaptiveSampler2D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnAssignmentTable.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnBBox.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnBSPTree.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnBlackbodyRadiation.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnCSG.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnCalculatedSpectrum.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnCamera.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnColourMatchingFunctions.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnColourSpace.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnColourStandardImplementation.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnColourTransform.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnCompoundFace.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnCone.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnConstSpectrum.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnCube.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnCylinder.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnCylinderCamera.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnDualImageManipulationAction.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnExponentialTrackingVolumeIntegrator.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnExternal.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnFileImage.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnFirstHitNormalShadingTracer.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnFisheyeCamera.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnFluorescentAwareTrackingVolumeIntegrator.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnFresnelEmissiveSurfaceMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnFresnelSurfaceMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnGaussianSpectrum.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnGeneralSurfaceMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnGraphTraversal.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnGroup.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnHNSVolumeMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnHTrafo3D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnHeterogeneousVolumeMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnHomogeneousVolumeMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnHosekSkyModel.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnHosekSkyModel_EnvironmentMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnHyperboloid.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnImageInfo.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnImageManipulationMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnImageMap.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnImageOperators.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnImageSampler.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnImageSamplerBase.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnImageSamplerCommonMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnImageSamplerRGBA.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnInertSurfaceMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnInfSphere.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnIsotropicPhaseFunction.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnLambertEmissiveSurfaceMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnLambertEmissiveSurfaceMaterialConst.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnLambertSurfaceMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnLayeredSurfaceMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnLeafNodeBBoxCollection.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnLightTracer.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnLightsourceCollection.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnLightsourceCollector.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnMappedSurfaceMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnMaxExponentialTrackingVolumeIntegrator.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnMidpointImageSamplerRGBA.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnNamedNodeSet.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnNoClosedFormVolumeMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnNodeAction.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnNodeStack.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnOperationTree.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnOrenNayarSurfaceMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnPDFSampling.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnParaboloid.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnPartImage.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnPathTracer.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnPathspaceIntegrator.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnPathspaceIntegratorCommonMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnPathspaceIntegratorRGBA.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnPerspectiveCamera.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnPhongSurfaceMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnPixelSampler.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnPlainImage.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnPragueSkyModel.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnPragueSkyModel_EnvironmentMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnPragueSkyModel_VolumeMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnPreethamSkyModel.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnPreethamSkyModel_EnvironmentMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnPreethamSkyModel_VolumeMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnQuadrangle.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnRSSpectrum2D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnRayCaster.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnRayleighPhaseFunction.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnRayleighVolumeMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnReconstructionKernel.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnReference.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnRepeater.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnRotate.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnScaleTranslation.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnScene.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnSelectedNode.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnSellmeierDispersion.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnShape.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnShearXYZ3D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnSimpleIndexedShape.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnSingleImageManipulationAction.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnSkyModel.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnSphere.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnSphereVolumeMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnSphericalCamera.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnStochasticBackwardsSampler.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnStochasticImageSampler.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnStochasticImageSamplerRGBA.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnStochasticSampler.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnStochasticSamplerVerticalMirror.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnSuppliedMaterialSurfaceMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnSurfaceMaterialConst.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnSyntheticFluorescentSpectrum.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnThinLensCamera.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnTiledStochasticSampler.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnTorranceSparrowSurfaceMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnTorus.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnTrafo.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnTrafoGroup.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnTrafoPair.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnTriangle.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnTriangleMesh.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnUniformEnvironmentMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnUniformFisheyeCamera.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnUnion.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnVCM.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnValConstants.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnValEnvConstantsPoint.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnValMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnValMathFunctions.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnValNoise.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnValOperators.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnVertexSet.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnVisitor.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnVolumeDataConst.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArnVolumeDataGrid.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpAction.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpAssignmentTable.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpAttributeConcatenation.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpAttributeConcatenation_Node.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpBBox.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpBBoxHandling_Node.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpBBoxHandling_PlyTriangleMesh.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpCamera.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpCoding.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpColourMatchingFunctions.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpColourSpace.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpEnvironmentMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpEstimation2D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpEvaluationEnvironment.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpFile.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpImage.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpImageFile.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpImageSampler.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpLightmap.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpLightsource.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpLightsourceSampling.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpLightsourceSampling_Categories.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpMapping.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpMicrofacetDistribution.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpNamedNodeSet.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpNode.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpNodeStack.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpObject.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpPDF.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpParameterisation.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpParser.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpPathspaceIntegrator.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpPathspaceIntegratorCore.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpPathspaceIntegratorRGBA.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpPhaseFunction.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpPhotonMap.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpPhotonStore.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpPhotonStoreCollection.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpPrintCSGTree_Node.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpRandomGenerator.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpRayCaster.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpRayCasting.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpRayCasting_Categories.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpRayEndpoint.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpReconstructionKernel.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpReporter.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpSampling2D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpScene.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpShape.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpSkyModel.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpSpectrum.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpSpectrum2D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpStream.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpSurfaceMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpTrafo.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpValue.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpVertices.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpVolume.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpVolumeIntegrator.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpVolumeMaterial.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ArpWorld.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Astro.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/AttenuationImplementationMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/AttenuationInterfaceMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/AttenuationSampleImplementationMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/BSPTree.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/BlendedSurfacesCorrectnessTesting.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Box.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/C1.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/C11.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/C18.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/C2.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/C3.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/C4.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/C46.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/C500.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/C8.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/CMakeLists.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Cmisc.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Cn.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ColourAndLightSubsystem.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ColourAndSpectralDataConversion.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ColourAndSpectralDataConversion_ImplementationMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ColourConversionConstructorMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Constants.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Cx_ImplementationMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Cx_InterfaceMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ExecutionEnvironment.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/FC2.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/FC3.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/FC4.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/FoundationAssertionMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Fresnel.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/FresnelBSDFSampleListHandling.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/FresnelPlain.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/FresnelPolarising.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/FresnelTermsPlain.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/FresnelTermsPolarising.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Functions.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Geometry2MathConversions.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/GlobalTableOfNodeClasses.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Gx_AccessorMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/IC2.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/IC3.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/IC4.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ICx.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/IPnt2D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/IPnt3D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/IPnt4D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/IVec2D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/IVec3D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ImageComparisonActions.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ImageConversionActions.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Interpolation.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/LengthAndAreaComputations.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/LightImplementationMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/LightInterfaceMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/LightSampleImplementationMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/LightsourceSamplingCommonMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Line2D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/MicrofacetDistributions.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/MicrofacetMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/MiscellaneousImageActions.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ObjC_Runtime.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/OpenEXRSettings.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Plane3D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Pnt2D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Pnt2DE.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Pnt2DE_to_Pnt3DE.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Pnt3D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Pnt3DE.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Pnt3DE_Trafo.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Pnt4D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Polygon3D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Prime.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Quadrangle3D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Quasi.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Range.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Ray2D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Ray3D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Ray3DE.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/RayCastingCommonMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Roots.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Rotation2D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Rotation3D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Scale2D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Scale3D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/ScenegraphActions.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Shear3D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/SkyModelPolarisationHeuristic_EGSR2004.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/SpectralDatatype_ImplementationMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/SpectralDatatype_InterfaceMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/SurfaceMaterialMacros.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/SystemWhitepoint.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/TonemappingImageActions.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Trafo2D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Trafo3D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Translation2D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Translation3D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Triangle2D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Triangle3D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Units.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/UpliftCoefficientCube.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Vec2D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Vec3D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Vec4D.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/_ArDirectAttenuationSample_GV.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/_ArDirectAttenuation_GV.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/_ArLightSample_GV.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/_ArLight_GV.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/_ArSpectrum_GV.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/halton_sampler.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/rply.h" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +659,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="22b4529bfd14a4786df36c5640d6fb275229609e" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -84,30 +683,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;CMake Application.artist.executor&quot;: &quot;Run&quot;,
-    &quot;CMake Application.structureStressTest.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.ART_Docker.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;Docker&quot;,
-    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "CMake Application.artist.executor": "Run",
+    "CMake Application.structureStressTest.executor": "Run",
+    "Docker.ART_Docker.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.RadMigrateCodeStyle": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "thesis",
+    "last_opened_file_path": "/home/domped/Documents/ART",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "CMakeSettings",
+    "structure.view.defaults.are.configured": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="CMake Application.artist">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="AdvancedRenderingToolkit" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="AdvancedRenderingToolkit" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -158,7 +763,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="artist" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/Gallery/CornellBox/CornellBox.arm -j 32" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="artist" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="artist">
+    <configuration name="artist" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/Gallery/CornellBox/CornellBoxPT.arm -j 32" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ART" TARGET_NAME="artist" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ART" RUN_TARGET_NAME="artist">
       <envs>
         <env name="LD_LIBRARY_PATH" value="$PROJECT_DIR$/cmake-build-debug/lib" />
       </envs>
@@ -267,6 +872,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Docker.ART_Docker" />
+        <item itemvalue="Docker.ART_Docker" />
       </list>
     </recent_temporary>
   </component>
@@ -310,6 +916,12 @@
       <workItem from="1718275807004" duration="2748000" />
       <workItem from="1718286214966" duration="3192000" />
       <workItem from="1718294676355" duration="615000" />
+      <workItem from="1720964200584" duration="607000" />
+      <workItem from="1720965531315" duration="3000" />
+      <workItem from="1720965559527" duration="2000" />
+      <workItem from="1720965567271" duration="1591000" />
+      <workItem from="1720967206742" duration="4433000" />
+      <workItem from="1720973221410" duration="2224000" />
     </task>
     <task id="LOCAL-00001" summary="all working">
       <option name="closed" value="true" />
@@ -408,9 +1020,14 @@
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Source/ClassLibraries/MiscellaneousClasses/ArcHashgrid.m</url>
+          <line>363</line>
+          <option name="timeStamp" value="44" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/Source/ClassLibraries/ImageSampler/ArnStochasticBackwardsSampler.m</url>
-          <line>78</line>
-          <option name="timeStamp" value="20" />
+          <line>557</line>
+          <option name="timeStamp" value="47" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
