@@ -89,7 +89,12 @@ ART_MODULE_INTERFACE(ArpRayEndpoint)
         : (      ArAttenuationSample *) attenuationSample
         ;
 
+- (ArSurfaceType) isReflectiveOrRefractive
+        ;
 
+
+//- (ArSurfaceType) surfaceType
+//;
 - (double) getThetaFix
         ;
 @end

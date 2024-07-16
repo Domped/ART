@@ -395,6 +395,8 @@ typedef struct ArPixelID {
             continue;
         }
 
+        if(pv->isSpecular)
+            continue;
 //        arlightsample_d_mul_l(art_gv, numberOfRenderThreads, pv->cameraLightSample->light);
         [self splatOntoImage
                 :threadIndex
@@ -787,21 +789,41 @@ typedef struct ArPixelID {
                                 currentState->incomingWavelength = wavelength;
                                 currentState->outgoingWavelength = wavelength;
 
-
-                                [THREAD_PATHSPACE_INTEGRATOR evaluatePhotonMaps
-                                        :art_gv
-                                        :&ray
-                                        :currentState
-                                        :lightAlphaSample
-                                        :hashgrid
-                                        :&LightPaths
-                                        :&vcmGlobalValues
-                                ];
-
-                                if(arlightsample_l_valid(art_gv, lightAlphaSample->light))
                                 {
-                                    [self splatOntoImage:threadIndex :lightAlphaSample :&wavelength :subpixelIdx :x :y];
+                                    [THREAD_PATHSPACE_INTEGRATOR evaluatePhotonMaps
+                                            :art_gv
+                                            :&ray
+                                            :currentState
+                                            :lightAlphaSample
+                                            :hashgrid
+                                            :&LightPaths
+                                            :&vcmGlobalValues
+                                    ];
+
+                                    if(arlightsample_l_valid(art_gv, lightAlphaSample->light))
+                                    {
+
+
+                                        ArLightIntensitySample intensitySample;
+                                        arlightsample_l_init_i(art_gv, lightAlphaSample->light, &intensitySample);
+
+                                        bool sfas = true;
+
+                                        for(int isas = 0; isas < 4; isas ++)
+                                        {
+                                            if(SPS_CI(intensitySample, isas) > 100)
+                                            {
+                                                sfas = false;
+                                            }
+                                        }
+
+                                        if(sfas)
+                                            [self splatOntoImage:threadIndex :lightAlphaSample :&wavelength :subpixelIdx :x :y];
+
+
+                                    }
                                 }
+
 
                             }
 

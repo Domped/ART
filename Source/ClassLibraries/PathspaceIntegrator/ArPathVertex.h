@@ -119,6 +119,8 @@ typedef struct ArPathVertex
     Vec3D incomingDirection;
 
     ArWavelength initialWavelength;
+
+    bool isSpecular;
 }
 
 ArPathVertex;

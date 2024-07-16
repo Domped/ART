@@ -532,6 +532,8 @@ ARPACTION_DEFAULT_IMPLEMENTATION(ArnImageSampler)
                                     compositeScanline->data[x]
                             );
                         }
+
+
                     }
 
                     compositeScanline->data[x]->alpha = 1.0f;

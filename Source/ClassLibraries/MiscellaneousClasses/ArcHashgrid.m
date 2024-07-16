@@ -269,8 +269,8 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
                     vec3d_pp_sub_v(&particle->worldHitPoint->worldspace_point, &position, &distVec);
 
                     int areWavelengthDependent = arwavelength_ww_equal_ranged(gv,
-                                                                               &currentState->outgoingWavelength,
-                                                                              &particle->outgoingWavelength);
+                                                                               &currentState->incomingWavelength,
+                                                                              &particle->incomingWavelength);
 
                     if(areWavelengthDependent == -1)
                         continue;
@@ -319,6 +319,9 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
 
     if(particle->totalPathLength > 0)
     {
+        ArSpectralSample sample;
+        arattenuationsample_a_init_s(gv, particle->attenuationSample, &sample);
+
         arattenuationsample_a_rotate_a(gv, particle->attenuationSample, rotatedLightAtten, referenceIndex);
     }
 
@@ -381,7 +384,11 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
     arlightsample_a_mul_l(gv, temp, tempLightSample);
     arlightsample_d_mul_l(gv, hwssWeight, tempLightSample);
     arlightsample_l_add_l(gv, tempLightSample, contribution->light);
+    ArLightIntensitySample intensitySample;
 
+
+
+    arlightsample_l_init_i(gv, contribution->light, &intensitySample);
 
     arattenuationsample_free(gv, temp);
     arlightsample_free(gv, tempLightSample);

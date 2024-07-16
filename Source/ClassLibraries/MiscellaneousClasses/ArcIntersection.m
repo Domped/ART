@@ -331,7 +331,7 @@ ART_NO_MODULE_SHUTDOWN_FUNCTION_NECESSARY
              & ARCINTERSECTION_WORLDSPACE_NORMAL(self),
                outgoingDirection
          );
-    
+
     return
         [ self evaluateScattering
             : & outgoingDirectionCosine
@@ -424,6 +424,28 @@ ART_NO_MODULE_SHUTDOWN_FUNCTION_NECESSARY
     return fabs(ZC(localIncoming)) < 1e-6f ? -1.0 : fabs(ZC(localIncoming));
 }
 
+- (ArSurfaceType) isReflectiveOrRefractive
+{
+
+    if(([ARCINTERSECTION_SURFACE_MATERIAL(self) globalSurfaceType]) & arsurface_generates_perfectly_specular_refractions )
+    {
+        return true;
+    }
+
+    if(([ARCINTERSECTION_SURFACE_MATERIAL(self) globalSurfaceType]) & (arsurface_generates_perfectly_specular_reflections ) )
+    {
+        return true;
+    }
+
+
+
+    return false;
+}
+
+//- (ArSurfaceType) surfaceType
+//{
+//    return [ARCINTERSECTION_SURFACE_MATERIAL(self) globalSurfaceType];
+//}
 @end
 
 // ===========================================================================
