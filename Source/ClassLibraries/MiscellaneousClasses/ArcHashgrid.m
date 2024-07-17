@@ -271,6 +271,11 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
                     int areWavelengthDependent = arwavelength_ww_equal_ranged(gv,
                                                                                &currentState->incomingWavelength,
                                                                               &particle->incomingWavelength);
+//                    int areWavelengthDependent = arwavelength_ww_equal_radius(gv,
+//                                                                               &currentState->incomingWavelength,
+//                                                                              &particle->incomingWavelength,
+//                                                                              molDistance
+//                                                                              );
 
                     if(areWavelengthDependent == -1)
                         continue;
@@ -338,6 +343,33 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
     ArPDFValue eyeForwardPDF_W;
     ArPDFValue eyeReversePDF_W;
 
+    ArWavelength newWavelength;
+    ArPDFValue wavelengthPDF;
+    if( ! [ currentState->worldHitPoint sampleWavelengthShift
+            :   arpathdirection_from_eye
+            :   sgc
+            : & currentState->incomingWavelength
+            : & newWavelength
+            : & wavelengthPDF
+    ]) {
+        arattenuationsample_free(gv, rotatedLightAtten);
+        arlightsample_free(gv, rotatedLightSample);
+        return;
+    }
+
+//    int areWavelengthDependent = arwavelength_ww_equal_radius(gv,
+//                                                              &newWavelength,
+//                                                              &particle->incomingWavelength,
+//                                                              molDistance
+//    );
+//
+//    if(!areWavelengthDependent)
+//    {
+//        arattenuationsample_free(gv, rotatedLightAtten);
+//        arlightsample_free(gv, rotatedLightSample);
+//        return;
+//    }
+
     ArAttenuationSample *temp = arattenuationsample_alloc(gv);
     if(![currentState->worldHitPoint evaluateScattering
             : & incomingLightDir
@@ -359,7 +391,6 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
 
     };
 
-
     double wLight = particle->dVCM * VCweight + particle->dVM * ARPDFVALUE_MAIN(eyeForwardPDF_W);
     double wCamera = currentState->dVCM * VCweight + currentState->dVM * ARPDFVALUE_MAIN(eyeReversePDF_W);
     double misW = VCweight != 0 ? 1.f / (wLight + 1.f + wCamera) : 1.f;
@@ -373,7 +404,8 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
     }
     arattenuationsample_d_mul_a(gv, misW * particle->throughput, temp);
 
-    arattenuationsample_d_div_a(gv, ARPDFVALUE_MAIN(lightRotatedPDF) * (1.f/8), temp);
+//    arattenuationsample_d_div_a(gv, ARPDFVALUE_MAIN(lightRotatedPDF) * (2.f * molDistance) / (320.f), temp);
+    arattenuationsample_d_div_a(gv, ARPDFVALUE_MAIN(lightRotatedPDF) * (1.f / 8.f), temp);
 
 
     double hwssWeight = [self mis : gv : &lightRotatedPDF];

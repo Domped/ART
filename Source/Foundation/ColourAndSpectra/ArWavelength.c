@@ -202,6 +202,24 @@ int arwavelength_ww_equal_ranged(
     return -1;
 }
 
+int arwavelength_ww_equal_radius(
+        const ART_GV        * art_gv,
+        const ArWavelength  * w0,
+        const ArWavelength  * w1,
+        const double          radius
+)
+{
+
+    int equal = 1;
+    for(unsigned int i = 0; i < 1; i++)
+    {
+        if(fabs(ARWL_WI(*w0, i) - ARWL_WI(*w1, i)) > radius NM)
+            equal = 0;
+    }
+
+    return equal;
+
+}
 void arwavelength_w_debugprintf(
         const ART_GV             * art_gv,
         const ArWavelength  * w0

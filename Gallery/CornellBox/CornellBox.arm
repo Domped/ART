@@ -1,5 +1,6 @@
+#import "SnailShell.arm"
 #ifndef SAMPLES
-#define SAMPLES 1000
+#define SAMPLES 400
 #endif
 
 
@@ -233,29 +234,62 @@ ArObj createTallBlock(ART_GV * art_gv) {
 
 //    ArObj mirror2 =  TORRANCE_SPARROW_BLINN_SURFACE( -0.5 DEGREES );
     ArObj mirror2 =  TORRANCE_SPARROW_BLINN_SURFACE_CONST( 0.1 DEGREES );
-//    ArObj blockMaterial = LAMBERT_REFLECTOR( synthFluoB );
+    ArObj fluoSurfacc = LAMBERT_REFLECTOR( synthFluoB );
     ArObj blockMaterial = LAMBERT_REFLECTOR(redReflectance(art_gv));
     id  groovedSphere = createGroovedSphere( art_gv, 22 DEGREES, 0.1 );
 
     id  groovedSphere2 = createGroovedSphere( art_gv, 30 DEGREES, 0.1 );
     id  groovedSphere3 = createGroovedSphere( art_gv, 30 DEGREES, 0.8 );
 
+    id noiseExpr = P3_PERLIN_NOISE(WORLDSPACE_COORDS);
+    id shiny = TORRANCE_SPARROW_BLINN_SURFACE_WITH_MATERIAL_CONST(0.05,PLATINUM_MATERIAL);
+    id rim = TORRANCE_SPARROW_BLINN_SURFACE_WITH_MATERIAL_CONST(0.18,GOLD_MATERIAL);
+    id notsoshiny = TORRANCE_SPARROW_BLINN_SURFACE_WITH_MATERIAL_CONST(0.35,SELENIUM_MATERIAL);
+    id othershiny = TORRANCE_SPARROW_BLINN_SURFACE_WITH_MATERIAL_CONST(0.05,PLATINUM_MATERIAL);
+//    id surface =
+//        MAPPED_SURFACE(
+//            noiseExpr,
+//            SURFACE_MAP(
+//                0.0, shiny,
+//                0.25, shiny,
+//                0.45, rim,
+//                0.5, notsoshiny,
+//                0.6, notsoshiny,
+//                0.65, rim,
+//                0.75, othershiny,
+//                1.0, othershiny,
+//                MAP_END
+//                )
+//            );
+//
+//
+//
+//    ArObj shell =
+//        [ create_Shell(art_gv) apply
+////        [ SPHERE apply
+//            :   USCALE(0.3)
+//            :   ROT_Z(110 DEGREES)
+//            :   TRANSLATION(0, 0.24964 ,0.984465)
+//            :   surface
+////            :   TORRANCE_SPARROW_BLINN_SURFACE_WITH_MATERIAL(noiseExpr,SELENIUM_MATERIAL)
+//            ];
+
+
     groovedSphere =
             [ groovedSphere apply :
 
-                    mirror2
-                    :pinkGlassVolumeMaterial
+                            fluoSurfacc
                 :   USCALE(0.55)
                 :   ROT_Y(65 DEGREES)
                 :   ROT_Z(245 DEGREES)
-                :   TRANSLATION(1.2099, -1.24964 + 1.2 , 0.00084465)
+                :   TRANSLATION(0.7, -1.24964 + 0.5 , 0.00084465)
 
               ];
 
     groovedSphere2 =
     [ groovedSphere2 apply :
 
-        mirror2
+                    fluoSurfacc
     :   USCALE(0.55)
     :   ROT_Y(65 DEGREES)
     :   TRANSLATION(-1.05399 + 0.3, 0.24964 ,0.084465)
@@ -274,7 +308,8 @@ ArObj createTallBlock(ART_GV * art_gv) {
 
     ArObj torus =
     [ TORUS(0.3) apply
-    :   mirror2
+    :    mirror2
+    :    pinkGlassVolumeMaterial
     ];
 
     ArObj cone =
@@ -285,7 +320,7 @@ ArObj createTallBlock(ART_GV * art_gv) {
 
     ArObj sphere =
     [ SPHERE apply
-    :   roughOrenNayar
+    :   mirror2
     ];
 
     ArObj sphere2 =
@@ -297,39 +332,44 @@ ArObj createTallBlock(ART_GV * art_gv) {
 
     sphere =
     [ sphere apply
-    :   USCALE(0.55)
+    :   USCALE(0.44)
     :   ROT_Y(65 DEGREES)
     :   ROT_Z(245 DEGREES)
     :   TRANSLATION(-1.05399 + 0.7,-1.24964 + 0.4 , -1.00084465)
     ];
 
+    ArObj sphere3 =
+            [ sphere apply
+                    :   ROT_Y(65 DEGREES)
+    :   ROT_Z(245 DEGREES)
+    :   TRANSLATION(-1.05399 + 2, -2.24964 , -0.5)
+    ];
 
 
     torus =
     [ torus apply
-    :   USCALE(0.75)
-    :   ROT_Y(65 DEGREES)
-    :   ROT_Z(245 DEGREES)
-    :   TRANSLATION(-1.05399 + 0.3,-1.24964 + 0.4 ,0.084465)
+    :   USCALE(0.44)
+                      : ROT_X(0 DEGREES)
+    :   TRANSLATION(0, 0.8/home/domped/Desktop/thesis_results/SmallCaustics/, 0)
     ];
 
     cone =
     [ cone apply
     :   USCALE(0.4)
-    :   ROT_Y(35 DEGREES)
-    :   ROT_Z(10 DEGREES)
-    :   TRANSLATION(-1.05399 + 0.3, 0.24964 ,0.084465)
+            : ROT_X(90 DEGREES)
+    :   TRANSLATION(0, -0.26009002f, 0)
     ];
 
     sphere2 =
     [ sphere2 apply
-    :   USCALE(0.45)
+    :   USCALE(0.44)
     :   ROT_Y(65 DEGREES)
     :   ROT_Z(245 DEGREES)
-    :   TRANSLATION(1.05399,-1.24964 + 1.3 ,0.084465)
+    :   TRANSLATION(-0.55, 0.68002f, 0)
     ];
 
-    return UNION(sphere, groovedSphere, groovedSphere2, groovedSphere3, UNION_END);
+    return UNION(sphere, torus, sphere3, UNION_END);
+//    return UNION(shell, UNION_END);
 //    return
 //    [ block apply
 //    : vertices
@@ -355,11 +395,21 @@ ArObj createLight(ART_GV * art_gv) {
     blockPoints[7] = PNT3D( -0.25f,  1.26002f,   0.25f ); // right  bottom front
 
     /////////////////////////////////////
-    blockPoints[0] = PNT3D(    1.28975f, -0.423075f - 0.4f,  1.05019f - 0.5f); // left   top    rear
-    blockPoints[1] = PNT3D(    1.28975f,  0.035249f - 0.4f,  1.05019f - 0.5f); // left   top    front
+//    blockPoints[0] = PNT3D(    1.28975f, -0.35,  0); // left   top    rear
+//    blockPoints[1] = PNT3D(    1.28975f, -0.35,  0.25); // left   top    front
+//
+//    blockPoints[2] = PNT3D(   1.28975f,  -0.55f, 0.25); // left   bottom rear
+//    blockPoints[3] = PNT3D(   1.28975f,  -0.55f, 0); // left   bottom front
 
-    blockPoints[2] = PNT3D(   1.28975f,  0.035249f - 0.4f,  0.591847f - 0.5f); // left   bottom rear
-    blockPoints[3] = PNT3D(   1.28975f,  -0.423075f - 0.4f,  0.591847f - 0.5f); // left   bottom front
+    /////
+    blockPoints[0] = PNT3D(    -0.15, 1.28002f,    -0.15 ); // left   top    rear
+    blockPoints[1] = PNT3D(     0.15,  1.28002f,   -0.15 ); // left   top    front
+
+    blockPoints[2] = PNT3D(     0.15f,  1.28002f,  0.15f ) ; // left   bottom rear
+    blockPoints[3] = PNT3D(    -0.15f,  1.28002f, 0.15f ); // left   bottom front
+
+
+
 
 //    blockPoints[0] = PNT3D( -0.69083f, -0.660441f,  -0.156858f ); // left   top    rear
 //    blockPoints[1] = PNT3D(  -0.232487f, -0.660441f,  -0.156858f ); // left   top    front
@@ -420,7 +470,13 @@ ArObj createBox(ART_GV * art_gv) {
     boxPoints[11] = PNT3D( -6.27029f,  6.28002f,  6.30455f ); // left   bottom front
 
     boxPoints[12] = PNT3D_HUGE;
-
+    id synthFluoB =
+            CONST_FLUORESCENT_COLOUR(
+                    FLUORESCENT_YELLOW_PLAIN,
+                    0.025,
+    PNT2D( 370 NM, 560 NM ),
+    VEC2D(  40 NM,  50 NM )
+    );
     ArObj vertices =
             arnvertexset(
                     art_gv,
@@ -430,7 +486,7 @@ ArObj createBox(ART_GV * art_gv) {
                     NULL,
                     NULL
             );
-
+    ArObj fluoSurfacc = LAMBERT_REFLECTOR( synthFluoB );
     ArObj whiteLambert    = LAMBERT_REFLECTOR(whiteReflectance(art_gv));
     ArObj redLambert      = LAMBERT_REFLECTOR(redReflectance(art_gv));
     ArObj greenLambert    = LAMBERT_REFLECTOR(greenReflectance(art_gv));
@@ -439,17 +495,17 @@ ArObj createBox(ART_GV * art_gv) {
 
     ArObj floorGeometry =
     [ QUADRANGLE(5, 1, 0, 4) apply
-    : orenOren
+    : whiteLambert
     ];
 
     ArObj ceilingGeometry =
     [ QUADRANGLE(2,6,7,3) apply
-    : greenLambert
+    : redLambert
     ];
 
     ArObj rightWallGeometry =
     [ QUADRANGLE(1, 5, 6, 2) apply
-    : greenLambert
+    : redLambert
     ];
 
     ArObj leftWallGeometry =
@@ -459,13 +515,13 @@ ArObj createBox(ART_GV * art_gv) {
 
     ArObj backWallGeometry =
     [ QUADRANGLE(0, 1, 2, 3) apply
-    : orenOren
+    : whiteLambert
     ];
 
-    ArObj frontWall =
-    [ QUADRANGLE(8, 9, 10, 11) apply
-    : orenOren
-    ];
+//    ArObj frontWall =
+//    [ QUADRANGLE(8, 9, 10, 11) apply
+//    : orenOren
+//    ];
 
     ArObj lightGeometry =
     [ TRIANGLE(5, 1, 0) apply
@@ -479,7 +535,7 @@ ArObj createBox(ART_GV * art_gv) {
                     ceilingGeometry,
                     leftWallGeometry,
                     backWallGeometry,
-                    frontWall,
+//                    frontWall,
                     //lightGeometry,
                     UNION_END
             );

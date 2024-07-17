@@ -699,7 +699,12 @@ typedef struct ArPixelID {
                         hashgrid->vmNormalization = vmNormalization;
                         hashgrid->VMweight = VMweight;
                         hashgrid->VCweight = VCweight;
+
+                        hashgrid->molDistance = 50 * 1.f / (pow(i+1, 0.25));
+//                        NSLog(@"Mol Distance: %f", hashgrid->molDistance);
                     }
+
+
 
                     LightPaths = arpvptrdynarray_init(0);
                 }

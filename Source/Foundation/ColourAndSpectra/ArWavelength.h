@@ -111,6 +111,14 @@ int arwavelength_ww_equal_ranged(
         const ArWavelength  * w0,
         const ArWavelength  * w1
         );
+
+int arwavelength_ww_equal_radius(
+        const ART_GV        * art_gv,
+        const ArWavelength  * w0,
+        const ArWavelength  * w1,
+        const double          radius
+);
+
 //   Debug output of the wavelength struct in human readable form.
 
 void arwavelength_w_debugprintf(

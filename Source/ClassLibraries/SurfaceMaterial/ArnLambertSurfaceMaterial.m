@@ -313,6 +313,11 @@ ARPSURFACEMATERIAL_DEFAULT_WAVELENGTH_SHIFTING_SURFACETYPE_IMPLEMENTATION(
               SAMPLED_COSINE_WORLDSPACE / MATH_PI, // probability of direction
               sampleProbability
             );
+
+        arpdfvalue_d_mul_p(
+                SAMPLED_COSINE_WORLDSPACE / MATH_PI, // probability of direction
+                reverseSampleProbability
+        );
         
         // todo: reverseSampleProbability
         

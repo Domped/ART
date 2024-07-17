@@ -1057,14 +1057,12 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
             }
 
             ArSpectralSample sample = SPS4(currentState->throughput);
+            ArPDFValue preWavelength = currentState->pathPDF;
+            arpdfvalue_p_reverse_concat_p(&wavelengthPDF, &preWavelength);
 
-            if(!ARPDFVALUE_IS_INFINITE(wavelengthPDF))
-            {
-                arpdfvalue_p_div_s(&wavelengthPDF, &sample);
-            }
             arpdfvalue_p_div_s(&currentState->pathPDF, &sample);
 
-            div *= surfaceFactor;
+            div *= (surfaceFactor * fabs(ARPDFVAL_PI(wavelengthPDF, 0)));
 
             if(pathLength > 0)
             {
