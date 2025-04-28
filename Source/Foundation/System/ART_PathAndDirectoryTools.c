@@ -38,6 +38,8 @@
 
 #if ! defined( MINGW )
 #include <wordexp.h>
+#include <ctype.h>
+
 #endif
 
 ART_NO_MODULE_INITIALISATION_FUNCTION_NECESSARY
@@ -142,6 +144,11 @@ void create_pathlist_from_stringarray(
 
 int wordexp_s_copy_s(const char * in_path, char ** out_path)
 {
+    if (strncmp(in_path, "/mnt/", 5) == 0 && strlen(in_path) > 6 && isalpha(in_path[5]) && in_path[6] == '/')
+    {
+        return 1; // Return 1 if copy succeeded, 0 otherwise
+    }
+
 #if defined( MINGW )
     arstring_s_copy_s(in_path, out_path);
 #else

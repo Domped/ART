@@ -350,7 +350,7 @@ ArObj createTallBlock(ART_GV * art_gv) {
     [ torus apply
     :   USCALE(0.44)
                       : ROT_X(0 DEGREES)
-    :   TRANSLATION(0, 0.8/home/domped/Desktop/thesis_results/SmallCaustics/, 0)
+    :   TRANSLATION(0, 0.8, 0)
     ];
 
     cone =
