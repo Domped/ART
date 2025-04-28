@@ -48,7 +48,7 @@ ARDYNARRAY_IMPLEMENTATION_FOR_MANAGED_TYPE(
 ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(PathVertex,pv,pv,0);
 
 
-void arpv_free_pv(const ART_GV *art_gv, ArPathVertex *pv)
+void arpv_free_pv(const ART_GV *art_gv, ArPathVertex *pv, bool include_wp)
 {
     if(pv->lightSample)
     {
@@ -67,8 +67,7 @@ void arpv_free_pv(const ART_GV *art_gv, ArPathVertex *pv)
         arattenuationsample_free(art_gv, pv->attenuationSample);
         pv->attenuationSample = 0;
     }
-
-    if(pv->worldHitPoint)
+    if(pv->worldHitPoint && include_wp)
     {
         RELEASE_OBJECT(pv->worldHitPoint);
         pv->worldHitPoint = 0;
@@ -84,7 +83,7 @@ void arpv_free_arr_itrsc(const ART_GV  * art_gv, ArPathVertexptrDynArray *arr)
 
         ArPathVertex *pv = arpvptrdynarray_i(arr, i);
 
-        arpv_free_pv(art_gv, pv);
+        arpv_free_pv(art_gv, pv, true);
         FREE(pv);
         pv = 0;
     }

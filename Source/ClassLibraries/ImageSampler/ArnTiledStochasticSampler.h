@@ -2,24 +2,7 @@
 //ASK: shouldn't this be in foundation???
 #include <semaphore.h>
 
-#ifdef __APPLE__
-#ifndef PTHREAD_BARRIER_H_
-#define PTHREAD_BARRIER_H_
-
-#include <pthread.h>
-#include <errno.h>
-
-typedef int pthread_barrierattr_t;
-typedef struct
-{
-    pthread_mutex_t mutex;
-    pthread_cond_t cond;
-    int count;
-    int tripCount;
-} pthread_barrier_t;
-#endif
-#endif
-
+#include "ART_ThreadBarrier.h"
 #import "ART_Scenegraph.h"
 #import "ART_ImageData.h"
 
@@ -140,8 +123,8 @@ typedef struct {
 
         int                                   read_thread_pipe[2];
         ArTime  beginTime, endTime;
-        pthread_barrier_t renderingDone;
-        pthread_barrier_t mergingDone;
+        art_pthread_barrier_t renderingDone;
+        art_pthread_barrier_t mergingDone;
 
 
 

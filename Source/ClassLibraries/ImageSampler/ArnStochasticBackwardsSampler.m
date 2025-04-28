@@ -73,7 +73,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnStochasticBackwardsSampler)
                     :newRandomValueGeneration
             ];
 
-//    vcmMode = [newPathspaceIntegrator getIntegratorMode];
+    vcmMode = arvcmmode_lt;
     deterministicWavelengths = NO;
     wavelengthSteps = 1;
 
@@ -496,8 +496,8 @@ typedef struct ArPixelID {
 
 - (void)fillLightPaths
         :(ArPathVertexptrDynArray *)lightPathsBucket
-        :(ArcUnsignedInteger *)threadIndex {
-    LightPaths;
+        :(ArcUnsignedInteger *)threadIndex
+{
     pthread_mutex_lock(&LightPathsMutex);
     int threadAccessOffset = threadIndex->value * arpvptrdynarray_size(lightPathsBucket);
     for (uint32_t threadStart = 0; threadStart < arpvptrdynarray_size(lightPathsBucket); threadStart++) {
@@ -510,17 +510,32 @@ typedef struct ArPixelID {
 - (void)renderProc
         :(ArcUnsignedInteger *)threadIndex {
 
+
+    pthread_attr_t attr;
+    size_t stack_size;
+    int result;
+    result = pthread_attr_init(&attr);
+    result = pthread_attr_getstacksize(&attr, &stack_size);
+    if (result == 0) {
+        NSLog(@"Default thread stack size: %zu bytes (%zu KB, %zu MB)\n",
+               stack_size, stack_size/1024, stack_size/(1024*1024));
+    }
+    pthread_attr_destroy(&attr);
+
+
     NSAutoreleasePool *threadPool;
 //    ArcVCMSamplerInput *threadInput = [input pointerValue];
 //
 //    ArcUnsignedInteger* threadIndex = threadInput->threadIndex;
-    vcmMode = [THREAD_PATHSPACE_INTEGRATOR getIntegratorMode];
+//    vcmMode = [THREAD_PATHSPACE_INTEGRATOR getIntegratorMode];
+    vcmMode = arvcmmode_lt;
     threadPool = [[NSAutoreleasePool alloc] init];
     ArPixelID px_id;
     px_id.threadIndex = THREAD_INDEX;
     px_id.globalRandomSeed = arrandom_global_seed(art_gv);
 
 
+    NSLog(@"VCM MODE: %d", MODE);
     int threadStripWidth = YC(imageSize) / numberOfRenderThreads;
     int threadOffset = threadStripWidth * THREAD_INDEX;
 
@@ -544,11 +559,12 @@ typedef struct ArPixelID {
             radius = fmax(radius, 1e-7f);
             vmNormalization = 1.f / (M_SQR(radius) * M_PI * XC(imageSize) * YC(imageSize));
             double etaVCM = (M_PI * M_SQR(radius)) * XC(imageSize) * YC(imageSize);
-            uint32_t pathEnds[XC(imageSize) * YC(imageSize)];
-
-            for (int peInit = 0; peInit < XC(imageSize) * YC(imageSize); peInit++) {
-                pathEnds[peInit] = 0;
-            }
+//            uint32_t pathEnds[XC(imageSize) * YC(imageSize)];
+//
+//
+//            for (int peInit = 0; peInit < XC(imageSize) * YC(imageSize); peInit++) {
+//                pathEnds[peInit] = 0;
+//            }
 
             VMweight = MODE & arvcmmode_vm ? etaVCM : 0;
             VCweight = MODE & arvcmmode_vc ? 1.0f / etaVCM : 0;
@@ -558,11 +574,11 @@ typedef struct ArPixelID {
             vcmGlobalValues.VMweight = VMweight;
             vcmGlobalValues.VCweight = VCweight;
 //            [self renderLightPaths:pathEnds :vcmGlobalValues :threadIndex :&renderBucket];
-//            pthread_barrier_wait(&renderBarrier);
+//            pthread_barrier_wait(&renderBarrier);Ï
 //
 //            [self fillLightPaths : &renderBucket : threadIndex];
 //
-            pthread_barrier_wait(&renderBarrier);
+            art_pthread_barrier_wait(&renderBarrier);
 
             {
 
@@ -621,7 +637,7 @@ typedef struct ArPixelID {
                                         :camera
                                         :&renderBucket
                                         :&wavelength
-                                        :pathEnds
+                                        :NULL
                                         :x + y * XC(imageSize)
                                         :0
                                         :&vcmGlobalValues
@@ -666,7 +682,7 @@ typedef struct ArPixelID {
                                             :&renderBucket
                                             :&wavelength
                                             :currentState
-                                            :pathEnds
+                                            :NULL
                                             :lightAlphaSample
                                             :currentPathStart
                                             :hashgrid
@@ -679,7 +695,7 @@ typedef struct ArPixelID {
                                     }
                                 }
                                 arlightalphasample_free(art_gv, lightAlphaSample);
-                                arpv_free_pv(art_gv, currentState);
+                                arpv_free_pv(art_gv, currentState, false);
                                 FREE(currentState);
                                 currentState = 0;
                             }
@@ -705,10 +721,11 @@ typedef struct ArPixelID {
                     }
 
 
-
+//                    arpv_free_arr_itrsc(art_gv, &LightPaths);
+//                    arpvptrdynarray_free_contents(&LightPaths);
                     LightPaths = arpvptrdynarray_init(0);
                 }
-                pthread_barrier_wait(&renderBarrier);
+                art_pthread_barrier_wait(&renderBarrier);
 
                 pthread_mutex_lock(&LightPathsMutex);
                 for(int iiPath = 0; iiPath < arpvptrdynarray_size(&renderBucket); iiPath++)
@@ -718,13 +735,13 @@ typedef struct ArPixelID {
                 }
 
                 pthread_mutex_unlock(&LightPathsMutex);
-                pthread_barrier_wait(&renderBarrier);
+                art_pthread_barrier_wait(&renderBarrier);
 
                 if(THREAD_INDEX == 0)
                 {
                     [hashgrid BuildHashgrid:&LightPaths :radius];
                 }
-                pthread_barrier_wait(&renderBarrier);
+                art_pthread_barrier_wait(&renderBarrier);
 
                 const int TILE_COUNT = XC(imageSize) * YC(imageSize) / TILE_SIZE;
                 if (threadIndex->value > TILE_COUNT) {
@@ -833,20 +850,20 @@ typedef struct ArPixelID {
                             }
 
                             arlightalphasample_free(art_gv, lightAlphaSample);
-                            arpv_free_pv(art_gv, currentState);
+                            arpv_free_pv(art_gv, currentState, false);
                             FREE(currentState);
                             currentState = 0;
                         }
                     }
                 }
 
-                pthread_barrier_wait(&renderBarrier);
+                art_pthread_barrier_wait(&renderBarrier);
                 if(THREAD_INDEX == 0)
                     [hashgrid dealloc];
 
             }
 
-            pthread_barrier_wait(&renderBarrier);
+            art_pthread_barrier_wait(&renderBarrier);
             if (arpvptrdynarray_size(&renderBucket) > 1) {
 
                 if(!( MODE & arvcmmode_vm && !(MODE & arvcmmode_vc))) {

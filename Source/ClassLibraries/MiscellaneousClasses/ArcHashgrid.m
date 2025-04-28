@@ -313,6 +313,11 @@ ARDYNARRAY_IMPLEMENTATION_FOR_ARTYPE_PTR(IndexHolder,iholder,iholder,0);
     {
         return;
     }
+    
+    if(particle->lightSample == NULL)
+    {
+        return;
+    }
 
     ArAttenuationSample *rotatedLightAtten = arattenuationsample_alloc(gv);
     ArLightSample *rotatedLightSample = arlightsample_alloc(gv);

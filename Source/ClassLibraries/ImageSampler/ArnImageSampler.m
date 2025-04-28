@@ -262,7 +262,7 @@ ARPACTION_DEFAULT_IMPLEMENTATION(ArnImageSampler)
 //        pthread_cond_wait( & lightPathsCond, & generationMutex );
 //    }
 
-    pthread_barrier_init(&renderBarrier, NULL, numberOfRenderThreads);
+    art_pthread_barrier_init(&renderBarrier,numberOfRenderThreads);
     for ( unsigned int i = 0; i < numberOfRenderThreads; i++ )
     {
 

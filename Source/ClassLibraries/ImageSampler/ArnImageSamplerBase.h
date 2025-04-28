@@ -32,6 +32,8 @@ ART_MODULE_INTERFACE(ArnImageSamplerBase)
 #import "ART_ImageData.h"
 
 #include "ArVCMSamplerInput.h"
+#import "ART_ThreadBarrier.h"
+
 /* ===========================================================================
     'ArnImageSamplerBase'
 =========================================================================== */
@@ -78,7 +80,7 @@ ART_MODULE_INTERFACE(ArnImageSamplerBase)
     pthread_mutex_t                       generationMutex;
     pthread_cond_t                        writeThreadCond;
     pthread_cond_t                        lightPathsCond;
-    pthread_barrier_t                     renderBarrier;
+    art_pthread_barrier_t                 renderBarrier;
     int                                 * x_start;
     int                                 * x_end;
 

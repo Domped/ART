@@ -613,8 +613,8 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
                          :   [ ArnInfSphere class ] ] ? NO : YES;
     }
 
-    RELEASE_OBJECT(occlusion);
-
+//    RELEASE_OBJECT(occlusion);
+    [INTERSECTION_FREELIST releaseInstance: occlusion];
     return result;
 }
 
@@ -1702,9 +1702,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
 
             if (rayOriginIntersection)
             {
-                [INTERSECTION_FREELIST releaseInstance
-                :rayOriginIntersection
-                ];
+                [INTERSECTION_FREELIST releaseInstance: rayOriginIntersection];
                 rayOriginIntersection = 0;
             }
 
@@ -1716,15 +1714,19 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
     }
 
 
-    if( rayOriginIntersection )
+    if( rayOriginIntersection)
     {
-        RELEASE_OBJECT(rayOriginIntersection);
+        [INTERSECTION_FREELIST releaseInstance: rayOriginIntersection];
+        rayOriginIntersection = 0;
     }
 
-    if ( intersection )
+    if ( intersection)
     {
-        RELEASE_OBJECT(intersection);
+        [INTERSECTION_FREELIST releaseInstance: intersection];
+        intersection = 0;
     }
+
+    return true;
 }
 
 - (bool) traceRay
@@ -1991,8 +1993,9 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
 
     }
 
-    RELEASE_OBJECT(incomingSourcePoint);
-    pathEnds[pathIndex] = arpvptrdynarray_size(lightPathsList);
+    [SURFACEPOINT_FREELIST releaseInstance: incomingSourcePoint];
+//    RELEASE_OBJECT(incomingSourcePoint);
+//    pathEnds[pathIndex] = arpvptrdynarray_size(lightPathsList);
 
     arattenuationsample_free(gv, temporaryMediaAttenuation);
 
@@ -2000,7 +2003,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
     {
         if(intersection)
         {
-            RELEASE_OBJECT(intersection);
+            [INTERSECTION_FREELIST releaseInstance: intersection];
             intersection = 0;
         }
 
@@ -2010,7 +2013,8 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
     {
         if(intersection)
         {
-            RELEASE_OBJECT(intersection);
+//            RELEASE_OBJECT(intersection);
+            [INTERSECTION_FREELIST releaseInstance: intersection];
             intersection = 0;
         }
 
@@ -2209,14 +2213,16 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
     }
 
 
-    if( rayOriginIntersection )
+    if( rayOriginIntersection)
     {
-        RELEASE_OBJECT(rayOriginIntersection);
+        [INTERSECTION_FREELIST releaseInstance: rayOriginIntersection];
+        rayOriginIntersection = 0;
     }
 
-    if ( intersection )
+    if ( intersection)
     {
-        RELEASE_OBJECT(intersection);
+        [INTERSECTION_FREELIST releaseInstance: intersection];
+        intersection = 0;
     }
 }
 

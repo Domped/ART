@@ -27,59 +27,6 @@
 #define LOCALHOST "127.0.0.1"
 #define TEV_PORT 14158
 
-
-#ifdef __APPLE__
-
-int pthread_barrier_init(pthread_barrier_t *barrier, const pthread_barrierattr_t *attr, unsigned int count)
-{
-    if(count == 0)
-    {
-        errno = EINVAL;
-        return -1;
-    }
-    if(pthread_mutex_init(&barrier->mutex, 0) < 0)
-    {
-        return -1;
-    }
-    if(pthread_cond_init(&barrier->cond, 0) < 0)
-    {
-        pthread_mutex_destroy(&barrier->mutex);
-        return -1;
-    }
-    barrier->tripCount = count;
-    barrier->count = 0;
-
-    return 0;
-}
-
-int pthread_barrier_destroy(pthread_barrier_t *barrier)
-{
-    pthread_cond_destroy(&barrier->cond);
-    pthread_mutex_destroy(&barrier->mutex);
-    return 0;
-}
-
-int pthread_barrier_wait(pthread_barrier_t *barrier)
-{
-    pthread_mutex_lock(&barrier->mutex);
-    ++(barrier->count);
-    if(barrier->count >= barrier->tripCount)
-    {
-        barrier->count = 0;
-        pthread_cond_broadcast(&barrier->cond);
-        pthread_mutex_unlock(&barrier->mutex);
-        return 1;
-    }
-    else
-    {
-        pthread_cond_wait(&barrier->cond, &(barrier->mutex));
-        pthread_mutex_unlock(&barrier->mutex);
-        return 0;
-    }
-}
-#endif // __APPLE__
-
-
 struct termios original;
 sem_t writeSem;
 // sem_t writeTonemapSem;
@@ -462,8 +409,8 @@ ARPACTION_DEFAULT_IMPLEMENTATION(ArnTiledStochasticSampler)
 {
     (void)nWorld;
     (void)nCamera;
-    pthread_barrier_init(&renderingDone, NULL, numberOfRenderThreads+1);
-    pthread_barrier_init(&mergingDone, NULL, 2);
+    art_pthread_barrier_init(&renderingDone,  numberOfRenderThreads+1);
+    art_pthread_barrier_init(&mergingDone, 2);
     
     
     sem_init(&writeSem, 0, 1);
@@ -870,7 +817,7 @@ ARPACTION_DEFAULT_IMPLEMENTATION(ArnTiledStochasticSampler)
 
     artime_now( & beginTime );
 
-    pthread_barrier_wait(&renderingDone);
+    art_pthread_barrier_wait(&renderingDone);
     //This shuts down the I/O watching thread for interactive mode
     write( read_thread_pipe[1], "q", 1 );
 
@@ -879,7 +826,7 @@ ARPACTION_DEFAULT_IMPLEMENTATION(ArnTiledStochasticSampler)
     task.type=WRITE_EXIT;
     push_merge_queue(&merge_queue,task);
     
-    pthread_barrier_wait(&mergingDone);
+    art_pthread_barrier_wait(&mergingDone);
 
     artime_now( & endTime );
 
@@ -943,7 +890,7 @@ ARPACTION_DEFAULT_IMPLEMENTATION(ArnTiledStochasticSampler)
         push_merge_queue(&merge_queue, curr_task);
     }
     
-    pthread_barrier_wait(&renderingDone);
+    art_pthread_barrier_wait(&renderingDone);
 }
 
 typedef struct ArPixelID
@@ -1214,7 +1161,7 @@ ArPixelID;
         }
     }
     END: 
-    pthread_barrier_wait(&mergingDone);
+    art_pthread_barrier_wait(&mergingDone);
 }
 -(void) merge_task
     :(art_task_t*) t
@@ -1643,8 +1590,8 @@ ArPixelID;
 {
     free_render_queue(&render_queue);
     free_merge_queue(&merge_queue);
-    pthread_barrier_destroy(&renderingDone);
-    pthread_barrier_destroy(&mergingDone);
+    art_pthread_barrier_destroy(&renderingDone);
+    art_pthread_barrier_destroy(&mergingDone);
     sem_destroy(&writeSem);
 
     RELEASE_OBJECT( sampleCounter );

@@ -38,8 +38,9 @@ ART_MODULE_INTERFACE(ArnStochasticBackwardsSampler)
 =========================================================================== */
 
 #define IMAGE_SAMPLER_MAX_SUBPIXEL_SAMPLES      1024
+
 #ifndef MODE
-    #define MODE arvcmmode_vcm
+    #define MODE arvcmmode_lt
 #endif
 
 #define TILE_SIZE 32
