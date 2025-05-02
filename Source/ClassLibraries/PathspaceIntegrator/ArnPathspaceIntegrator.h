@@ -65,7 +65,6 @@ ArDistanceTrackingMode;
     ArAttenuationSample               * pointOfInterestAttenuation;
 
     //   Contexts, caches and freelists
-
     ArLightsourceSamplingContext        lssc;
     ArBSDFSampleGenerationContext       sgc;
 

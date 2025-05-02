@@ -582,7 +582,13 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnPathTracer)
             :   0
             :   contribution
     ])
+    {
+        if(lightSourcePoint)
+            [ SURFACEPOINT_FREELIST releaseInstance
+            : lightSourcePoint
+            ];
         return NO;
+    }
 
     // invert the direction to point towards the light source, as opposed to away from it
     ArDirectionCosine connectionDirection;

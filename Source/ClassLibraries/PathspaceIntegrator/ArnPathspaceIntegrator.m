@@ -276,6 +276,21 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnPathspaceIntegrator)
     numberOfSamplesPerPixel = numberOfSamples;
 }
 
+- (void) freeIntersection
+        : (ART_GV*) art_gv
+        : (ArPathVertex *) pathVertex
+        : (bool) includeWorldPoints
+{
+    arpv_free_pv( art_gv, pathVertex, INTERSECTION_FREELIST, includeWorldPoints);
+}
+
+- (void) freeIntersections
+        : (ART_GV*) art_gv
+        : (ArPathVertexptrDynArray *) states
+{
+    arpv_free_arr_itrsc( art_gv, states, INTERSECTION_FREELIST);
+}
+
 // returns ArcRayEndpoint if a distance lower than maxDistance was generated, null otherwise
 - (ArcRayEndpoint *) sampleVolumeTransmittanceAndDistance
         : (      ArNode <ArpVolumeMaterial> *) volume

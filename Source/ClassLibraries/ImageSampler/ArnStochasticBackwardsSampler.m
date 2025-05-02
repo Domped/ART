@@ -419,7 +419,7 @@ typedef struct ArPixelID {
 
 //    ArPathVertexptrDynArray *pathVertexArray = [input pointerValue];
     if (arpvptrdynarray_size(renderBucket) > 1) {
-        arpv_free_arr_itrsc(art_gv, renderBucket);
+        [THREAD_PATHSPACE_INTEGRATOR freeIntersections : art_gv : renderBucket];
         arpvptrdynarray_free_contents(renderBucket);
     }
 
@@ -511,24 +511,24 @@ typedef struct ArPixelID {
         :(ArcUnsignedInteger *)threadIndex {
 
 
-    pthread_attr_t attr;
-    size_t stack_size;
-    int result;
-    result = pthread_attr_init(&attr);
-    result = pthread_attr_getstacksize(&attr, &stack_size);
-    if (result == 0) {
-        NSLog(@"Default thread stack size: %zu bytes (%zu KB, %zu MB)\n",
-               stack_size, stack_size/1024, stack_size/(1024*1024));
-    }
-    pthread_attr_destroy(&attr);
+//    pthread_attr_t attr;
+//    size_t stack_size;
+//    int result;
+//    result = pthread_attr_init(&attr);
+//    result = pthread_attr_getstacksize(&attr, &stack_size);
+//    if (result == 0) {
+//        NSLog(@"Default thread stack size: %zu bytes (%zu KB, %zu MB)\n",
+//               stack_size, stack_size/1024, stack_size/(1024*1024));
+//    }
+//    pthread_attr_destroy(&attr);
 
 
     NSAutoreleasePool *threadPool;
 //    ArcVCMSamplerInput *threadInput = [input pointerValue];
 //
 //    ArcUnsignedInteger* threadIndex = threadInput->threadIndex;
-//    vcmMode = [THREAD_PATHSPACE_INTEGRATOR getIntegratorMode];
-    vcmMode = arvcmmode_lt;
+    vcmMode = [THREAD_PATHSPACE_INTEGRATOR getIntegratorMode];
+//    vcmMode = arvcmmode_lt;
     threadPool = [[NSAutoreleasePool alloc] init];
     ArPixelID px_id;
     px_id.threadIndex = THREAD_INDEX;
@@ -643,6 +643,7 @@ typedef struct ArPixelID {
                                         :&vcmGlobalValues
                                 ];
 
+
                                 if(!(MODE & arvcmmode_vc))
                                 {
                                     continue;
@@ -695,8 +696,7 @@ typedef struct ArPixelID {
                                     }
                                 }
                                 arlightalphasample_free(art_gv, lightAlphaSample);
-                                arpv_free_pv(art_gv, currentState, false);
-                                FREE(currentState);
+                                [THREAD_PATHSPACE_INTEGRATOR freeIntersection : art_gv :currentState : false];
                                 currentState = 0;
                             }
 
@@ -850,8 +850,7 @@ typedef struct ArPixelID {
                             }
 
                             arlightalphasample_free(art_gv, lightAlphaSample);
-                            arpv_free_pv(art_gv, currentState, false);
-                            FREE(currentState);
+                            [THREAD_PATHSPACE_INTEGRATOR freeIntersection :art_gv : currentState : false];
                             currentState = 0;
                         }
                     }
@@ -869,7 +868,7 @@ typedef struct ArPixelID {
                 if(!( MODE & arvcmmode_vm && !(MODE & arvcmmode_vc))) {
                     [self splatRenderLightPaths:threadIndex :subpixelIdx :&renderBucket];
                 }
-                arpv_free_arr_itrsc(art_gv, &renderBucket);
+                [THREAD_PATHSPACE_INTEGRATOR freeIntersections :art_gv : &renderBucket];
                 arpvptrdynarray_free_contents(&renderBucket);
             }
 

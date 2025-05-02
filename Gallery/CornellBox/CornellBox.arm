@@ -1,6 +1,6 @@
 #import "SnailShell.arm"
 #ifndef SAMPLES
-#define SAMPLES 400
+#define SAMPLES 2000
 #endif
 
 
@@ -368,7 +368,8 @@ ArObj createTallBlock(ART_GV * art_gv) {
     :   TRANSLATION(-0.55, 0.68002f, 0)
     ];
 
-    return UNION(sphere, torus, sphere3, UNION_END);
+//    return UNION(sphere, torus, sphere3, UNION_END);
+    return UNION(groovedSphere, groovedSphere2, UNION_END);
 //    return UNION(shell, UNION_END);
 //    return
 //    [ block apply
@@ -505,12 +506,12 @@ ArObj createBox(ART_GV * art_gv) {
 
     ArObj rightWallGeometry =
     [ QUADRANGLE(1, 5, 6, 2) apply
-    : redLambert
+    : fluoSurfacc
     ];
 
     ArObj leftWallGeometry =
     [ QUADRANGLE(0, 3, 7, 4) apply
-    : redLambert
+    : fluoSurfacc
     ];
 
     ArObj backWallGeometry =
@@ -574,7 +575,7 @@ ARM_MAIN_FUNCTION(CornellBox)
 
         [ STOCHASTIC_BACKWARDS_PIXEL_SAMPLER
         sampleProvider:
-        [VCM
+       [VCM
         rayCaster:        STANDARD_RAYCASTER
         maximalRecursion: 9
         mode: arvcmmode_vm
@@ -583,6 +584,16 @@ ARM_MAIN_FUNCTION(CornellBox)
         samplesPerPixel:       SAMPLES
         randomValueGeneration: RANDOM_SEQUENCE
         ],
+        //[ STOCHASTIC_PIXEL_SAMPLER
+        //sampleProvider:
+        //[PATHTRACER
+        //rayCaster:        STANDARD_RAYCASTER
+        //maximalRecursion: 6
+        //]
+        //sampleSplattingKernel: TENT_KERNEL
+        //samplesPerPixel:       SAMPLES
+        //randomValueGeneration: RANDOM_SEQUENCE
+        //],
 
         [ IMAGECONVERSION_RAW_TO_ARTCSP
         removeSource: NO

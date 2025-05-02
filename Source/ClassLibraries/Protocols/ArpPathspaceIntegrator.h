@@ -133,6 +133,18 @@ ART_MODULE_INTERFACE(ArpPathspaceIntegrator)
         : (ArPathVertexptrDynArray *)   lightPathsList
         : (ArVCMGlobalValues *)         pArVcmGlobalValues
         ;
+
+- (void) freeIntersection
+        : (ART_GV *) art_gv
+        : (ArPathVertex *) pathVertex
+        : (bool) includeWorldPoints
+;
+
+- (void) freeIntersections
+        : (ART_GV *) art_gv
+        : (ArPathVertexptrDynArray *) states
+;
+
 @end
 
 // ===========================================================================

@@ -477,6 +477,21 @@ install (
 	PATTERN ".DS_Store" EXCLUDE
 	)
 
+option(ENABLE_ASAN "Enable address sanitizer" OFF)
+
+if(ENABLE_ASAN)
+	message(STATUS "AddressSanitizer enabled")
+	# Add ASan flags for GCC/Clang
+	if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-omit-frame-pointer")
+		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -fno-omit-frame-pointer")
+		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
+		set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fsanitize=address")
+	else()
+		message(WARNING "AddressSanitizer is not configured for the current compiler.")
+	endif()
+endif()
+
 # Copy the headers to the resource dir
 
 add_subdirectory (${art_internal_include_dir} ${art_internal_include_dir})

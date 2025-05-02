@@ -161,5 +161,5 @@ ARDYNARRAY_INTERFACE_FOR_ARTYPE_PTR(PathVertex,pv,pv);
 
 
 ArPathVertex* arpv_alloc(const ART_GV *art_gv);
-void arpv_free_pv(const ART_GV *art_gv, ArPathVertex *pv, bool include_wp);
-void arpv_free_arr_itrsc(const ART_GV  * art_gv, ArPathVertexptrDynArray *arr);
+void arpv_free_pv(const ART_GV *art_gv, ArPathVertex *pv, ArcFreelist* intersectionFreelist, bool include_wp);
+void arpv_free_arr_itrsc(const ART_GV  * art_gv, ArPathVertexptrDynArray *arr, ArcFreelist* intersectionFreelist);

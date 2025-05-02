@@ -721,6 +721,8 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
 
         currentState->dVCM = 1.0f / ARPDFVALUE_MAIN(*samplePDF);
     }
+
+    return YES;
 //    currentState->throughput *= cos_factor;
     // calculate the probability of sampling the wavelength when light-source sampling, but only if it then can end up being used
     // (this calculation is here, because we do not have a proper reference to the surface at calculateEmissionContribution -- because a SurfacePoint can end up there)
@@ -1523,7 +1525,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
     currentState->pathPDF = ARPDFVALUE_ONE;
 
     bool pushed = false;
-    for (unsigned int pathLength = 0; pathLength < 6; pathLength++)
+    for (unsigned int pathLength = 0; pathLength < maximalRecursionLevel; pathLength++)
     {
 
         currentState->totalPathLength = pathLength;
@@ -1667,7 +1669,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
         }
         currentState->incomingWavelength = currentState->outgoingWavelength;
 
-        if( pathLength < 6) {
+        if( pathLength < maximalRecursionLevel + 1) {
             double cos;
             //conduct random walk step, generating new ray and wavelength
             if (![self randomWalkPT
@@ -1742,8 +1744,6 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
 
 {
     ASSERT_VALID_WAVELENGTH(wavelength);
-    // initial ra
-    ArcIntersection * rayOriginIntersection = 0;
     ArcIntersection * intersection = 0; // outside of loop for easier early termination of loop
     ArcRayEndpoint * scatteringEvent = 0; // outside of loop for easier early termination of loop
     // initial volume
@@ -1804,7 +1804,7 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
 
     unsigned int pathLength = 0;
 
-    for(; pathLength < 6; ++pathLength)
+    for(; pathLength < maximalRecursionLevel; ++pathLength)
     {
         gotPushed = false;
         if(pathLength == 0)
@@ -1994,12 +1994,13 @@ ARPCONCRETECLASS_DEFAULT_IMPLEMENTATION(ArnVCM)
     }
 
     [SURFACEPOINT_FREELIST releaseInstance: incomingSourcePoint];
+    incomingSourcePoint = 0;
 //    RELEASE_OBJECT(incomingSourcePoint);
 //    pathEnds[pathIndex] = arpvptrdynarray_size(lightPathsList);
 
     arattenuationsample_free(gv, temporaryMediaAttenuation);
 
-    if(shouldBreak && !gotPushed)
+    if(shouldBreak)
     {
         if(intersection)
         {
