@@ -164,6 +164,38 @@ ART_NO_MODULE_SHUTDOWN_FUNCTION_NECESSARY
 }
 
 
+- (BOOL) cloneIntersection
+        : (ArcIntersection *) newIntersection
+{
+    if(newIntersection == NULL || self == NULL)
+        return NO;
+
+    if (ARCPOINTCONTEXT_OBJECTSPACE_POINT_IS_VALID(self)) {
+        ARCPOINTCONTEXT_SET_OBJECTSPACE_POINT(newIntersection, ARCPOINTCONTEXT_OBJECTSPACE_POINT(self));
+    }
+    if (ARCPOINTCONTEXT_WORLDSPACE_POINT_IS_VALID(self)) {
+        ARCPOINTCONTEXT_SET_WORLDSPACE_POINT(newIntersection, ARCPOINTCONTEXT_WORLDSPACE_POINT(self));
+    }
+
+    // Copy ArcSurfacePoint properties
+    newIntersection->sp_status_flags = self->sp_status_flags;
+    newIntersection->texture_coordinates = self->texture_coordinates;
+    newIntersection->objectspace_normal = self->objectspace_normal;
+    newIntersection->worldspace_normal = self->worldspace_normal;
+    newIntersection->surfaceType = self->surfaceType;
+    newIntersection->faceOnShape = self->faceOnShape;
+    newIntersection->shape = self->shape;
+    newIntersection->materialInsideRef = self->materialInsideRef;
+    newIntersection->materialOutsideRef = self->materialOutsideRef;
+    newIntersection->phaseInterface = self->phaseInterface;
+
+    newIntersection->t = self->t;
+    newIntersection->worldspace_cosine = self->worldspace_cosine;
+    newIntersection->worldspace_incoming_ray = self->worldspace_incoming_ray;
+    newIntersection->objectspace_incoming_ray = self->objectspace_incoming_ray;
+
+    return YES;
+}
 
 - (BOOL) evaluateEmission
         : (      ArcPointContext *) illuminatedPoint

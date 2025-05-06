@@ -47,6 +47,10 @@ ART_MODULE_INTERFACE(ArcIntersection)
 #endif
 }
 
+- (BOOL) cloneIntersection
+        : (ArcIntersection *) newIntersection
+        ;
+
 - (BOOL) evaluateEmission
         : (      ArcPointContext *) illuminatedPoint
         // path direction assumed to be arpathdirection_from_eye
